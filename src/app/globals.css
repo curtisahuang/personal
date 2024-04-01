@@ -6,22 +6,28 @@
   --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 0, 0, 0;
   --background-end-rgb: 0, 0, 0;
+  --right-bg-color: #ffabb9;
+  --left-bg-color: #9900ff;
 }
 
 body {
+  height: 100vh;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    90deg,
+    var(--left-bg-color) 50%,
+    var(--right-bg-color) 50%
+  );
 }
 
 h1 {
   font-size: 6rem;
   font-weight: 600;
-  background: -webkit-linear-gradient(135deg, #a200ff, #dd0000);
+  background: linear-gradient(
+    90deg,
+    var(--right-bg-color) 50%,
+    var(--left-bg-color) 50%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
