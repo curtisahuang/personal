@@ -8,7 +8,7 @@ const Home = () => {
     <main className="pt-16">
       <div className="text-center">
         <div className="min-h-screen">
-          <span className="hidden lg:block">
+          <span className="hidden md:block">
             <SideSlogan />
           </span>
           <Header />
