@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 const Home = () => {
   return (
-    <main className="pt-12">
+    <main className="pt-12 pb-20">
       <div className="text-center">
         <h1 className={`pb-8 ${inter.className}`}>curtis alexander huang</h1>
         <div className="w-full flex justify-center pb-12 select-none">
@@ -19,17 +19,34 @@ const Home = () => {
             priority
           />
         </div>
-        <h4>
-          <em>creating robust, user-driven experiences</em>
+        <h4 className="pb-5">
+          <em>
+            creating robust, user-driven experiences with typescript (and fun)
+          </em>
         </h4>
         <h5>
-          <a href="https://github.com/curtisahuang">github</a>
+          <a
+            className="hover-underline-animation"
+            href="https://github.com/curtisahuang"
+          >
+            <strong>github</strong>
+          </a>
         </h5>
         <h5>
-          <a href="https://instagram.com/curtisahuang">instagram</a>
+          <a
+            className="hover-underline-animation"
+            href="https://instagram.com/curtisahuang"
+          >
+            <strong>instagram</strong>
+          </a>
         </h5>
         <h5>
-          <a href="https://www.linkedin.com/in/curtisahuang/">linkedin</a>
+          <a
+            className="hover-underline-animation"
+            href="https://www.linkedin.com/in/curtisahuang/"
+          >
+            <strong>linkedin</strong>
+          </a>
         </h5>
       </div>
     </main>
