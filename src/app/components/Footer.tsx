@@ -27,7 +27,7 @@ const SocialLinks = ({
     <div className="h-[300px] bg-[var(--background-color)] overflow-hidden">
       <motion.div
         style={{ y }}
-        className="h-full bg-[var(--background-color)] flex flex-row justify-center gap-10 items-center p-10"
+        className="h-full bg-[var(--background-color)] flex flex-col sm:flex-row justify-center gap-10 items-center p-10"
       >
         <h5>
           <a

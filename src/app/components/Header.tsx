@@ -11,7 +11,7 @@ const Header = () => {
       <h1 className={`pb-12 tracking-tighter ${inter.className}`}>
         curtis alexander huang
       </h1>
-      <div className="w-full flex justify-center pb-12 select-none">
+      <div className="w-full flex justify-center pb-20 select-none">
         <Image
           src={vaporwave}
           width={500}
