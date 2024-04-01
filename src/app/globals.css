@@ -10,9 +10,13 @@
   --left-bg-color: #b13cff;
 }
 
+html {
+  background-color: #000000;
+}
+
 body {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
     90deg,
