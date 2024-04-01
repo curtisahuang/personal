@@ -8,10 +8,11 @@
   --background-end-rgb: 0, 0, 0;
   --right-bg-color: #ffabb9;
   --left-bg-color: #b13cff;
+  --background-color: #000747;
 }
 
 html {
-  background-color: #00025e;
+  background-color: var(--background-color);
 }
 
 body {
@@ -27,6 +28,7 @@ body {
 
 h1 {
   font-size: 6rem;
+  line-height: 5rem;
   font-weight: 600;
   background: linear-gradient(
     90deg,
