@@ -16,7 +16,7 @@ const Contact = () => {
 
         <a
           href="https://wa.me/85255781337"
-          className="transition duration-500 hover:text-black"
+          className="transition duration-500 hover:text-[#555]"
         >
           <div className="flex justify-between tracking-[0.9em] ">
             <h2>whatsapp</h2>
@@ -29,7 +29,7 @@ const Contact = () => {
 
         <a
           href="tel:+447479227231"
-          className="transition duration-500 hover:text-black"
+          className="transition duration-500 hover:text-[#555]"
         >
           <div className="flex justify-between tracking-[0.65em]">
             <h2>telephone</h2>
