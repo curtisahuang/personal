@@ -9,10 +9,12 @@ const Contact = () => {
           <h2>Stack</h2>
         </div>
 
-        <div className="flex justify-between pb-6 tracking-[0.7em]">
+        <div className="flex justify-between pb-4 tracking-[0.7em]">
           <h2>developer</h2>
           <h2></h2>
         </div>
+
+        <hr className="pb-5 h-0 border-t-4" />
 
         <a
           href="https://wa.me/85255781337"

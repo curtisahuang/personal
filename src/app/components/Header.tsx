@@ -5,7 +5,7 @@ import vaporwave from "../../assets/vaporwave.png";
 const Header = () => {
   return (
     <div>
-      <div className="w-full flex justify-center pb-12 select-none">
+      <div className="w-full flex justify-center pb-12">
         <Image
           src={vaporwave}
           width={500}

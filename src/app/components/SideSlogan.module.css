@@ -11,7 +11,7 @@
 
 .textContainer {
   position: relative;
-  cursor: pointer;
+  cursor: default;
   transform-style: preserve-3d;
   transition: transform 0.4s;
 }

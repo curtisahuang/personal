@@ -1,6 +1,6 @@
 const Summary = () => {
   return (
-    <div className="mx-10 select-none">
+    <div className="mx-10">
       <h4 className="leading-none tracking-tighter">
         <em>
           creating robust, user-driven experiences with typescript (and fun)
