@@ -50,7 +50,7 @@ const Contact = () => {
           </div>
           <div className="flex justify-between pb-2 tracking-[0.44em]">
             <h2>
-              <span className="font-serif">@</span>
+              <span className="font-sans">@</span>
             </h2>
             <h2>gmail.com</h2>
           </div>
