@@ -5,7 +5,7 @@ const Contact = () => {
     <div className="flex justify-between items-center uppercase pt-10 sm:pb-10 leading-[2.75rem]">
       <div className="w-[360px]">
         <div className="flex justify-between tracking-[0.5em]">
-          <h2>Full</h2>
+          <h2 className="pb-2">Full</h2>
           <h2>Stack</h2>
         </div>
 
