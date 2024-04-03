@@ -28,7 +28,7 @@ const SideSlogan = () => {
         <Text3D primary="creating" secondary="delivering" />
         <Text3D primary="concepts" secondary="products" />
         <Text3D primary="with" secondary="from" />
-        <Text3D primary="design" secondary="ui/ux" />
+        <Text3D primary="design" secondary="code" />
       </div>
     </div>
   );
