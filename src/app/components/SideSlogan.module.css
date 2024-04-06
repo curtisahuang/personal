@@ -31,7 +31,7 @@
   top: 0;
   color: var(--left-bg-color);
   opacity: 0;
-  transform: rotateX(-90deg) translateY(2rem);
+  transform: rotateX(-90deg) translateY(1.9rem);
   transform-origin: bottom center;
 }
 
@@ -40,10 +40,12 @@
 }
 
 .textContainer:hover .primary {
+  width: 100%;
   transform: translateY(-100%);
   opacity: 0;
 }
 
 .textContainer:hover .secondary {
   opacity: 1;
+  width: 100%;
 }

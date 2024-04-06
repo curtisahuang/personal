@@ -5,7 +5,7 @@ import chicken from "../../assets/chicken.png";
 const Chicken = ({ showChicken }: { showChicken: boolean }) => {
   return (
     <div
-      className={`absolute top-20 transition-all duration-1000 ${
+      className={`absolute top-20 transition-all duration-300 ${
         showChicken ? `left-[-16rem] rotate-45` : `left-[-30rem]`
       }`}
     >
