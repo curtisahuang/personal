@@ -19,6 +19,14 @@ const SideSlogan = () => {
     }
   };
 
+  // Reset rotation to 0deg on mouse leave to fix sticky hover in Firefox
+  const resetPlane = () => {
+    if (plane.current) {
+      plane.current.style.transform = "rotateX(0deg) rotateY(0deg)";
+      // perspective remains unchanged
+    }
+  };
+
   // SSR-safe: Use window only if defined, fallback to 4000
   const initialPerspective =
     typeof window !== "undefined" ? window.innerWidth * 4 : 4000;
@@ -28,6 +36,7 @@ const SideSlogan = () => {
       onMouseMove={(e: React.MouseEvent) => {
         manageMouseMove(e);
       }}
+      onMouseLeave={resetPlane}
     >
       <div
         ref={plane}
