@@ -6,35 +6,75 @@ import { AnimatePresence, motion } from "framer-motion";
 import vaporwave from "@/assets/vaporwave.png";
 import { Caption } from "../components/";
 
-type CaptionPosition = "right" | "left" | "center";
+type CaptionPosition =
+  | "right"
+  | "left"
+  | "center"
+  | "topRight"
+  | "topLeft"
+  | "top"
+  | "bottomRight"
+  | "bottomLeft"
+  | "bottom";
 
 type Photo = {
   id: number;
-  src: StaticImageData;
+  src: string | StaticImageData;
   alt: string;
   caption?: string;
   captionColor?: string;
   captionPosition?: CaptionPosition;
 };
 
+// Load photo config from JSON (edit src/app/photoblog/photos.json)
+import photosConfig from "./photos.json";
+type PhotoEntry = {
+  src?: string;
+  filename?: string;
+  alt?: string;
+  caption?: string;
+  captionColor?: string;
+  captionPosition?: CaptionPosition;
+};
+
 const PhotoblogPage = () => {
-  // 16 placeholder items using the same image for now
-  const photos: Photo[] = useMemo(
-    () =>
-      Array.from({ length: 24 }, (_, i) => ({
-        id: i,
-        src: vaporwave,
-        alt: `photoblog-${i + 1}`,
-        caption: "why oh just why",
-        captionColor: "#ffffff",
-        captionPosition: "right",
-      })),
-    []
-  );
+  // Build from JSON with graceful fallback to placeholder
+  const dynamicPhotos: Photo[] = useMemo(() => {
+    const entries = (photosConfig as PhotoEntry[]) ?? [];
+    return entries.map((entry, i) => ({
+      id: i,
+      // Prefer explicit src; else assume files live under /assets in public
+      src: entry.src ?? (entry.filename ? `/assets/${entry.filename}` : vaporwave),
+      alt: entry.alt ?? `photoblog-${i + 1}`,
+      caption: entry.caption ?? "why oh just why",
+      captionColor: entry.captionColor ?? "#ffffff",
+      captionPosition: entry.captionPosition ?? "right",
+    }));
+  }, []);
+
+  const desiredCount = 24;
+  const photos: Photo[] = useMemo(() => {
+    if (dynamicPhotos.length >= desiredCount) {
+      return dynamicPhotos.slice(0, desiredCount).map((p, i) => ({ ...p, id: i }));
+    }
+    // Fill remaining slots with placeholder
+    return Array.from({ length: desiredCount }, (_, i) => {
+      const existing = dynamicPhotos[i];
+      return (
+        existing ?? {
+          id: i,
+          src: vaporwave,
+          alt: `photoblog-${i + 1}`,
+          caption: "why oh just why",
+          captionColor: "#ffffff",
+          captionPosition: "right",
+        }
+      );
+    });
+  }, [dynamicPhotos]);
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  // Track viewport for fitting the image size
   const [viewport, setViewport] = useState(() => ({
     w: typeof window !== "undefined" ? window.innerWidth : 0,
     h: typeof window !== "undefined" ? window.innerHeight : 0,
@@ -46,20 +86,19 @@ const PhotoblogPage = () => {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  // Compute fitted size for active image
   const activePhoto = activeIndex !== null ? photos[activeIndex] : null;
   const fitted = useMemo(() => {
     if (!activePhoto) return null;
-    const data = activePhoto.src as StaticImageData;
-    const nw = data.width || 1200;
-    const nh = data.height || 800;
+    const isStatic = typeof activePhoto.src === "object";
+    const data = isStatic ? (activePhoto.src as StaticImageData) : null;
+    const nw = data?.width ?? 1200;
+    const nh = data?.height ?? 800;
     const maxW = viewport.w ? viewport.w * 0.95 : nw;
     const maxH = viewport.h ? viewport.h * 0.85 : nh;
     const scale = Math.min(maxW / nw, maxH / nh);
     return { width: Math.round(nw * scale), height: Math.round(nh * scale) };
   }, [activePhoto, viewport]);
 
-  // Close on ESC only (keyboard navigation disabled)
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setActiveIndex(null);
@@ -73,7 +112,6 @@ const PhotoblogPage = () => {
 
   return (
     <main className="m-0 p-0 min-h-[100svh] w-screen bg-[#578b92]">
-      {/* Scrollable viewport containing a square thumbnail grid */}
       <div className="scroll-area w-screen h-[100svh] overflow-auto">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 w-full gap-0 m-0 p-0">
           {photos.map((photo, i) => (
@@ -84,7 +122,6 @@ const PhotoblogPage = () => {
               style={{ animationDelay: `${i * 90}ms` }}
               onClick={() => open(i)}
             >
-              {/* Shared element for zoom transition; square cell */}
               <motion.div
                 layoutId={`photo-${photo.id}`}
                 className="relative w-full aspect-square"
@@ -104,7 +141,6 @@ const PhotoblogPage = () => {
         </div>
       </div>
 
-      {/* Lightbox overlay with fade; content uses shared element zoom */}
       <AnimatePresence>
         {activeIndex !== null && (
           <motion.div
@@ -138,14 +174,12 @@ const PhotoblogPage = () => {
                 priority
               />
 
-              {/* Caption on photo */}
               <Caption
                 text={photos[activeIndex].caption ?? "why oh just why"}
                 color={photos[activeIndex].captionColor ?? "#ffffff"}
                 position={photos[activeIndex].captionPosition ?? "right"}
               />
 
-              {/* Close */}
               <button
                 className="absolute top-3 right-3 text-white/90 hover:text-white text-2xl leading-none"
                 onClick={close}
