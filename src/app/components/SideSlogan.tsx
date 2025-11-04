@@ -14,17 +14,35 @@ const SideSlogan = () => {
     const rotateX = maxRotate * x - maxRotate / 2;
     const rotateY = (maxRotate * y - maxRotate / 2) * -1;
     if (plane.current) {
-      plane.current.style.transform = `perspective(${perspective}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg)`;
+      plane.current.style.perspective = `${perspective}px`;
+      plane.current.style.transform = `rotateX(${rotateY}deg) rotateY(${rotateX}deg)`;
     }
   };
+
+  // Reset rotation to 0deg on mouse leave to fix sticky hover in Firefox
+  const resetPlane = () => {
+    if (plane.current) {
+      plane.current.style.transform = "rotateX(0deg) rotateY(0deg)";
+      // perspective remains unchanged
+    }
+  };
+
+  // SSR-safe: Use window only if defined, fallback to 4000
+  const initialPerspective =
+    typeof window !== "undefined" ? window.innerWidth * 4 : 4000;
 
   return (
     <div
       onMouseMove={(e: React.MouseEvent) => {
         manageMouseMove(e);
       }}
+      onMouseLeave={resetPlane}
     >
-      <div ref={plane} className="absolute top-[20rem] right-[10%] z-0">
+      <div
+        ref={plane}
+        className="absolute top-[20rem] right-[10%] z-0"
+        style={{ perspective: `${initialPerspective}px` }}
+      >
         <Text3D primary="creating" secondary="delivering" />
         <Text3D primary="concepts" secondary="products" />
         <Text3D primary="from" secondary="with" />
