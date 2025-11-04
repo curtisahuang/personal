@@ -1,5 +1,5 @@
 "use client";
-import { MutableRefObject, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Summary, Header, Footer, SideSlogan, Chicken } from "./components/";
 import { Inter } from "next/font/google";
 import downChevron from "../assets/down-chevron.svg";
@@ -9,9 +9,9 @@ const inter = Inter({ subsets: ["latin"] });
 
 const Home = () => {
   const [showChicken, setShowChicken] = useState(false);
-  const footerRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const footerRef = useRef<HTMLDivElement | null>(null);
   const scrollToElement = () =>
-    footerRef.current.scrollIntoView({ behavior: "smooth" });
+    footerRef.current?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <main className="pt-16">
