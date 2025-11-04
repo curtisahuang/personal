@@ -5,6 +5,7 @@ import Image, { StaticImageData } from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import vaporwave from "@/assets/vaporwave.png";
 import { Caption } from "../components/";
+import { useRouter } from "next/navigation";
 
 type CaptionPosition =
   | "right"
@@ -110,9 +111,18 @@ const PhotoblogPage = () => {
   const open = (index: number) => setActiveIndex(index);
   const close = () => setActiveIndex(null);
 
+  const router = useRouter();
+  const handleBack = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/");
+    }
+  };
+
   return (
-    <main className="m-0 p-0 min-h-[100svh] w-screen bg-[#578b92]">
-      <div className="scroll-area w-screen h-[100svh] overflow-auto">
+    <main className="m-0 p-0 min-h-svh w-screen bg-[#578b92]">
+      <div className="scroll-area w-screen h-svh overflow-auto pb-20 md:pb-24">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 w-full gap-0 m-0 p-0">
           {photos.map((photo, i) => (
             <button
@@ -180,18 +190,24 @@ const PhotoblogPage = () => {
                 position={photos[activeIndex].captionPosition ?? "right"}
               />
 
-              <button
-                className="absolute top-3 right-3 text-white/90 hover:text-white text-2xl leading-none"
-                onClick={close}
-                aria-label="Close"
-                title="Close"
-              >
-                ×
-              </button>
+              
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <footer className="fixed bottom-0 left-0 right-0 z-40 bg-[#578b92]">
+        <div className="px-4 py-3 flex items-center">
+          <button
+            onClick={handleBack}
+            className="text-white/90 hover:text-white text-sm md:text-base font-medium"
+            aria-label="Back"
+            title="Back"
+          >
+            ← Back
+          </button>
+        </div>
+      </footer>
 
       </main>
   );

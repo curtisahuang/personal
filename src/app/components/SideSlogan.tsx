@@ -24,7 +24,7 @@ const SideSlogan = () => {
         manageMouseMove(e);
       }}
     >
-      <div ref={plane} className="absolute top-[20rem] right-[10%] z-0">
+      <div ref={plane} className="absolute top-80 right-[10%] z-0">
         <Text3D primary="creating" secondary="delivering" />
         <Text3D primary="concepts" secondary="products" />
         <Text3D primary="from" secondary="with" />
