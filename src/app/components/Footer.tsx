@@ -25,10 +25,10 @@ const SocialLinks = ({
   const y = useTransform(scrollProgress, [0, 1], [-225, 0]);
 
   return (
-    <div className="h-[800px] pb-10 bg-[var(--background-color)] overflow-hidden">
+    <div className="h-[800px] pb-10 bg-(--background-color) overflow-hidden">
       <motion.div
         style={{ y }}
-        className="h-full bg-[var(--background-color)] flex flex-col justify-center gap-10 items-center p-10"
+        className="h-full bg-(--background-color) flex flex-col justify-center gap-10 items-center p-10"
       >
         <Contact />
         <div className="flex flex-col sm:flex-row gap-10 items-center">

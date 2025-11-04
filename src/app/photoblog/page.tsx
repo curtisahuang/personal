@@ -200,7 +200,7 @@ const PhotoblogPage = () => {
         <div className="px-4 py-3 flex items-center">
           <button
             onClick={handleBack}
-            className="text-white/90 hover:text-white text-sm md:text-base font-medium"
+            className="text-white/90 hover:text-white text-sm md:text-base font-medium cursor-pointer"
             aria-label="Back"
             title="Back"
           >
