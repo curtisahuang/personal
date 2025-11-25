@@ -45,7 +45,8 @@ const PhotoblogPage = () => {
     return entries.map((entry, i) => ({
       id: i,
       // Prefer explicit src; else assume files live under /assets in public
-      src: entry.src ?? (entry.filename ? `/assets/${entry.filename}` : vaporwave),
+      src:
+        entry.src ?? (entry.filename ? `/assets/${entry.filename}` : vaporwave),
       alt: entry.alt ?? `photoblog-${i + 1}`,
       caption: entry.caption ?? "why oh just why",
       captionColor: entry.captionColor ?? "#ffffff",
@@ -56,7 +57,9 @@ const PhotoblogPage = () => {
   const desiredCount = 24;
   const photos: Photo[] = useMemo(() => {
     if (dynamicPhotos.length >= desiredCount) {
-      return dynamicPhotos.slice(0, desiredCount).map((p, i) => ({ ...p, id: i }));
+      return dynamicPhotos
+        .slice(0, desiredCount)
+        .map((p, i) => ({ ...p, id: i }));
     }
     // Fill remaining slots with placeholder
     return Array.from({ length: desiredCount }, (_, i) => {
@@ -81,7 +84,8 @@ const PhotoblogPage = () => {
     h: typeof window !== "undefined" ? window.innerHeight : 0,
   }));
   useEffect(() => {
-    const update = () => setViewport({ w: window.innerWidth, h: window.innerHeight });
+    const update = () =>
+      setViewport({ w: window.innerWidth, h: window.innerHeight });
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
@@ -141,6 +145,7 @@ const PhotoblogPage = () => {
                   src={photo.src}
                   alt={photo.alt}
                   fill
+                  unoptimized
                   sizes="(min-width:1280px) 12.5vw, (min-width:1024px) 16.66vw, (min-width:768px) 25vw, (min-width:640px) 33.33vw, 50vw"
                   className="object-cover select-none"
                   priority={i < 12}
@@ -174,11 +179,15 @@ const PhotoblogPage = () => {
                 alt={photos[activeIndex].alt}
                 width={
                   fitted?.width ||
-                  (activePhoto ? (activePhoto.src as StaticImageData).width : 800)
+                  (activePhoto
+                    ? (activePhoto.src as StaticImageData).width
+                    : 1000)
                 }
                 height={
                   fitted?.height ||
-                  (activePhoto ? (activePhoto.src as StaticImageData).height : 600)
+                  (activePhoto
+                    ? (activePhoto.src as StaticImageData).height
+                    : 600)
                 }
                 className="h-full w-full object-contain select-none"
                 priority
@@ -189,8 +198,6 @@ const PhotoblogPage = () => {
                 color={photos[activeIndex].captionColor ?? "#ffffff"}
                 position={photos[activeIndex].captionPosition ?? "right"}
               />
-
-              
             </motion.div>
           </motion.div>
         )}
@@ -208,8 +215,7 @@ const PhotoblogPage = () => {
           </button>
         </div>
       </footer>
-
-      </main>
+    </main>
   );
 };
 

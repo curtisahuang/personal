@@ -1,8 +1,20 @@
 [
-  { "caption": "oh god\nwhy", "captionPosition": "right"},
-  { "caption": "oh god why", "captionPosition": "center" },
-  { "caption": "oh god why", "captionPosition": "left" },
-  { "caption": "oh god why" },
+  {
+    "caption": "dancers under a golden\nsun",
+    "captionPosition": "right",
+    "src": "/assets/001.jpg"
+  },
+  {
+    "caption": "blue flags",
+    "captionPosition": "right",
+    "src": "/assets/002.jpg"
+  },
+  {
+    "caption": "oh the lights \nthey blind\nme",
+    "captionPosition": "left",
+    "src": "/assets/003.jpg"
+  },
+  { "caption": "oh god why", "src": "/assets/004.jpg" },
   { "caption": "oh god why" },
   { "caption": "oh god why" },
   { "caption": "oh god why" },
