@@ -57,6 +57,11 @@ const SocialLinks = ({
             </a>
           </h5>
         </div>
+        <h5 className="text-center">
+          <a className="hover-underline-animation" href="/games-and-toys">
+            <strong>Games and Toys</strong>
+          </a>
+        </h5>
       </motion.div>
     </div>
   );
