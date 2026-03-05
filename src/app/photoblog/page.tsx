@@ -177,6 +177,7 @@ const PhotoblogPage = () => {
                     src={photo.src}
                     alt={photo.alt}
                     fill
+                    unoptimized
                     quality={55}
                     sizes="(min-width:1536px) 12.5vw, (min-width:1280px) 14.3vw, (min-width:1024px) 16.66vw, (min-width:768px) 25vw, (min-width:640px) 33.33vw, 50vw"
                     className="object-cover select-none"
