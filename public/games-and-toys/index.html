@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>Cosine's Curious Compendium</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lavishly+Yours&family=Honk&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="bg-synthwave" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="wrap">
+      <h1 class="brand">Cosine's Curious Compendium</h1>
+      <!-- No inline theme buttons; launchers are placed elsewhere per theme -->
+    </div>
+  </header>
+
+  <!-- Geocities banner (only visible in Geocities theme) -->
+  <div class="geo-banner" aria-hidden="true">
+    <div class="geo-banner-inner">
+      <span class="geo-badge">Under Construction</span>
+      <span class="geo-badge">Best viewed in Netscape</span>
+      <span class="geo-badge">Sign my Guestbook!</span>
+      <div class="geo-marquee">
+        <span>Welcome to my homepage!!! Thanks for visiting!  Hit refresh for more sparkles!  </span>
+      </div>
+    </div>
+  </div>
+
+  <main class="site-main">
+    <div class="wrap">
+
+      <section id="filters" class="filters" hidden aria-label="Filter by tags">
+        <div class="chips" role="toolbar" aria-label="Tag filters"></div>
+      </section>
+
+      <section id="grid" class="grid" aria-live="polite"></section>
+      <p id="empty" class="empty" hidden>No curiosities yet. Add entries to <code>assets/curiosities.json</code>.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small>&copy; 2025 Curtis</small>
+    </div>
+  </footer>
+
+  <!-- Win98 Taskbar (visible only in Win98 theme) -->
+  <div class="win98-taskbar win98-only" role="toolbar" aria-label="Windows 98 taskbar">
+    <button id="winStartBtn" class="win-start-btn" aria-haspopup="true" aria-controls="winStartMenu" title="Start">Start</button>
+    <div class="taskbar-spacer" aria-hidden="true"></div>
+    <span id="winClock" class="win-clock" aria-live="polite" aria-atomic="true"></span>
+  </div>
+
+  <!-- Dark theme hamburger (visible only in Dark theme) -->
+  <button id="themeMenuBtn" class="theme-menu-btn dark-only" aria-haspopup="true" aria-controls="themeMenu" title="Themes" aria-label="Open theme menu">
+    <span class="hamburger" aria-hidden="true"></span>
+  </button>
+  <div id="themeMenu" class="theme-menu dark-menu" hidden>
+    <button type="button" data-theme="dark">Synthwave</button>
+    <button type="button" data-theme="homepage">Homepage</button>
+    <button type="button" data-theme="win98">Windows 98</button>
+    <button type="button" data-theme="geocities">Geocities</button>
+  </div>
+
+  <!-- Win98 Start menu -->
+  <div id="winStartMenu" class="theme-menu win98-menu" hidden>
+    <button type="button" data-theme="dark">Synthwave</button>
+    <button type="button" data-theme="homepage">Homepage</button>
+    <button type="button" data-theme="win98">Windows 98</button>
+    <button type="button" data-theme="geocities">Geocities</button>
+  </div>
+
+  <!-- Geocities launcher -->
+  <button id="geoThemeBtn" class="geo-theme-btn geocities-only" aria-haspopup="true" aria-controls="geoThemeMenu" title="THEMEZ">THEMEZ</button>
+  <div id="geoThemeMenu" class="theme-menu geocities-menu" hidden>
+    <button type="button" data-theme="dark">Synthwave</button>
+    <button type="button" data-theme="homepage">Homepage</button>
+    <button type="button" data-theme="win98">Windows 98</button>
+    <button type="button" data-theme="geocities">Geocities</button>
+  </div>
+
+  <script>window.INSTANT_SITE_DOMAIN = "cosine";</script>
+  <script src="assets/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1310 @@
+/* Base and theme tokens */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+:root {
+  --bg: #f7f8fb;
+  --text: #10131f;
+  --muted: #5f657a;
+  --card: #ffffff;
+  --card-border: #e6e9f2;
+  --header-bg: rgba(255,255,255,0.85);
+  --header-border: #e6e9f2;
+  --accent: #3b82f6;
+  --accent-contrast: #ffffff;
+  --shadow: 0 6px 20px rgba(16,19,31,0.08), 0 2px 6px rgba(16,19,31,0.04);
+
+  /* Glass tokens */
+  --glass: rgba(255,255,255,0.6);
+  --glass-border: rgba(230,233,242,0.6);
+  --glass-button-bg: rgba(59,130,246,0.22);
+  --glass-button-border: rgba(59,130,246,0.5);
+
+  /* Chip tokens */
+  --chip-bg: rgba(255,255,255,0.9);
+  --chip-border: rgba(0,0,0,0.12);
+  --chip-text: var(--text);
+
+  /* Animated border */
+  --shine-angle: 0deg;
+
+  /* Card row heights (fixed for consistent layout) */
+  --row-title: 28px;   /* 1-line title */
+  --row-author: 28px;  /* 1-line author row */
+  --row-tags: 28px;    /* 1-line tags row */
+}
+
+html { color-scheme: light dark; }
+
+html[data-theme="dark"] {
+  --bg: #0e141b;
+  --text: #e6eaf3;
+  --muted: #a1a8bb;
+  --card: #121922;
+  --card-border: #1b2431;
+  --header-bg: rgba(14,20,27,0.75);
+  --header-border: #1b2431;
+  --accent: #60a5fa;
+  /* Ensure button text is bright and readable in dark mode */
+  --accent-contrast: #ffffff;
+  --shadow: 0 8px 24px rgba(0,0,0,0.35);
+
+  /* Glass tokens (dark) */
+  --glass: rgba(18,25,34,0.6);
+  --glass-border: rgba(27,36,49,0.7);
+  /* Slightly brighter translucent button background in dark mode */
+  --glass-button-bg: rgba(96,165,250,0.3);
+  --glass-button-border: rgba(147,197,253,0.8);
+
+  /* Chip tokens (dark) */
+  --chip-bg: rgba(18,25,34,0.85);
+  --chip-border: rgba(255,255,255,0.12);
+  --chip-text: var(--accent-contrast);
+}
+
+html[data-theme="homepage"] {
+  --bg: #ff9950;
+  --text: #ffffff;
+  --muted: rgba(255,255,255,0.85);
+  --card: rgba(255,255,255,0.2);
+  --card-border: rgba(255,255,255,0.5);
+  --header-bg: transparent;
+  --header-border: rgba(255,255,255,0.35);
+  --accent: #ffffff;
+  --accent-contrast: #ff9950;
+  --shadow: 0 10px 26px rgba(0,0,0,0.22);
+
+  --glass: rgba(255,255,255,0.18);
+  --glass-border: rgba(255,255,255,0.45);
+  --glass-button-bg: rgba(255,255,255,0.2);
+  --glass-button-border: rgba(255,255,255,0.55);
+
+  --chip-bg: rgba(255,255,255,0.22);
+  --chip-border: rgba(255,255,255,0.65);
+  --chip-text: #ffffff;
+}
+
+html[data-theme="homepage"] body {
+  background: linear-gradient(90deg, #bb56ff 50%, #ffabb9 50%);
+  color: #ffffff;
+}
+
+html[data-theme="homepage"] .bg-synthwave,
+html[data-theme="homepage"] .geo-banner {
+  display: none;
+}
+
+html[data-theme="homepage"] .site-header {
+  background: transparent;
+  border-bottom: 0;
+}
+
+html[data-theme="homepage"] .brand {
+  font-family: "Quicksand", system-ui, sans-serif;
+  font-size: clamp(2.2rem, 6vw, 4.4rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-shadow: 8px 8px #ffffff;
+  background: linear-gradient(90deg, #ffabb9 50%, #bb56ff 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html[data-theme="homepage"] .card h3 {
+  font-family: "Quicksand", system-ui, sans-serif;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+html[data-theme="homepage"] .visit,
+html[data-theme="homepage"] .cta .cta-link {
+  color: #ffffff;
+}
+
+html[data-theme="homepage"] .site-footer {
+  border-top: 1px solid rgba(255,255,255,0.45);
+  background: rgba(0,0,0,0.12);
+}
+
+/* Dark mode – transparent button with animated border, readable text */
+html[data-theme="dark"] .visit,
+html[data-theme="dark"] .cta .cta-link {
+  background: transparent;
+  color: var(--text);
+  text-shadow: none;
+  box-shadow: none;
+}
+
+html[data-theme="dark"] .visit:hover {
+  transform: none;
+}
+
+/* Disable hover lift for cards and CTA buttons in Synthwave (dark) */
+html[data-theme="dark"] .card:hover {
+  transform: none;
+}
+html[data-theme="dark"] .cta .cta-link:hover {
+  transform: none;
+}
+
+/* Base layout */
+body {
+  margin: 0;
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background-color .3s ease, color .3s ease;
+}
+
+.wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Header */
+.site-header {
+  position: static; /* let the header scroll with the page */
+  top: auto;
+  z-index: auto;
+  background: transparent; /* remove dark backdrop so sunset shows through */
+  border-bottom: 0;
+  backdrop-filter: none;
+  transition: background-color .3s ease, border-color .3s ease, backdrop-filter .3s ease;
+}
+
+.site-header .wrap {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.brand {
+  margin: 0;
+  font-family: "Honk", system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: .5px;
+  font-size: 4rem;
+  line-height: 1.15;
+  text-align: center;
+  width: 100%;
+}
+
+/* Theme buttons container (top-right) */
+.site-header .theme-buttons {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Base theme button */
+.theme-toggle {
+  appearance: none;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  color: var(--text);
+  padding: 6px 8px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+.theme-toggle .icon,
+.win-logo {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* Windows 98-style button */
+.theme-toggle.win98-toggle {
+  border: 1px solid #000;
+  background: #c0c0c0;
+  color: #000;
+  border-radius: 2px;
+  box-shadow:
+    inset 1px 1px 0 #fff,
+    inset -1px -1px 0 #7f7f7f,
+    1px 1px 0 #000;
+}
+
+.theme-toggle.win98-toggle:hover { filter: brightness(0.98); }
+
+/* Dark theme button */
+.theme-toggle.dark-toggle {
+  border: 1px solid #1b2431;
+  background: #0e141b;
+  color: #e6eaf3;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.35);
+}
+.theme-toggle.dark-toggle:hover { filter: brightness(1.05); }
+
+/* Geocities badge button (match neon magenta/blue/cyan, avoid yellow) */
+.theme-toggle.geo-toggle {
+  border: 2px ridge #ff00ff;
+  background: linear-gradient(180deg, #ff00ff, #0000ff);
+  color: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 0 10px #00ffff, inset 0 0 6px #ff00ff;
+}
+.theme-toggle.geo-toggle .icon { filter: saturate(1.6) contrast(1.3); }
+
+/* Windows 98 Theme */
+html[data-theme="win98"] {
+  --bg: #008080;            /* classic teal desktop */
+  --text: #000000;
+  --muted: #000000;
+  --card: #c0c0c0;          /* dialog grey */
+  --card-border: #000000;
+  --header-bg: #000080;     /* title bar blue */
+  --header-border: #000000;
+  --accent: #000080;
+  --accent-contrast: #ffffff;
+  --shadow: none;
+
+  --glass: #c0c0c0;
+  --glass-border: #000000;
+  --glass-button-bg: #c0c0c0;
+  --glass-button-border: #000000;
+
+  --chip-bg: #c0c0c0;
+  --chip-border: #000000;
+  --chip-text: #000000;
+}
+
+/* Hide synthwave background in Win98 mode */
+html[data-theme="win98"] .bg-synthwave { display: none; }
+
+/* Header becomes a title bar */
+html[data-theme="win98"] .site-header {
+  position: static;
+  background: var(--header-bg);
+  border-bottom: 2px solid #000;
+}
+
+html[data-theme="win98"] .site-header .wrap {
+  min-height: 44px;
+}
+
+html[data-theme="win98"] .brand {
+  font-family: Tahoma, "MS Sans Serif", "Segoe UI", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 44px;
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+}
+
+/* Base layout overrides */
+html[data-theme="win98"] body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Tahoma, "MS Sans Serif", "Segoe UI", system-ui, sans-serif;
+}
+
+/* CTA turns into a flat panel */
+html[data-theme="win98"] .cta {
+  margin: 8px 0 16px;
+  padding: 10px 12px;
+  border: 2px solid #000;
+  border-radius: 2px;
+  background: #c0c0c0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+html[data-theme="win98"] .cta-link {
+  background: #c0c0c0;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 2px;
+  box-shadow:
+    inset 1px 1px 0 #fff,
+    inset -1px -1px 0 #7f7f7f;
+}
+html[data-theme="win98"] .cta .cta-link::before { content: none; }
+
+/* Filters become classic buttons */
+html[data-theme="win98"] .filters {
+  margin: 8px 0 16px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+html[data-theme="win98"] .filters .chip {
+  padding: 6px 10px;
+  border-radius: 2px;
+  border: 1px solid #000;
+  background: #c0c0c0;
+  color: #000;
+  font-weight: 600;
+  font-size: .9rem;
+  text-shadow: none;
+  box-shadow:
+    inset 1px 1px 0 #fff,
+    inset -1px -1px 0 #7f7f7f;
+}
+
+html[data-theme="win98"] .filters .chip.is-active {
+  background: #000080;
+  color: #fff;
+  border-color: #000;
+  box-shadow: none;
+}
+
+/* Cards look like Win98 windows */
+html[data-theme="win98"] .card {
+  background: #c0c0c0;
+  border: 2px solid #000;
+  border-radius: 2px;
+  box-shadow: none;
+  backdrop-filter: none;
+  transition: none;
+}
+
+html[data-theme="win98"] .card:hover { transform: none; }
+html[data-theme="win98"] .card:hover img { transform: none; }
+
+html[data-theme="win98"] .card img {
+  background: #808080;
+  transition: none;
+}
+
+html[data-theme="win98"] .card .content {
+  padding: 10px 12px 12px;
+  gap: 8px;
+  grid-template-rows: var(--row-title) auto var(--row-author) var(--row-tags) auto;
+}
+
+html[data-theme="win98"] .card h3 {
+  font-family: Tahoma, "MS Sans Serif", system-ui, sans-serif;
+  font-size: 1.1rem;
+  line-height: 28px;
+  font-weight: 700;
+  color: #000;
+  text-shadow: none;
+}
+
+html[data-theme="win98"] .desc {
+  color: #000;
+  font-family: Tahoma, "MS Sans Serif", system-ui, sans-serif;
+}
+
+html[data-theme="win98"] .card .meta,
+html[data-theme="win98"] .card .meta .byline {
+  color: #000;
+}
+
+/* Card tags as flat chips */
+html[data-theme="win98"] .card .tag {
+  background: #c0c0c0;
+  border: 1px solid #000;
+  color: #000;
+  border-radius: 2px;
+  box-shadow:
+    inset 1px 1px 0 #fff,
+    inset -1px -1px 0 #7f7f7f;
+}
+
+/* Buttons become Win98 buttons */
+html[data-theme="win98"] .visit,
+html[data-theme="win98"] .cta .cta-link {
+  background: #c0c0c0;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 2px;
+  box-shadow:
+    inset 1px 1px 0 #fff,
+    inset -1px -1px 0 #7f7f7f;
+  transition: none;
+}
+
+html[data-theme="win98"] .visit::before,
+html[data-theme="win98"] .cta .cta-link::before {
+  content: none;
+}
+
+html[data-theme="win98"] .visit:hover,
+html[data-theme="win98"] .cta .cta-link:hover {
+  transform: none;
+  filter: brightness(0.98);
+}
+
+html[data-theme="win98"] .visit:active,
+html[data-theme="win98"] .cta .cta-link:active {
+  box-shadow:
+    inset -1px -1px 0 #fff,
+    inset 1px 1px 0 #7f7f7f;
+}
+
+/* Footer like a taskbar panel */
+html[data-theme="win98"] .site-footer {
+  display: none;
+}
+
+html[data-theme="win98"] .site-footer .wrap {
+  color: #000;
+  font-family: Tahoma, "MS Sans Serif", system-ui, sans-serif;
+}
+
+/* Win98 fixed taskbar */
+.win98-taskbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background: #c0c0c0;
+  border-top: 2px solid #000;
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -1px 0 #7f7f7f;
+}
+html[data-theme="win98"] body { padding-bottom: 48px; } /* prevent overlap */
+
+.win-start-btn {
+  min-width: 86px;
+  appearance: none;
+  border: 1px solid #000;
+  background: #c0c0c0;
+  color: #000;
+  padding: 6px 12px;
+  border-radius: 2px;
+  font-family: Tahoma, "MS Sans Serif", system-ui, sans-serif;
+  box-shadow:
+    inset 1px 1px 0 #fff,
+    inset -1px -1px 0 #7f7f7f,
+    1px 1px 0 #000;
+  cursor: pointer;
+}
+.win-start-btn:active {
+  box-shadow:
+    inset -1px -1px 0 #fff,
+    inset 1px 1px 0 #7f7f7f;
+}
+
+.taskbar-spacer { flex: 1 1 auto; }
+
+.win-clock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 84px;
+  padding: 4px 8px;
+  border: 1px inset #7f7f7f;
+  background: #c0c0c0;
+  color: #000;
+  font-family: Tahoma, "MS Sans Serif", system-ui, sans-serif;
+  font-size: 12px;
+}
+
+/* Start menu position (opens upward just above the taskbar) */
+.win98-menu {
+  position: fixed;
+  left: 8px;
+  bottom: 40px;
+  border-radius: 0 !important;
+  padding: 6px;
+  border: 2px solid #000;
+  background: #c0c0c0;
+  box-shadow: none;
+}
+
+/* =========================
+   Geocities Theme (1999 web vibes)
+   ========================= */
+html[data-theme="geocities"] {
+  --bg: #000000;
+  --text: #00ff00;           /* neon green text */
+  --muted: #ff00ff;          /* magenta accents */
+  --card: #ffff00;           /* loud yellow panels */
+  --card-border: #ff00ff;    /* magenta borders */
+  --header-bg: #0000ff;      /* bright blue header */
+  --header-border: #ff00ff;
+  --accent: #ff0000;         /* red buttons/links */
+  --accent-contrast: #ffffff;
+  --shadow: none;
+
+  --glass: #ffff00;
+  --glass-border: #ff00ff;
+  --glass-button-bg: #ff0000;
+  --glass-button-border: #000000;
+
+  --chip-bg: #00ffff;
+  --chip-border: #000000;
+  --chip-text: #000000;
+}
+
+/* Hide synthwave in Geocities */
+html[data-theme="geocities"] .bg-synthwave { display: none; }
+
+/* Comic Sans, baby */
+html[data-theme="geocities"] body {
+  background:
+    repeating-linear-gradient(45deg, #222 0 20px, #111 20px 40px),
+    #000;
+  color: var(--text);
+  font-family: "Comic Sans MS", "Marker Felt", cursive, system-ui, sans-serif;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><text y='24' x='0' font-size='24'>💫</text></svg>"), auto;
+}
+
+/* Header: bright and loud */
+html[data-theme="geocities"] .site-header {
+  background: linear-gradient(90deg, #0000ff, #ff00ff);
+  border-bottom: 3px dashed #ffff00;
+}
+html[data-theme="geocities"] .site-header .wrap { min-height: 64px; }
+html[data-theme="geocities"] .brand {
+  font-family: "Comic Sans MS", cursive, system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 3rem;
+  color: #ffff00;
+  text-shadow:
+    2px 2px 0 #ff00ff,
+    -2px -2px 0 #00ffff;
+}
+
+/* Toggle button looks like a gaudy badge */
+.theme-toggle.win98-toggle {
+  border: 2px ridge #ff00ff;
+  background: linear-gradient(180deg, #ffff00, #ffcc00);
+  color: #000;
+  border-radius: 6px;
+  box-shadow: 0 0 10px #ff00ff;
+}
+.theme-toggle.win98-toggle .win-logo { filter: saturate(1.8) contrast(1.4); }
+
+/* Geocities banner strip */
+.geo-banner {
+  display: none;
+}
+html[data-theme="geocities"] .geo-banner {
+  display: block;
+  background:
+    repeating-linear-gradient(90deg, #ff0000 0 12px, #ffff00 12px 24px, #00ff00 24px 36px, #0000ff 36px 48px);
+  border-top: 4px double #00ffff;
+  border-bottom: 4px double #00ffff;
+}
+.geo-banner-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.geo-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  background: #000;
+  color: #00ff00;
+  border: 2px dotted #ff00ff;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+.geo-marquee {
+  overflow: hidden;
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 240px;
+  border: 2px solid #ff00ff;
+  background: #000;
+}
+.geo-marquee span {
+  position: relative;
+  display: inline-block;
+  padding: 4px 10px;
+  color: #ffff00;
+  animation: geo-scroll 12s linear infinite;
+  white-space: nowrap;
+}
+@keyframes geo-scroll {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(-100%); }
+}
+
+/* CTA and chips = chaotic */
+html[data-theme="geocities"] .cta {
+  border: 4px groove #00ffff;
+  background: #000;
+  box-shadow: 0 0 20px #ff00ff inset;
+}
+html[data-theme="geocities"] .cta-link {
+  color: #fff;
+  background: linear-gradient(180deg, #ff0000, #990000);
+  border: 3px outset #ffff00;
+  text-decoration: underline wavy #00ffff;
+}
+html[data-theme="geocities"] .cta .cta-link::before { content: none; }
+
+html[data-theme="geocities"] .filters .chip {
+  background: linear-gradient(180deg, #00ffff, #00a0a0);
+  color: #000;
+  border: 3px ridge #ff00ff;
+  text-shadow: none;
+}
+html[data-theme="geocities"] .filters .chip.is-active {
+  background: linear-gradient(180deg, #ff00ff, #a000a0);
+  color: #ffff00;
+  border-color: #ffff00;
+}
+
+/* Cards like garish panels */
+html[data-theme="geocities"] .card {
+  background: var(--card);
+  border: 5px double var(--card-border);
+  border-radius: 0;
+  box-shadow: 0 0 12px #ff00ff;
+}
+html[data-theme="geocities"] .card:hover { transform: rotate(-0.3deg) scale(1.01); }
+html[data-theme="geocities"] .card img { filter: contrast(1.2) saturate(1.4); }
+
+html[data-theme="geocities"] .card .content {
+  gap: 10px;
+}
+
+html[data-theme="geocities"] .card h3 {
+  font-family: "Comic Sans MS", cursive, system-ui, sans-serif;
+  color: #000;
+  text-shadow: 2px 2px 0 #ffff00;
+}
+
+html[data-theme="geocities"] .desc {
+  color: #ff00ff;
+  font-weight: 700;
+}
+
+html[data-theme="geocities"] .card .meta,
+html[data-theme="geocities"] .card .meta .byline {
+  color: #000;
+}
+
+/* Tags: bright pills */
+html[data-theme="geocities"] .card .tag {
+  background: linear-gradient(180deg, #ffff00, #ffcc00);
+  border: 2px solid #000;
+  color: #000;
+  border-radius: 12px;
+}
+
+/* Buttons: flashing chaos */
+html[data-theme="geocities"] .visit,
+html[data-theme="geocities"] .cta .cta-link {
+  border-radius: 0;
+  border: 4px outset #ff00ff;
+  background: linear-gradient(180deg, #ff0000, #a00000);
+  color: #ffff00;
+  text-decoration: underline;
+  animation: blink 1s steps(2, start) infinite;
+}
+html[data-theme="geocities"] .visit::before,
+html[data-theme="geocities"] .cta .cta-link::before { content: none; }
+
+@keyframes blink {
+  50% { filter: brightness(1.6); }
+}
+
+/* Footer like a web counter strip */
+html[data-theme="geocities"] .site-footer {
+  background:
+    repeating-linear-gradient(90deg, #000 0 10px, #111 10px 20px);
+  border-top: 6px dashed #ff00ff;
+}
+html[data-theme="geocities"] .site-footer .wrap {
+  color: #00ff00;
+  font-family: "Comic Sans MS", cursive, system-ui, sans-serif;
+}
+
+
+
+/* Main */
+.site-main .wrap {
+  padding: 24px 16px 40px;
+}
+
+/* CTA */
+.cta {
+  margin: 8px 0 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  background:
+    radial-gradient(250px 120px at 10% 10%, rgba(96,165,250,.12), transparent 60%),
+    radial-gradient(250px 120px at 90% 20%, rgba(99,102,241,.12), transparent 60%),
+    var(--glass);
+  box-shadow: var(--shadow);
+  backdrop-filter: saturate(160%) blur(12px);
+}
+
+/* Tag filters - naked chips, no container */
+.filters {
+  margin: 8px 0 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.filters .chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.filters .chip {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--chip-border);
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  font-weight: 700;
+  font-size: .9rem;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  box-shadow:
+    0 2px 10px rgba(16,19,31,0.18),
+    0 0 0 1px rgba(255,255,255,0.06) inset;
+  backdrop-filter: saturate(140%) blur(6px);
+  text-shadow: 0 1px 1px rgba(0,0,0,0.25);
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.filters .chip.is-active {
+  background: var(--accent);
+  border: 0;
+  color: var(--accent-contrast);
+}
+
+.filters .chip:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.25);
+}
+
+.cta p {
+  margin: 0;
+  color: var(--text);
+  display: flex;
+  align-items: center; /* vertically align text and button */
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+  background: linear-gradient(180deg, rgba(59,130,246,.15), rgba(59,130,246,0));
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(59,130,246,.35);
+  transition: transform .24s cubic-bezier(.2,.8,.2,1), box-shadow .24s cubic-bezier(.2,.8,.2,1), background-color .24s cubic-bezier(.2,.8,.2,1), color .24s cubic-bezier(.2,.8,.2,1), border-color .24s cubic-bezier(.2,.8,.2,1);
+}
+
+.cta-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(59,130,246,.25);
+  border-color: rgba(59,130,246,.5);
+  background: linear-gradient(180deg, rgba(59,130,246,.22), rgba(59,130,246,.05));
+}
+
+.cta-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.25);
+}
+
+.cta-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(59,130,246,.25);
+}
+
+/* Grid of curiosities */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* Card */
+.card {
+  background:
+    radial-gradient(240px 120px at 15% 10%, rgba(255,255,255,.12), transparent 60%),
+    radial-gradient(240px 120px at 85% 20%, rgba(255,255,255,.08), transparent 60%),
+    var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  backdrop-filter: saturate(160%) blur(12px);
+  transition: transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s cubic-bezier(.2,.8,.2,1), border-color .28s cubic-bezier(.2,.8,.2,1), backdrop-filter .28s cubic-bezier(.2,.8,.2,1), background-color .28s cubic-bezier(.2,.8,.2,1);
+  display: grid;
+  grid-template-rows: auto 1fr; /* image + content */
+  height: 100%;
+  will-change: transform, box-shadow, backdrop-filter;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card a.image {
+  display: block;
+  position: relative;
+}
+
+.card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #0b1118;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1);
+  will-change: transform;
+}
+
+.card:hover img {
+  transform: scale(1.02);
+}
+
+.img-fallback {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background:
+    radial-gradient(120px 80px at 20% 20%, rgba(96,165,250,.2), transparent 60%),
+    radial-gradient(120px 80px at 80% 50%, rgba(99,102,241,.2), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+  border-bottom: 1px solid var(--card-border);
+}
+
+.card .content {
+  padding: 12px 14px 16px;
+  display: grid;
+  gap: 10px;
+  /* rows: title (fixed), description (2 lines fixed via height), author (fixed), tags (fixed), button */
+  grid-template-rows: var(--row-title) auto var(--row-author) var(--row-tags) auto;
+  align-content: start;
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 28px; /* 1 line tall to match --row-title */
+  font-weight: 600;
+  font-family: "Honk", system-ui, sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.desc {
+  color: var(--muted);
+  font-size: .95rem;
+  line-height: 1.4;
+  font-family: "Quicksand", system-ui, sans-serif;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* clamp to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: calc(2 * 1.4em); /* exactly two lines tall */
+}
+
+.card .meta {
+  color: var(--muted);
+  font-size: .875rem;
+  display: flex;
+  flex-direction: row;   /* byline on its own row */
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  min-height: var(--row-author);
+}
+
+.card .meta .byline {
+  color: var(--muted);
+  font-size: .85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card .tags {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;     /* one row */
+  gap: 6px;
+  overflow: hidden;      /* hide overflowed chips */
+  white-space: nowrap;
+  min-height: var(--row-tags);
+}
+
+.card .tag {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .2px;
+  background: var(--glass-button-bg);
+  border: 1px solid var(--glass-button-border);
+  color: var(--accent-contrast);
+  user-select: none;
+  white-space: nowrap;   /* keep chip text on one line */
+  flex: 0 0 auto;        /* prevent chips from shrinking */
+}
+
+.visit,
+.cta .cta-link {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  text-decoration: none;
+  position: relative;
+  background: transparent; /* transparent bg */
+  color: var(--text);       /* theme-aware text color */
+  padding: .6rem .95rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-family: "Quicksand", system-ui, sans-serif;
+  border: none;
+  box-shadow: none;
+  margin-top: auto; /* pin to bottom of content */
+  overflow: hidden; /* contain animated border */
+  transition: transform .2s ease, color .2s ease;
+}
+
+.visit:hover,
+.cta .cta-link:hover { transform: translateY(-1px); }
+.visit:active,
+.cta .cta-link:active { transform: translateY(0); }
+
+.card .visit { padding-left: 1.2rem; padding-right: 1.2rem; }
+
+.visit::before,
+.cta .cta-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;              /* cover full button */
+  border-radius: inherit;
+  padding: 2px;          /* border thickness */
+  background:
+    conic-gradient(from var(--shine-angle),
+      #ff4aa1, #9a63ff, #4cc9f0, #7cffcb, #ffd166, #ff4aa1);
+  /* Create a border ring by masking the center */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: spin-shine 6s linear infinite;
+}
+
+.visit:hover,
+.cta .cta-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(59,130,246,.3);
+}
+
+/* Empty state */
+.empty {
+  text-align: center;
+  color: var(--muted);
+  margin: 24px 0 0;
+  font-size: .95rem;
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--header-border);
+  background: var(--header-bg);
+  transition: background-color .3s ease, border-color .3s ease;
+}
+
+.site-footer .wrap {
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+/* Visibility helpers */
+.dark-only, .win98-only, .geocities-only { display: none; }
+html[data-theme="dark"] .dark-only { display: inline-flex; }
+html[data-theme="homepage"] .dark-only { display: inline-flex; }
+html[data-theme="win98"] .win98-only { display: inline-flex; }
+html[data-theme="geocities"] .geocities-only { display: inline-flex; }
+
+/* Dark theme hamburger (fixed, top-left) */
+.theme-menu-btn {
+  position: fixed;
+  left: 12px;
+  top: 12px;
+  z-index: 1000;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #1b2431;
+  background: #0e141b;
+  color: #e6eaf3;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.45);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.theme-menu-btn .hamburger {
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  position: relative;
+  display: block;
+}
+.theme-menu-btn .hamburger::before,
+.theme-menu-btn .hamburger::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+}
+.theme-menu-btn .hamburger::before { top: -6px; }
+.theme-menu-btn .hamburger::after { top: 6px; }
+
+/* Theme dropdown menus - base */
+.theme-menu {
+  position: fixed;
+  z-index: 1000;
+  min-width: 180px;
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.45);
+  border: 1px solid var(--glass-border);
+  background: var(--card);
+}
+.theme-menu button {
+  width: 100%;
+  display: block;
+  text-align: left;
+  padding: 8px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.theme-menu button:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* Dark: dropdown appears under hamburger */
+.dark-menu { left: 12px; top: 58px; }
+
+/* Win98 Start button and menu */
+html[data-theme="win98"] .site-footer .wrap {
+  justify-content: space-between;
+}
+
+.win98-menu button {
+  font-family: Tahoma, "MS Sans Serif", system-ui, sans-serif;
+  color: #000;
+  border-radius: 2px;
+}
+.win98-menu button:hover {
+  background: #000080;
+  color: #fff;
+}
+
+/* Geocities floating launcher and menu */
+.geo-theme-btn {
+  position: fixed;
+  left: 14px;
+  top: 12px;
+  z-index: 1000;
+  padding: 10px 12px;
+  border: 3px ridge #ff00ff;
+  background: linear-gradient(180deg, #ff00ff, #0000ff);
+  color: #fff;
+  font-family: "Comic Sans MS", cursive, system-ui, sans-serif;
+  text-transform: uppercase;
+  border-radius: 8px;
+  box-shadow: 0 0 12px #00ffff, inset 0 0 8px #ff00ff;
+  cursor: pointer;
+}
+.geocities-menu {
+  left: 14px;
+  top: 58px;
+  border: 4px groove #00ffff;
+  background: #000;
+  box-shadow: 0 0 20px #ff00ff;
+}
+.geocities-menu button {
+  color: #00ff00;
+  border: 2px solid #ff00ff;
+  border-radius: 0;
+  background: linear-gradient(180deg, #0000ff33, #ff00ff22);
+}
+.geocities-menu button:hover {
+  filter: brightness(1.5);
+}
+
+@keyframes spin-shine {
+  to { --shine-angle: 360deg; }
+}
+/* Motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .brand {
+    font-size: 4rem;
+  }
+}
+
+/* Synthwave background (fixed): horizon grid + sunset */
+.bg-synthwave {
+  position: fixed;
+  inset: 0;
+  pointer-events: none; /* purely decorative */
+  /* keep it behind header which has z-index:10 by default stacking order */
+  z-index: 0;
+  /* sunset sky with darker blues/purples in the upper half */
+  background:
+    /* sun halo (pink) centered on the horizon */
+    radial-gradient(40vmin 40vmin at 50% 50vh,
+      rgba(255,64,160,.36) 0%,
+      rgba(255,64,160,.28) 35%,
+      rgba(255,64,160,.14) 62%,
+      rgba(255,64,160,0) 75%),
+    /* sunset flare near the horizon (reds/oranges/pinks) */
+    radial-gradient(80vmin 48vmin at 50% 54vh,
+      rgba(255,59,107,.30) 0%,
+      rgba(255,112,89,.24) 25%,
+      rgba(255,138,61,.18) 45%,
+      rgba(255,64,160,.14) 60%,
+      rgba(255,64,160,0) 80%),
+    /* soft golden band above the horizon */
+    linear-gradient(to top,
+      rgba(255,206,130,.22) 47%,
+      rgba(255,174,94,.13) 55%,
+      rgba(0,0,0,0) 60%),
+    /* top-sky deep indigo glow */
+    radial-gradient(90vmax 60vmax at 50% -10vmax,
+      rgba(28,33,74,.20) 0%,
+      rgba(28,33,74,0) 60%),
+    /* base sunset sky with darker upper half */
+    linear-gradient(to top,
+      /* lower half near horizon (warm band kept tight) */
+      #0a0d1a 0%,
+      #0a0d1a 44%,
+      #2b0f2e 48%,
+      #ff3b6b 50%,
+      #ff6f59 54%,
+      #ff8a3d 58%,
+      #d74c9f 62%,
+      /* upper half transitions to darker purples/blues */
+      #3a1a6e 70%,
+      #1a1440 82%,
+      #0e1226 100%);
+}
+
+/* Sunset with scanline stripes */
+.bg-synthwave::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(50vh - 19vmin); /* center the sun on the horizon so half is covered by grid */
+  width: 38vmin;
+  height: 38vmin;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 60%,
+      #ffd166 0%,
+      #ff9a62 35%,
+      #ff4aa1 62%,
+      rgba(255,74,161,0) 66%);
+  /* striped mask */
+  -webkit-mask: repeating-linear-gradient(to bottom, rgba(0,0,0,1) 0 8px, rgba(0,0,0,0) 8px 14px);
+  mask: repeating-linear-gradient(to bottom, rgba(0,0,0,1) 0 8px, rgba(0,0,0,0) 8px 14px);
+  /* amplified glow around the sun (more pink) */
+  filter:
+    drop-shadow(0 0 34px rgba(255,74,161,.75))
+    drop-shadow(0 0 70px rgba(255,74,161,.45))
+    drop-shadow(0 0 110px rgba(255,74,161,.30));
+  box-shadow:
+    0 0 90px 20px rgba(255,74,161,.24),
+    0 0 110px 30px rgba(255,74,161,.18) inset;
+  opacity: .97;
+  z-index: 1; /* place sun behind the grid */
+}
+
+/* Purple grid horizon */
+.bg-synthwave::after {
+  content: "";
+  position: absolute;
+  left: -20vw;
+  right: -20vw;
+  top: 50vh;      /* flat horizon at mid-screen */
+  bottom: -35vh;  /* extend beyond bottom to keep base filled */
+  transform-origin: top center; /* vanishing point aligned to sun (center) */
+  /* strong perspective tilt to foreshorten horizontals while keeping horizon flat */
+  transform: perspective(650px) rotateX(70deg);
+  /* draw: atmosphere fade, converging verticals (conic), horizontal lines, dark blue base */
+  background:
+    /* atmospheric fade rising from the horizon */
+    linear-gradient(to top, rgba(20,0,40,.92), rgba(20,0,40,0) 60%),
+    /* converging vertical grid lines toward the sun (vanishing point at 50% 0%) */
+    repeating-conic-gradient(from -90deg at 50% 0%,
+      rgba(168,85,247,.65) 0 0.7deg,
+      transparent 0.7deg 12deg),
+    /* horizontal grid lines (foreshortened by 3D transform) */
+    repeating-linear-gradient(to top, rgba(168,85,247,.55) 0 2px, transparent 2px 60px),
+    /* base plane fill to make squares dark blue */
+    linear-gradient(#061128, #061128);
+  box-shadow:
+    0 -10px 40px rgba(168,85,247,.28) inset,
+    0 0 60px rgba(99,102,241,.18) inset;
+  z-index: 2; /* ensure grid overlays the lower half of the sun */
+}
