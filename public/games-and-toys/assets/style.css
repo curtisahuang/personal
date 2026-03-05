@@ -31,7 +31,6 @@
 
   /* Card row heights (fixed for consistent layout) */
   --row-title: 28px;   /* 1-line title */
-  --row-author: 28px;  /* 1-line author row */
   --row-tags: 28px;    /* 1-line tags row */
 }
 
@@ -176,12 +175,19 @@ html[data-theme="homepage"] .site-footer {
 }
 
 html[data-theme="homepage"] .card h3 {
-  font-family: "Instrument Serif", Georgia, serif;
+  font-family: "Times New Roman", Times, serif;
   font-weight: 400;
   font-size: 1.5rem;
   color: #3be4ff;
   -webkit-text-stroke: 1px #ffffff;
   text-shadow: 0 4px 10px rgba(59, 228, 255, 0.28);
+}
+
+html[data-theme="homepage"] .card .content,
+html[data-theme="homepage"] .desc,
+html[data-theme="homepage"] .card .tag,
+html[data-theme="homepage"] .visit {
+  font-family: "Times New Roman", Times, serif;
 }
 
 html[data-theme="homepage"] .card {
@@ -216,8 +222,8 @@ html[data-theme="homepage"] .card img {
 }
 
 html[data-theme="homepage"] .card .content {
-  padding: 10px 12px 12px;
-  gap: 8px;
+  padding: 8px 10px 10px;
+  gap: 4px;
 }
 
 html[data-theme="homepage"] .visit::before,
@@ -495,7 +501,7 @@ html[data-theme="win98"] .card img {
 html[data-theme="win98"] .card .content {
   padding: 10px 12px 12px;
   gap: 8px;
-  grid-template-rows: var(--row-title) auto var(--row-author) var(--row-tags) auto;
+  grid-template-rows: var(--row-title) auto var(--row-tags) auto;
 }
 
 html[data-theme="win98"] .card h3 {
@@ -1020,8 +1026,8 @@ html[data-theme="geocities"] .site-footer .wrap {
   padding: 12px 14px 16px;
   display: grid;
   gap: 10px;
-  /* rows: title (fixed), description (2 lines fixed via height), author (fixed), tags (fixed), button */
-  grid-template-rows: var(--row-title) auto var(--row-author) var(--row-tags) auto;
+  /* rows: title (fixed), description (2 lines fixed via height), tags (fixed), button */
+  grid-template-rows: var(--row-title) auto var(--row-tags) auto;
   align-content: start;
 }
 

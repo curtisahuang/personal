@@ -66,7 +66,6 @@
     const url = String(site.url || "").trim();
     const title = String(site.title || url || "Untitled").trim() || "Untitled";
     const desc = String(site.description || "").trim();
-    const author = String(site.author || "").trim();
     const tags = Array.isArray(site.tags) ? site.tags.filter(Boolean).map(String) : [];
 
     // Allow explicit screenshot override per item
@@ -123,16 +122,6 @@
     p.className = "desc";
     if (desc) p.textContent = desc;
 
-    // Meta rows: author then tags
-    const meta = document.createElement("div");
-    meta.className = "meta";
-    if (author) {
-      const by = document.createElement("span");
-      by.className = "byline";
-      by.textContent = `by ${author}`;
-      meta.appendChild(by);
-    }
-
     const tagsWrap = document.createElement("div");
     tagsWrap.className = "tags";
     if (tags.length) {
@@ -154,7 +143,6 @@
     // Assemble in fixed row order
     content.appendChild(h3);
     content.appendChild(p);
-    content.appendChild(meta);
     content.appendChild(tagsWrap);
     content.appendChild(visit);
 
