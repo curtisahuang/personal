@@ -84,6 +84,8 @@ const PhotoblogPage = () => {
   }, [dynamicPhotos]);
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [highResPhaseStarted, setHighResPhaseStarted] = useState(false);
+  const [highResLoaded, setHighResLoaded] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   const [viewport, setViewport] = useState(() => ({
@@ -118,6 +120,17 @@ const PhotoblogPage = () => {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
+
+  useEffect(() => {
+    setHighResLoaded(false);
+    setHighResPhaseStarted(false);
+    if (activeIndex === null) return;
+    const timeout = window.setTimeout(
+      () => setHighResPhaseStarted(true),
+      shouldReduceMotion ? 0 : 180,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [activeIndex, shouldReduceMotion]);
 
   const open = (index: number) => setActiveIndex(index);
   const close = () => setActiveIndex(null);
@@ -164,6 +177,7 @@ const PhotoblogPage = () => {
                     src={photo.src}
                     alt={photo.alt}
                     fill
+                    quality={55}
                     sizes="(min-width:1536px) 12.5vw, (min-width:1280px) 14.3vw, (min-width:1024px) 16.66vw, (min-width:768px) 25vw, (min-width:640px) 33.33vw, 50vw"
                     className="object-cover select-none"
                     priority={i < 12}
@@ -210,8 +224,34 @@ const PhotoblogPage = () => {
                     : 600)
                 }
                 className="h-full w-full object-contain select-none"
+                quality={55}
                 priority
               />
+
+              {highResPhaseStarted && (
+                <Image
+                  src={photos[activeIndex].src}
+                  alt={photos[activeIndex].alt}
+                  width={
+                    fitted?.width ||
+                    (activePhoto
+                      ? (activePhoto.src as StaticImageData).width
+                      : 1000)
+                  }
+                  height={
+                    fitted?.height ||
+                    (activePhoto
+                      ? (activePhoto.src as StaticImageData).height
+                      : 600)
+                  }
+                  className={`absolute inset-0 h-full w-full object-contain select-none transition-opacity duration-150 ${
+                    highResLoaded ? "opacity-100" : "opacity-0"
+                  }`}
+                  quality={100}
+                  priority
+                  onLoad={() => setHighResLoaded(true)}
+                />
+              )}
 
               <Caption
                 text={photos[activeIndex].caption ?? "why oh just why"}
