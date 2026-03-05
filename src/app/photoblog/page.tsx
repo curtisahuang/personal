@@ -2,7 +2,13 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import {
+  AnimatePresence,
+  LayoutGroup,
+  motion,
+  type Transition,
+  useReducedMotion,
+} from "framer-motion";
 import vaporwave from "@/assets/vaporwave.png";
 import { Caption } from "../components/";
 import { useRouter } from "next/navigation";
@@ -78,6 +84,7 @@ const PhotoblogPage = () => {
   }, [dynamicPhotos]);
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const [viewport, setViewport] = useState(() => ({
     w: typeof window !== "undefined" ? window.innerWidth : 0,
@@ -115,6 +122,16 @@ const PhotoblogPage = () => {
   const open = (index: number) => setActiveIndex(index);
   const close = () => setActiveIndex(null);
 
+  const gridClassName = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 w-full gap-1 m-0 p-0";
+
+  const tileTransition: Transition = shouldReduceMotion
+    ? { duration: 0 }
+    : { type: "spring", damping: 26, stiffness: 270, mass: 0.85 };
+
+  const modalTransition: Transition = shouldReduceMotion
+    ? { duration: 0 }
+    : { type: "spring", damping: 30, stiffness: 280, mass: 0.9 };
+
   const router = useRouter();
   const handleBack = () => {
     if (typeof window !== "undefined" && window.history.length > 1) {
@@ -127,52 +144,55 @@ const PhotoblogPage = () => {
   return (
     <main className="m-0 p-0 min-h-svh w-screen bg-[#578b92]">
       <div className="scroll-area w-screen h-svh overflow-auto pb-20 md:pb-24">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 w-full gap-0 m-0 p-0">
-          {photos.map((photo, i) => (
-            <button
-              key={photo.id}
-              aria-label={`Open image ${i + 1}`}
-              className="overflow-hidden opacity-0 fade-in group cursor-pointer"
-              style={{ animationDelay: `${i * 90}ms` }}
-              onClick={() => open(i)}
-            >
-              <motion.div
-                layoutId={`photo-${photo.id}`}
-                className="relative w-full aspect-square"
-                transition={{ type: "tween", ease: "easeOut", duration: 0.22 }}
+        <LayoutGroup id="photoblog-grid">
+          <motion.div layout className={gridClassName} transition={tileTransition}>
+            {photos.map((photo, i) => (
+              <motion.button
+                key={photo.id}
+                layout
+                aria-label={`Open image ${i + 1}`}
+                className="overflow-hidden group cursor-pointer"
+                onClick={() => open(i)}
+                transition={tileTransition}
               >
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  fill
-                  unoptimized
-                  sizes="(min-width:1280px) 12.5vw, (min-width:1024px) 16.66vw, (min-width:768px) 25vw, (min-width:640px) 33.33vw, 50vw"
-                  className="object-cover select-none"
-                  priority={i < 12}
-                />
-              </motion.div>
-            </button>
-          ))}
-        </div>
+                <motion.div
+                  layoutId={`photo-${photo.id}`}
+                  className="relative w-full aspect-square transform-gpu"
+                  transition={modalTransition}
+                >
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    sizes="(min-width:1536px) 12.5vw, (min-width:1280px) 14.3vw, (min-width:1024px) 16.66vw, (min-width:768px) 25vw, (min-width:640px) 33.33vw, 50vw"
+                    className="object-cover select-none"
+                    priority={i < 12}
+                  />
+                </motion.div>
+              </motion.button>
+            ))}
+          </motion.div>
+        </LayoutGroup>
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {activeIndex !== null && (
           <motion.div
-            className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 md:p-8"
+            className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 md:p-8 backdrop-blur-sm"
             onClick={close}
             role="dialog"
             aria-modal="true"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
           >
             <motion.div
               layoutId={`photo-${photos[activeIndex].id}`}
               className="relative"
               style={{ width: fitted?.width, height: fitted?.height }}
               onClick={(e) => e.stopPropagation()}
-              transition={{ type: "tween", ease: "easeOut", duration: 0.22 }}
+              transition={modalTransition}
             >
               <Image
                 src={photos[activeIndex].src}
