@@ -206,7 +206,6 @@ const PhotoblogPage = () => {
               layoutId={`photo-${photos[activeIndex].id}`}
               className="relative"
               style={{ width: fitted?.width, height: fitted?.height }}
-              onClick={(e) => e.stopPropagation()}
               transition={{ layout: modalTransition }}
             >
               <Image
