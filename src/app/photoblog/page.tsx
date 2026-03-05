@@ -156,8 +156,8 @@ const PhotoblogPage = () => {
 
   return (
     <main className="m-0 p-0 min-h-svh w-screen bg-[#578b92]">
-      <div className="scroll-area w-screen h-svh overflow-auto pb-20 md:pb-24">
-        <LayoutGroup id="photoblog-grid">
+      <LayoutGroup id="photoblog-grid">
+        <div className="scroll-area w-screen h-svh overflow-auto pb-20 md:pb-24">
           <motion.div layout className={gridClassName} transition={tileTransition}>
             {photos.map((photo, i) => (
               <motion.button
@@ -187,10 +187,9 @@ const PhotoblogPage = () => {
               </motion.button>
             ))}
           </motion.div>
-        </LayoutGroup>
-      </div>
+        </div>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence initial={false}>
         {activeIndex !== null && (
           <motion.div
             className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 md:p-8 backdrop-blur-sm"
@@ -203,11 +202,12 @@ const PhotoblogPage = () => {
             transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
           >
             <motion.div
+              layout
               layoutId={`photo-${photos[activeIndex].id}`}
               className="relative"
               style={{ width: fitted?.width, height: fitted?.height }}
               onClick={(e) => e.stopPropagation()}
-              transition={modalTransition}
+              transition={{ layout: modalTransition }}
             >
               <Image
                 src={photos[activeIndex].src}
@@ -263,6 +263,7 @@ const PhotoblogPage = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      </LayoutGroup>
 
       <footer className="fixed bottom-0 left-0 right-0 z-40 bg-[#578b92]">
         <div className="px-4 py-3 flex items-center">
