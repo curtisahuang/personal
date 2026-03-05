@@ -86,5 +86,53 @@
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://77aizdrw75fy.cosine.show",
     "author": "curtisahuang",
     "tags": ["toys", "machine learning"]
+  },
+  {
+    "title": "Markov Music Maker",
+    "url": "https://markov-music-maker.cosine.page/",
+    "description": "Generative music toy powered by Markov-style sequencing",
+    "screenshotUrl": "https://screenshot.cosine.show/?url=https://markov-music-maker.cosine.page/",
+    "author": "curtisahuang",
+    "tags": ["music", "toys"]
+  },
+  {
+    "title": "North Pole Clicker",
+    "url": "https://north-pole-clicker.cosine.page/",
+    "description": "A holiday clicker game with festive progression",
+    "screenshotUrl": "https://screenshot.cosine.show/?url=https://north-pole-clicker.cosine.page/",
+    "author": "curtisahuang",
+    "tags": ["games"]
+  },
+  {
+    "title": "Drinkspo",
+    "url": "https://drinkspo.cosine.show/",
+    "description": "A playful drinks inspiration toy",
+    "screenshotUrl": "https://screenshot.cosine.show/?url=https://drinkspo.cosine.show/",
+    "author": "curtisahuang",
+    "tags": ["toys"]
+  },
+  {
+    "title": "Puzzle League",
+    "url": "https://puzzle-league.cosine.page/",
+    "description": "A puzzle game with quick sessions and satisfying combos",
+    "screenshotUrl": "https://screenshot.cosine.show/?url=https://puzzle-league.cosine.page/",
+    "author": "curtisahuang",
+    "tags": ["games"]
+  },
+  {
+    "title": "Bookworm",
+    "url": "https://bookworm.cosine.show/",
+    "description": "Word-focused game inspired by classic bookish puzzlers",
+    "screenshotUrl": "https://screenshot.cosine.show/?url=https://bookworm.cosine.show/",
+    "author": "curtisahuang",
+    "tags": ["games", "toys"]
+  },
+  {
+    "title": "Text2Beeps",
+    "url": "https://text2beeps.cosine.show/",
+    "description": "Convert text into playful beep melodies",
+    "screenshotUrl": "https://screenshot.cosine.show/?url=https://text2beeps.cosine.show/",
+    "author": "curtisahuang",
+    "tags": ["music", "toys"]
   }
 ]
