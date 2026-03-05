@@ -64,30 +64,67 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="homepage"] {
-  --bg: #ff9950;
-  --text: #ffffff;
-  --muted: rgba(255,255,255,0.85);
-  --card: rgba(255,255,255,0.2);
-  --card-border: rgba(255,255,255,0.5);
+  --bg: #0d0820;
+  --text: #f6f0ff;
+  --muted: rgba(236,221,255,0.85);
+  --card: rgba(23,15,50,0.6);
+  --card-border: rgba(150,105,255,0.45);
   --header-bg: transparent;
-  --header-border: rgba(255,255,255,0.35);
-  --accent: #ffffff;
-  --accent-contrast: #ff9950;
-  --shadow: 0 10px 26px rgba(0,0,0,0.22);
+  --header-border: rgba(150,105,255,0.45);
+  --accent: #ff5ecf;
+  --accent-contrast: #ffffff;
+  --shadow: 0 16px 34px rgba(5,4,12,0.45);
 
-  --glass: rgba(255,255,255,0.18);
-  --glass-border: rgba(255,255,255,0.45);
-  --glass-button-bg: rgba(255,255,255,0.2);
-  --glass-button-border: rgba(255,255,255,0.55);
+  --glass: rgba(27,18,58,0.58);
+  --glass-border: rgba(150,105,255,0.5);
+  --glass-button-bg: rgba(255,94,207,0.2);
+  --glass-button-border: rgba(106,250,255,0.6);
 
-  --chip-bg: rgba(255,255,255,0.22);
-  --chip-border: rgba(255,255,255,0.65);
-  --chip-text: #ffffff;
+  --chip-bg: rgba(35,24,74,0.75);
+  --chip-border: rgba(106,250,255,0.7);
+  --chip-text: #f6f0ff;
 }
 
 html[data-theme="homepage"] body {
-  background: linear-gradient(90deg, #bb56ff 50%, #ffabb9 50%);
-  color: #ffffff;
+  background:
+    radial-gradient(1200px 600px at -10% -20%, rgba(255,94,207,0.28), transparent 60%),
+    radial-gradient(1000px 540px at 110% -10%, rgba(106,250,255,0.2), transparent 58%),
+    linear-gradient(145deg, #120a2f 0%, #1c0f47 48%, #090513 100%);
+  color: var(--text);
+  position: relative;
+}
+
+html[data-theme="homepage"] body::before,
+html[data-theme="homepage"] body::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+}
+
+html[data-theme="homepage"] body::before {
+  inset: 0;
+  background:
+    repeating-linear-gradient(120deg,
+      rgba(255,94,207,0.14) 0 2px,
+      transparent 2px 90px),
+    repeating-linear-gradient(-120deg,
+      rgba(106,250,255,0.11) 0 2px,
+      transparent 2px 120px);
+  opacity: 0.55;
+}
+
+html[data-theme="homepage"] body::after {
+  width: 38vmin;
+  height: 38vmin;
+  right: 6vw;
+  bottom: 10vh;
+  border: 3px solid rgba(106,250,255,0.5);
+  transform: rotate(45deg);
+  box-shadow:
+    0 0 80px rgba(106,250,255,0.25),
+    inset 0 0 28px rgba(255,94,207,0.2);
+  opacity: 0.7;
 }
 
 html[data-theme="homepage"] .bg-synthwave,
@@ -98,34 +135,61 @@ html[data-theme="homepage"] .geo-banner {
 html[data-theme="homepage"] .site-header {
   background: transparent;
   border-bottom: 0;
+  position: relative;
+  z-index: 1;
 }
 
 html[data-theme="homepage"] .brand {
-  font-family: "Quicksand", system-ui, sans-serif;
+  font-family: "Honk", system-ui, sans-serif;
   font-size: clamp(2.2rem, 6vw, 4.4rem);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-shadow: 8px 8px #ffffff;
-  background: linear-gradient(90deg, #ffabb9 50%, #bb56ff 50%);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-shadow: 0 8px 22px rgba(255,94,207,0.35);
+  background: linear-gradient(90deg, #ff5ecf 0%, #6afaff 52%, #9e6dff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
+html[data-theme="homepage"] .site-main,
+html[data-theme="homepage"] .site-footer {
+  position: relative;
+  z-index: 1;
+}
+
 html[data-theme="homepage"] .card h3 {
-  font-family: "Quicksand", system-ui, sans-serif;
+  font-family: "Honk", system-ui, sans-serif;
   font-weight: 700;
-  color: #ffffff;
+  color: #f6f0ff;
+}
+
+html[data-theme="homepage"] .card {
+  border-width: 2px;
+  border-radius: 0;
+  background:
+    linear-gradient(135deg, rgba(255,94,207,0.08), rgba(106,250,255,0.08)),
+    var(--glass);
+}
+
+html[data-theme="homepage"] .card .tag {
+  border-radius: 0;
+}
+
+html[data-theme="homepage"] .visit::before,
+html[data-theme="homepage"] .cta .cta-link::before {
+  background:
+    conic-gradient(from var(--shine-angle),
+      #ff5ecf, #6afaff, #9e6dff, #ffcf4d, #ff5ecf);
 }
 
 html[data-theme="homepage"] .visit,
 html[data-theme="homepage"] .cta .cta-link {
-  color: #ffffff;
+  color: #f6f0ff;
 }
 
 html[data-theme="homepage"] .site-footer {
-  border-top: 1px solid rgba(255,255,255,0.45);
-  background: rgba(0,0,0,0.12);
+  border-top: 1px solid rgba(150,105,255,0.5);
+  background: rgba(14,8,31,0.5);
 }
 
 /* Dark mode – transparent button with animated border, readable text */
