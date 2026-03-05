@@ -153,16 +153,20 @@ html[data-theme="homepage"] .site-header {
   z-index: 1;
 }
 
+html[data-theme="homepage"] .site-header .wrap {
+  min-height: 210px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
 html[data-theme="homepage"] .brand {
-  font-family: "Honk", system-ui, sans-serif;
-  font-size: clamp(2.2rem, 5.5vw, 4.1rem);
-  font-weight: 600;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: clamp(2.8rem, 6.2vw, 5rem);
+  font-weight: 400;
   letter-spacing: 0.04em;
-  text-shadow: 0 8px 22px rgba(255, 94, 196, 0.42);
-  background: linear-gradient(90deg, #3be4ff 0%, #4fb8ff 35%, #ff4dc2 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #3be4ff;
+  -webkit-text-stroke: 1.5px #ffffff;
+  text-shadow: 0 8px 22px rgba(59, 228, 255, 0.35);
 }
 
 html[data-theme="homepage"] .site-main,
@@ -172,9 +176,12 @@ html[data-theme="homepage"] .site-footer {
 }
 
 html[data-theme="homepage"] .card h3 {
-  font-family: "Honk", system-ui, sans-serif;
-  font-weight: 700;
-  color: #f6f0ff;
+  font-family: "Instrument Serif", Georgia, serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  color: #3be4ff;
+  -webkit-text-stroke: 1px #ffffff;
+  text-shadow: 0 4px 10px rgba(59, 228, 255, 0.28);
 }
 
 html[data-theme="homepage"] .card {
@@ -189,6 +196,8 @@ html[data-theme="homepage"] .card {
 html[data-theme="homepage"] .grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
+  max-width: 980px;
+  margin-inline: auto;
 }
 
 @media (max-width: 900px) {
@@ -202,7 +211,13 @@ html[data-theme="homepage"] .card .tag {
 }
 
 html[data-theme="homepage"] .card img {
+  aspect-ratio: 16 / 8;
   filter: saturate(1.15) contrast(1.06);
+}
+
+html[data-theme="homepage"] .card .content {
+  padding: 10px 12px 12px;
+  gap: 8px;
 }
 
 html[data-theme="homepage"] .visit::before,
