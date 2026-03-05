@@ -7,14 +7,15 @@
     "author": "curtisahuang",
     "tags": ["games"]
   },
-  {
-    "title": "Cosine Music Maker",
-    "url": "https://cosine-music-maker.cosine.show/",
-    "description": "Make beats and drones",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://cosine-music-maker.cosine.show",
+    {
+    "title": "Bookworm",
+    "url": "https://bookworm.cosine.show/",
+    "description": "Word-focused game inspired by classic bookish puzzlers",
+    "screenshotUrl": "https://screenshot.cosine.show/?url=https://bookworm.cosine.show/",
     "author": "curtisahuang",
-    "tags": ["music"]
+    "tags": ["games"]
   },
+
   {
     "title": "Reign of the Necromancer",
     "url": "https://reign-of-the-necromancer.cosine.show/",
@@ -39,6 +40,14 @@
     "author": "curtisahuang",
     "tags": ["games", "music"]
   },
+    {
+    "title": "14 Days Until Christmas Game",
+    "url": "https://14-days-until-christmas-game.cosine.show/",
+    "description": "A dating simulator with music and choices that determine whether you can get a date by Christmas!",
+    "screenshotUrl": "https://screenshot.cosine.show/?url=https://14-days-until-christmas-game.cosine.show/",
+    "author": "curtisahuang",
+    "tags": ["games"]
+  },
   {
     "title": "winamp music visualiser",
     "url": "https://music-visualiser-winamp.cosine.page/",
@@ -48,12 +57,12 @@
     "tags": ["music"]
   },
   {
-    "title": "14 Days Until Christmas Game",
-    "url": "https://14-days-until-christmas-game.cosine.show/",
-    "description": "A dating simulator with music and choices that determine whether you can get a date by Christmas!",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://14-days-until-christmas-game.cosine.show/",
+    "title": "Markov Music Maker",
+    "url": "https://markov-music-maker.cosine.page/",
+    "description": "Generative music toy powered by Markov-style sequencing",
+    "screenshotUrl": "https://screenshot.cosine.show/?url=https://markov-music-maker.cosine.page/",
     "author": "curtisahuang",
-    "tags": ["games"]
+    "tags": ["music", "toys"]
   },
   {
     "title": "Escape Room",
@@ -79,6 +88,14 @@
     "author": "curtisahuang",
     "tags": ["toys", "data"]
   },
+    {
+    "title": "Cosine Music Maker",
+    "url": "https://cosine-music-maker.cosine.show/",
+    "description": "Make beats and drones",
+    "screenshotUrl": "https://screenshot.cosine.show/?url=https://cosine-music-maker.cosine.show",
+    "author": "curtisahuang",
+    "tags": ["music"]
+  },
   {
     "title": "Car ML",
     "url": "https://77aizdrw75fy.cosine.show/",
@@ -87,14 +104,7 @@
     "author": "curtisahuang",
     "tags": ["toys", "machine learning"]
   },
-  {
-    "title": "Markov Music Maker",
-    "url": "https://markov-music-maker.cosine.page/",
-    "description": "Generative music toy powered by Markov-style sequencing",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://markov-music-maker.cosine.page/",
-    "author": "curtisahuang",
-    "tags": ["music", "toys"]
-  },
+
   {
     "title": "North Pole Clicker",
     "url": "https://north-pole-clicker.cosine.page/",
@@ -118,14 +128,6 @@
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://puzzle-league.cosine.page/",
     "author": "curtisahuang",
     "tags": ["games"]
-  },
-  {
-    "title": "Bookworm",
-    "url": "https://bookworm.cosine.show/",
-    "description": "Word-focused game inspired by classic bookish puzzlers",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://bookworm.cosine.show/",
-    "author": "curtisahuang",
-    "tags": ["games", "toys"]
   },
   {
     "title": "Text2Beeps",
