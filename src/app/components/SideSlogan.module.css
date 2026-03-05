@@ -12,11 +12,8 @@
 .textContainer {
   position: relative;
   cursor: default;
-  perspective: 1000px;
   transform-style: preserve-3d;
-  transform-origin: center center;
   will-change: transform;
-  transition: transform 0.4s;
 }
 
 .textContainer p {
@@ -25,7 +22,7 @@
   font-weight: 700;
   margin: 0px;
   color: white;
-  transition: all 0.4s;
+  transition: transform 0.4s, opacity 0.4s;
   text-align: left;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -33,7 +30,8 @@
 }
 
 .textContainer .primary {
-  transform: translateZ(1px);
+  transform: rotateX(0deg);
+  transform-origin: top center;
 }
 
 .textContainer .secondary {
@@ -41,21 +39,23 @@
   top: 0;
   color: var(--left-bg-color);
   opacity: 0;
-  transform: rotateX(-90deg) translateY(1.9rem) translateZ(1px);
+  transform: rotateX(-90deg);
   transform-origin: bottom center;
+  pointer-events: none;
 }
 
 .textContainer:hover {
-  transform: rotateX(90deg);
+  transform: none;
 }
 
 .textContainer:hover .primary {
   width: 100%;
-  transform: translateY(-100%);
+  transform: rotateX(90deg) translateY(-100%);
   opacity: 0;
 }
 
 .textContainer:hover .secondary {
   opacity: 1;
   width: 100%;
+  transform: rotateX(0deg);
 }
