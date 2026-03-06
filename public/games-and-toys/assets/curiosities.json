@@ -1,7 +1,7 @@
 [
   {
     "title": "Just a Day in the Forest",
-    "url": "/games-and-toys/3d-forest-with-enemy",
+    "url": "/games-and-toys/projects/3d-forest-with-enemy/index.html",
     "description": "Just a walk through a 3D forest with zero monsters in sight!",
     "screenshotUrl": "/games-and-toys/assets/screenshots/3d-forest-with-enemy.png",
     "author": "curtisahuang",
@@ -12,7 +12,7 @@
   },
   {
     "title": "Bookworm",
-    "url": "/games-and-toys/bookworm",
+    "url": "/games-and-toys/projects/bookworm/index.html",
     "description": "Word-focused game inspired by classic bookish puzzlers",
     "screenshotUrl": "/games-and-toys/assets/screenshots/bookworm.png",
     "author": "curtisahuang",
@@ -23,7 +23,7 @@
   },
   {
     "title": "Reign of the Necromancer",
-    "url": "/games-and-toys/rpg-game-custom",
+    "url": "/games-and-toys/projects/rpg-game-custom/index.html",
     "description": "A retro turn-based RPG with a secret quest!",
     "screenshotUrl": "/games-and-toys/assets/screenshots/rpg-game-custom.png",
     "author": "curtisahuang",
@@ -34,7 +34,7 @@
   },
   {
     "title": "Cosine Noise Maker",
-    "url": "/games-and-toys/another-music-toy-noise",
+    "url": "/games-and-toys/projects/another-music-toy-noise/index.html",
     "description": "A droning experimental music maker with numerous filters.",
     "screenshotUrl": "/games-and-toys/assets/screenshots/another-music-toy-noise.png",
     "author": "curtisahuang",
@@ -45,7 +45,7 @@
   },
   {
     "title": "Piano Smasher Rhythm Game",
-    "url": "/games-and-toys/rhythm-game-test",
+    "url": "/games-and-toys/projects/rhythm-game-test/index.html",
     "description": "Upload an mp3 and play it!",
     "screenshotUrl": "/games-and-toys/assets/screenshots/rhythm-game-test.png",
     "author": "curtisahuang",
@@ -57,7 +57,7 @@
   },
   {
     "title": "14 Days Until Christmas Game",
-    "url": "/games-and-toys/14-days-until-christmas",
+    "url": "/games-and-toys/projects/14-days-until-christmas/index.html",
     "description": "A dating simulator with music and choices that determine whether you can get a date by Christmas!",
     "screenshotUrl": "/games-and-toys/assets/screenshots/14-days-until-christmas.png",
     "author": "curtisahuang",
@@ -68,7 +68,7 @@
   },
   {
     "title": "Markov Music Maker",
-    "url": "/games-and-toys/markov-music-maker",
+    "url": "/games-and-toys/projects/markov-music-maker/index.html",
     "description": "Generative music toy powered by Markov-style sequencing",
     "screenshotUrl": "/games-and-toys/assets/screenshots/markov-music-maker.png",
     "author": "curtisahuang",
@@ -80,7 +80,7 @@
   },
   {
     "title": "Escape Room",
-    "url": "/games-and-toys/escape-room",
+    "url": "/games-and-toys/projects/escape-room/index.html",
     "description": "Old school escape room text adventure game",
     "screenshotUrl": "/games-and-toys/assets/screenshots/escape-room.png",
     "author": "curtisahuang",
@@ -91,7 +91,7 @@
   },
   {
     "title": "Isometric Walker Demo",
-    "url": "/games-and-toys/isometric-walker",
+    "url": "/games-and-toys/projects/isometric-walker/index.html",
     "description": "A basic engine with some testing for sprite animations and isometric movements",
     "screenshotUrl": "/games-and-toys/assets/screenshots/isometric-walker.png",
     "author": "curtisahuang",
@@ -102,7 +102,7 @@
   },
   {
     "title": "Strange Correlations",
-    "url": "/games-and-toys/strange-correlations",
+    "url": "/games-and-toys/projects/strange-correlations/index.html",
     "description": "Funny graphs grabbing random public data sets to find correlations",
     "screenshotUrl": "/games-and-toys/assets/screenshots/strange-correlations.png",
     "author": "curtisahuang",
@@ -114,7 +114,7 @@
   },
   {
     "title": "Cosine Music Maker",
-    "url": "/games-and-toys/music-maker",
+    "url": "/games-and-toys/projects/music-maker/index.html",
     "description": "Make beats and drones",
     "screenshotUrl": "/games-and-toys/assets/screenshots/music-maker.png",
     "author": "curtisahuang",
@@ -125,7 +125,7 @@
   },
   {
     "title": "Car ML",
-    "url": "/games-and-toys/car-ml",
+    "url": "/games-and-toys/projects/car-ml/index.html",
     "description": "Self evolving car algorithm simulation",
     "screenshotUrl": "/games-and-toys/assets/screenshots/car-ml.png",
     "author": "curtisahuang",
@@ -137,7 +137,7 @@
   },
   {
     "title": "North Pole Clicker",
-    "url": "/games-and-toys/present-clicker",
+    "url": "/games-and-toys/projects/present-clicker/index.html",
     "description": "A holiday clicker game with festive progression",
     "screenshotUrl": "/games-and-toys/assets/screenshots/present-clicker.png",
     "author": "curtisahuang",
@@ -148,7 +148,7 @@
   },
   {
     "title": "Drinkspo",
-    "url": "/games-and-toys/cocktail-inspo",
+    "url": "/games-and-toys/projects/cocktail-inspo/index.html",
     "description": "A playful drinks inspiration toy",
     "screenshotUrl": "/games-and-toys/assets/screenshots/cocktail-inspo.png",
     "author": "curtisahuang",
@@ -159,7 +159,7 @@
   },
   {
     "title": "Puzzle League",
-    "url": "/games-and-toys/puzzle-league",
+    "url": "/games-and-toys/projects/puzzle-league/index.html",
     "description": "A puzzle game with quick sessions and satisfying combos",
     "screenshotUrl": "/games-and-toys/assets/screenshots/puzzle-league.png",
     "author": "curtisahuang",
@@ -170,7 +170,7 @@
   },
   {
     "title": "Text2Beeps",
-    "url": "/games-and-toys/text2beeps",
+    "url": "/games-and-toys/projects/text2beeps/index.html",
     "description": "Convert text into playful beep melodies",
     "screenshotUrl": "/games-and-toys/assets/screenshots/text2beeps.png",
     "author": "curtisahuang",
@@ -182,7 +182,7 @@
   },
   {
     "title": "poke the bear",
-    "url": "/games-and-toys/poke-the-bear",
+    "url": "/games-and-toys/projects/poke-the-bear/index.html",
     "description": "Poke the bear.",
     "screenshotUrl": "/games-and-toys/assets/screenshots/poke-the-bear.png",
     "author": "curtisahuang",
