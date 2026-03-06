@@ -10,8 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 const Home = () => {
   const [showChicken, setShowChicken] = useState(false);
   const footerRef = useRef<HTMLDivElement | null>(null);
-  const scrollToElement = () =>
-    footerRef.current?.scrollIntoView({ behavior: "smooth" });
+  const scrollToElement = () => footerRef.current?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <main className="pt-16">
@@ -22,9 +21,7 @@ const Home = () => {
           </span>
           <Chicken showChicken={showChicken} />
           <button onClick={() => setShowChicken(!showChicken)}>
-            <h1 className={`pb-12 tracking-tighter ${inter.className}`}>
-              curtis alexander huang
-            </h1>
+            <h1 className={`pb-12 tracking-tighter ${inter.className}`}>curtis alexander huang</h1>
           </button>
           <Header />
           <Summary />

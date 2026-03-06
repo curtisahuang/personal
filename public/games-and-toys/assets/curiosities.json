@@ -5,14 +5,16 @@
     "description": "Just a walk through a 3D forest with zero monsters in sight!",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://just-a-day-in-the-forest.cosine.show",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/3d-forest-with-enemy",
     "tags": ["games"]
   },
-    {
+  {
     "title": "Bookworm",
     "url": "https://bookworm.cosine.show/",
     "description": "Word-focused game inspired by classic bookish puzzlers",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://bookworm.cosine.show/",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/bookworm",
     "tags": ["games"]
   },
 
@@ -22,6 +24,7 @@
     "description": "A retro turn-based RPG with a secret quest!",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://reign-of-the-necromancer.cosine.show",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/rpg-game-custom",
     "tags": ["games"]
   },
   {
@@ -30,6 +33,7 @@
     "description": "A droning experimental music maker with numerous filters.",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://cosine-noise-maker.cosine.show",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/another-music-toy-noise",
     "tags": ["music"]
   },
   {
@@ -38,14 +42,16 @@
     "description": "Upload an mp3 and play it!",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://piano-smasher.cosine.show",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/rhythm-game-test",
     "tags": ["games", "music"]
   },
-    {
+  {
     "title": "14 Days Until Christmas Game",
     "url": "https://14-days-until-christmas-game.cosine.show/",
     "description": "A dating simulator with music and choices that determine whether you can get a date by Christmas!",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://14-days-until-christmas-game.cosine.show/",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/14-days-until-christmas",
     "tags": ["games"]
   },
   {
@@ -54,6 +60,7 @@
     "description": "Share a tab's audio with this page to see some retro visualisations!",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://music-visualiser-winamp.cosine.page/",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/curtisahuang",
     "tags": ["music"]
   },
   {
@@ -62,6 +69,7 @@
     "description": "Generative music toy powered by Markov-style sequencing",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://markov-music-maker.cosine.page/",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/markov-music-maker",
     "tags": ["music", "toys"]
   },
   {
@@ -70,14 +78,16 @@
     "description": "Old school escape room text adventure game",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://oiq7d76uywq5.cosine.show",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/escape-room",
     "tags": ["games"]
   },
-    {
+  {
     "title": "Isometric Walker Demo",
     "url": "https://isometric-walker-demo.cosine.show/",
     "description": "A basic engine with some testing for sprite animations and isometric movements",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://isometric-walker-demo.cosine.show",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/isometric-walker",
     "tags": ["games"]
   },
   {
@@ -86,14 +96,16 @@
     "description": "Funny graphs grabbing random public data sets to find correlations",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://2ipvm3r5a620.cosine.show",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/strange-correlations",
     "tags": ["toys", "data"]
   },
-    {
+  {
     "title": "Cosine Music Maker",
     "url": "https://cosine-music-maker.cosine.show/",
     "description": "Make beats and drones",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://cosine-music-maker.cosine.show",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/music-maker",
     "tags": ["music"]
   },
   {
@@ -102,6 +114,7 @@
     "description": "Self evolving car algorithm simulation",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://77aizdrw75fy.cosine.show",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/car-ML",
     "tags": ["toys", "machine learning"]
   },
 
@@ -111,6 +124,7 @@
     "description": "A holiday clicker game with festive progression",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://north-pole-clicker.cosine.page/",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/present-clicker",
     "tags": ["games"]
   },
   {
@@ -119,6 +133,7 @@
     "description": "A playful drinks inspiration toy",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://drinkspo.cosine.show/",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/cocktail-inspo",
     "tags": ["toys"]
   },
   {
@@ -127,6 +142,7 @@
     "description": "A puzzle game with quick sessions and satisfying combos",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://puzzle-league.cosine.page/",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/curtisahuang",
     "tags": ["games"]
   },
   {
@@ -135,6 +151,16 @@
     "description": "Convert text into playful beep melodies",
     "screenshotUrl": "https://screenshot.cosine.show/?url=https://text2beeps.cosine.show/",
     "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/text2beeps",
     "tags": ["music", "toys"]
+  },
+  {
+    "title": "poke the bear",
+    "url": "https://poke-the-bear.cosine.page",
+    "description": "Poke the bear.",
+    "screenshotUrl": "https://screenshot.cosine.show/?url=https://poke-the-bear.cosine.page",
+    "author": "curtisahuang",
+    "githubUrl": "https://github.com/CosineAI/poke-the-bear",
+    "tags": ["games"]
   }
 ]

@@ -1,7 +1,9 @@
 /* Base and theme tokens */
 *,
 *::before,
-*::after { box-sizing: border-box; }
+*::after {
+  box-sizing: border-box;
+}
 
 :root {
   --bg: #f7f8fb;
@@ -9,32 +11,34 @@
   --muted: #5f657a;
   --card: #ffffff;
   --card-border: #e6e9f2;
-  --header-bg: rgba(255,255,255,0.85);
+  --header-bg: rgba(255, 255, 255, 0.85);
   --header-border: #e6e9f2;
   --accent: #3b82f6;
   --accent-contrast: #ffffff;
-  --shadow: 0 6px 20px rgba(16,19,31,0.08), 0 2px 6px rgba(16,19,31,0.04);
+  --shadow: 0 6px 20px rgba(16, 19, 31, 0.08), 0 2px 6px rgba(16, 19, 31, 0.04);
 
   /* Glass tokens */
-  --glass: rgba(255,255,255,0.6);
-  --glass-border: rgba(230,233,242,0.6);
-  --glass-button-bg: rgba(59,130,246,0.22);
-  --glass-button-border: rgba(59,130,246,0.5);
+  --glass: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(230, 233, 242, 0.6);
+  --glass-button-bg: rgba(59, 130, 246, 0.22);
+  --glass-button-border: rgba(59, 130, 246, 0.5);
 
   /* Chip tokens */
-  --chip-bg: rgba(255,255,255,0.9);
-  --chip-border: rgba(0,0,0,0.12);
+  --chip-bg: rgba(255, 255, 255, 0.9);
+  --chip-border: rgba(0, 0, 0, 0.12);
   --chip-text: var(--text);
 
   /* Animated border */
   --shine-angle: 0deg;
 
   /* Card row heights (fixed for consistent layout) */
-  --row-title: 28px;   /* 1-line title */
-  --row-tags: 28px;    /* 1-line tags row */
+  --row-title: 28px; /* 1-line title */
+  --row-tags: 28px; /* 1-line tags row */
 }
 
-html { color-scheme: light dark; }
+html {
+  color-scheme: light dark;
+}
 
 html[data-theme="dark"] {
   --bg: #0e141b;
@@ -42,23 +46,23 @@ html[data-theme="dark"] {
   --muted: #a1a8bb;
   --card: #121922;
   --card-border: #1b2431;
-  --header-bg: rgba(14,20,27,0.75);
+  --header-bg: rgba(14, 20, 27, 0.75);
   --header-border: #1b2431;
   --accent: #60a5fa;
   /* Ensure button text is bright and readable in dark mode */
   --accent-contrast: #ffffff;
-  --shadow: 0 8px 24px rgba(0,0,0,0.35);
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 
   /* Glass tokens (dark) */
-  --glass: rgba(18,25,34,0.6);
-  --glass-border: rgba(27,36,49,0.7);
+  --glass: rgba(18, 25, 34, 0.6);
+  --glass-border: rgba(27, 36, 49, 0.7);
   /* Slightly brighter translucent button background in dark mode */
-  --glass-button-bg: rgba(96,165,250,0.3);
-  --glass-button-border: rgba(147,197,253,0.8);
+  --glass-button-bg: rgba(96, 165, 250, 0.3);
+  --glass-button-border: rgba(147, 197, 253, 0.8);
 
   /* Chip tokens (dark) */
-  --chip-bg: rgba(18,25,34,0.85);
-  --chip-border: rgba(255,255,255,0.12);
+  --chip-bg: rgba(18, 25, 34, 0.85);
+  --chip-border: rgba(255, 255, 255, 0.12);
   --chip-text: var(--accent-contrast);
 }
 
@@ -119,7 +123,11 @@ html[data-theme="homepage"] .bg-synthwave::before {
   transform: translateX(-50%);
   border-radius: 50%;
   background: radial-gradient(circle at 50% 35%, #fff48a 0%, #ffe36b 62%, #ffbc6a 100%);
-  -webkit-mask: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 1) 0 14px, rgba(0, 0, 0, 0) 14px 21px);
+  -webkit-mask: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0 14px,
+    rgba(0, 0, 0, 0) 14px 21px
+  );
   mask: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 1) 0 14px, rgba(0, 0, 0, 0) 14px 21px);
   box-shadow: 0 0 70px rgba(255, 206, 110, 0.5);
   opacity: 0.92;
@@ -135,13 +143,14 @@ html[data-theme="homepage"] .bg-synthwave::after {
   transform-origin: top center;
   transform: perspective(620px) rotateX(72deg);
   background:
-    repeating-linear-gradient(90deg,
-      rgba(255, 69, 187, 0.72) 0 3px,
-      transparent 3px 86px),
-    repeating-linear-gradient(to top,
-      rgba(255, 69, 187, 0.7) 0 3px,
-      transparent 3px 58px),
-    linear-gradient(to top, rgba(81, 209, 245, 0.92) 0%, rgba(112, 216, 248, 0.75) 75%, rgba(112, 216, 248, 0.15) 100%);
+    repeating-linear-gradient(90deg, rgba(255, 69, 187, 0.72) 0 3px, transparent 3px 86px),
+    repeating-linear-gradient(to top, rgba(255, 69, 187, 0.7) 0 3px, transparent 3px 58px),
+    linear-gradient(
+      to top,
+      rgba(81, 209, 245, 0.92) 0%,
+      rgba(112, 216, 248, 0.75) 75%,
+      rgba(112, 216, 248, 0.15) 100%
+    );
   box-shadow: 0 -16px 50px rgba(255, 69, 187, 0.22) inset;
 }
 
@@ -194,8 +203,7 @@ html[data-theme="homepage"] .card {
   border-width: 2px;
   border-radius: 0;
   background:
-    linear-gradient(135deg, rgba(255, 70, 190, 0.14), rgba(59, 228, 255, 0.14)),
-    var(--glass);
+    linear-gradient(135deg, rgba(255, 70, 190, 0.14), rgba(59, 228, 255, 0.14)), var(--glass);
   backdrop-filter: saturate(155%) blur(8px);
 }
 
@@ -228,9 +236,7 @@ html[data-theme="homepage"] .card .content {
 
 html[data-theme="homepage"] .visit::before,
 html[data-theme="homepage"] .cta .cta-link::before {
-  background:
-    conic-gradient(from var(--shine-angle),
-      #ff4dc2, #3be4ff, #59b8ff, #fff08b, #ff4dc2);
+  background: conic-gradient(from var(--shine-angle), #ff4dc2, #3be4ff, #59b8ff, #fff08b, #ff4dc2);
 }
 
 html[data-theme="homepage"] .visit,
@@ -267,10 +273,23 @@ html[data-theme="dark"] .cta .cta-link:hover {
 /* Base layout */
 body {
   margin: 0;
-  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font:
+    16px/1.5 system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    sans-serif;
   background: var(--bg);
   color: var(--text);
-  transition: background-color .3s ease, color .3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .wrap {
@@ -287,7 +306,10 @@ body {
   background: transparent; /* remove dark backdrop so sunset shows through */
   border-bottom: 0;
   backdrop-filter: none;
-  transition: background-color .3s ease, border-color .3s ease, backdrop-filter .3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    backdrop-filter 0.3s ease;
 }
 
 .site-header .wrap {
@@ -302,7 +324,7 @@ body {
   margin: 0;
   font-family: "Honk", system-ui, sans-serif;
   font-weight: 600;
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
   font-size: 4rem;
   line-height: 1.15;
   text-align: center;
@@ -353,7 +375,9 @@ body {
     1px 1px 0 #000;
 }
 
-.theme-toggle.win98-toggle:hover { filter: brightness(0.98); }
+.theme-toggle.win98-toggle:hover {
+  filter: brightness(0.98);
+}
 
 /* Dark theme button */
 .theme-toggle.dark-toggle {
@@ -361,9 +385,11 @@ body {
   background: #0e141b;
   color: #e6eaf3;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,.35);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
-.theme-toggle.dark-toggle:hover { filter: brightness(1.05); }
+.theme-toggle.dark-toggle:hover {
+  filter: brightness(1.05);
+}
 
 /* Geocities badge button (match neon magenta/blue/cyan, avoid yellow) */
 .theme-toggle.geo-toggle {
@@ -371,18 +397,22 @@ body {
   background: linear-gradient(180deg, #ff00ff, #0000ff);
   color: #ffffff;
   border-radius: 6px;
-  box-shadow: 0 0 10px #00ffff, inset 0 0 6px #ff00ff;
+  box-shadow:
+    0 0 10px #00ffff,
+    inset 0 0 6px #ff00ff;
 }
-.theme-toggle.geo-toggle .icon { filter: saturate(1.6) contrast(1.3); }
+.theme-toggle.geo-toggle .icon {
+  filter: saturate(1.6) contrast(1.3);
+}
 
 /* Windows 98 Theme */
 html[data-theme="win98"] {
-  --bg: #008080;            /* classic teal desktop */
+  --bg: #008080; /* classic teal desktop */
   --text: #000000;
   --muted: #000000;
-  --card: #c0c0c0;          /* dialog grey */
+  --card: #c0c0c0; /* dialog grey */
   --card-border: #000000;
-  --header-bg: #000080;     /* title bar blue */
+  --header-bg: #000080; /* title bar blue */
   --header-border: #000000;
   --accent: #000080;
   --accent-contrast: #ffffff;
@@ -399,7 +429,9 @@ html[data-theme="win98"] {
 }
 
 /* Hide synthwave background in Win98 mode */
-html[data-theme="win98"] .bg-synthwave { display: none; }
+html[data-theme="win98"] .bg-synthwave {
+  display: none;
+}
 
 /* Header becomes a title bar */
 html[data-theme="win98"] .site-header {
@@ -448,7 +480,9 @@ html[data-theme="win98"] .cta-link {
     inset 1px 1px 0 #fff,
     inset -1px -1px 0 #7f7f7f;
 }
-html[data-theme="win98"] .cta .cta-link::before { content: none; }
+html[data-theme="win98"] .cta .cta-link::before {
+  content: none;
+}
 
 /* Filters become classic buttons */
 html[data-theme="win98"] .filters {
@@ -466,7 +500,7 @@ html[data-theme="win98"] .filters .chip {
   background: #c0c0c0;
   color: #000;
   font-weight: 600;
-  font-size: .9rem;
+  font-size: 0.9rem;
   text-shadow: none;
   box-shadow:
     inset 1px 1px 0 #fff,
@@ -490,8 +524,12 @@ html[data-theme="win98"] .card {
   transition: none;
 }
 
-html[data-theme="win98"] .card:hover { transform: none; }
-html[data-theme="win98"] .card:hover img { transform: none; }
+html[data-theme="win98"] .card:hover {
+  transform: none;
+}
+html[data-theme="win98"] .card:hover img {
+  transform: none;
+}
 
 html[data-theme="win98"] .card img {
   background: #808080;
@@ -593,7 +631,9 @@ html[data-theme="win98"] .site-footer .wrap {
     inset 0 1px 0 #fff,
     inset 0 -1px 0 #7f7f7f;
 }
-html[data-theme="win98"] body { padding-bottom: 48px; } /* prevent overlap */
+html[data-theme="win98"] body {
+  padding-bottom: 48px;
+} /* prevent overlap */
 
 .win-start-btn {
   min-width: 86px;
@@ -616,7 +656,9 @@ html[data-theme="win98"] body { padding-bottom: 48px; } /* prevent overlap */
     inset 1px 1px 0 #7f7f7f;
 }
 
-.taskbar-spacer { flex: 1 1 auto; }
+.taskbar-spacer {
+  flex: 1 1 auto;
+}
 
 .win-clock {
   display: inline-flex;
@@ -648,13 +690,13 @@ html[data-theme="win98"] body { padding-bottom: 48px; } /* prevent overlap */
    ========================= */
 html[data-theme="geocities"] {
   --bg: #000000;
-  --text: #00ff00;           /* neon green text */
-  --muted: #ff00ff;          /* magenta accents */
-  --card: #ffff00;           /* loud yellow panels */
-  --card-border: #ff00ff;    /* magenta borders */
-  --header-bg: #0000ff;      /* bright blue header */
+  --text: #00ff00; /* neon green text */
+  --muted: #ff00ff; /* magenta accents */
+  --card: #ffff00; /* loud yellow panels */
+  --card-border: #ff00ff; /* magenta borders */
+  --header-bg: #0000ff; /* bright blue header */
   --header-border: #ff00ff;
-  --accent: #ff0000;         /* red buttons/links */
+  --accent: #ff0000; /* red buttons/links */
   --accent-contrast: #ffffff;
   --shadow: none;
 
@@ -669,16 +711,18 @@ html[data-theme="geocities"] {
 }
 
 /* Hide synthwave in Geocities */
-html[data-theme="geocities"] .bg-synthwave { display: none; }
+html[data-theme="geocities"] .bg-synthwave {
+  display: none;
+}
 
 /* Comic Sans, baby */
 html[data-theme="geocities"] body {
-  background:
-    repeating-linear-gradient(45deg, #222 0 20px, #111 20px 40px),
-    #000;
+  background: repeating-linear-gradient(45deg, #222 0 20px, #111 20px 40px), #000;
   color: var(--text);
   font-family: "Comic Sans MS", "Marker Felt", cursive, system-ui, sans-serif;
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><text y='24' x='0' font-size='24'>💫</text></svg>"), auto;
+  cursor:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><text y='24' x='0' font-size='24'>💫</text></svg>"),
+    auto;
 }
 
 /* Header: bright and loud */
@@ -686,7 +730,9 @@ html[data-theme="geocities"] .site-header {
   background: linear-gradient(90deg, #0000ff, #ff00ff);
   border-bottom: 3px dashed #ffff00;
 }
-html[data-theme="geocities"] .site-header .wrap { min-height: 64px; }
+html[data-theme="geocities"] .site-header .wrap {
+  min-height: 64px;
+}
 html[data-theme="geocities"] .brand {
   font-family: "Comic Sans MS", cursive, system-ui, sans-serif;
   font-weight: 900;
@@ -705,7 +751,9 @@ html[data-theme="geocities"] .brand {
   border-radius: 6px;
   box-shadow: 0 0 10px #ff00ff;
 }
-.theme-toggle.win98-toggle .win-logo { filter: saturate(1.8) contrast(1.4); }
+.theme-toggle.win98-toggle .win-logo {
+  filter: saturate(1.8) contrast(1.4);
+}
 
 /* Geocities banner strip */
 .geo-banner {
@@ -713,8 +761,13 @@ html[data-theme="geocities"] .brand {
 }
 html[data-theme="geocities"] .geo-banner {
   display: block;
-  background:
-    repeating-linear-gradient(90deg, #ff0000 0 12px, #ffff00 12px 24px, #00ff00 24px 36px, #0000ff 36px 48px);
+  background: repeating-linear-gradient(
+    90deg,
+    #ff0000 0 12px,
+    #ffff00 12px 24px,
+    #00ff00 24px 36px,
+    #0000ff 36px 48px
+  );
   border-top: 4px double #00ffff;
   border-bottom: 4px double #00ffff;
 }
@@ -735,7 +788,7 @@ html[data-theme="geocities"] .geo-banner {
   border: 2px dotted #ff00ff;
   text-transform: uppercase;
   font-weight: 800;
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
 }
 .geo-marquee {
   overflow: hidden;
@@ -754,8 +807,12 @@ html[data-theme="geocities"] .geo-banner {
   white-space: nowrap;
 }
 @keyframes geo-scroll {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(-100%); }
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
 
 /* CTA and chips = chaotic */
@@ -770,7 +827,9 @@ html[data-theme="geocities"] .cta-link {
   border: 3px outset #ffff00;
   text-decoration: underline wavy #00ffff;
 }
-html[data-theme="geocities"] .cta .cta-link::before { content: none; }
+html[data-theme="geocities"] .cta .cta-link::before {
+  content: none;
+}
 
 html[data-theme="geocities"] .filters .chip {
   background: linear-gradient(180deg, #00ffff, #00a0a0);
@@ -791,8 +850,12 @@ html[data-theme="geocities"] .card {
   border-radius: 0;
   box-shadow: 0 0 12px #ff00ff;
 }
-html[data-theme="geocities"] .card:hover { transform: rotate(-0.3deg) scale(1.01); }
-html[data-theme="geocities"] .card img { filter: contrast(1.2) saturate(1.4); }
+html[data-theme="geocities"] .card:hover {
+  transform: rotate(-0.3deg) scale(1.01);
+}
+html[data-theme="geocities"] .card img {
+  filter: contrast(1.2) saturate(1.4);
+}
 
 html[data-theme="geocities"] .card .content {
   gap: 10px;
@@ -833,24 +896,25 @@ html[data-theme="geocities"] .cta .cta-link {
   animation: blink 1s steps(2, start) infinite;
 }
 html[data-theme="geocities"] .visit::before,
-html[data-theme="geocities"] .cta .cta-link::before { content: none; }
+html[data-theme="geocities"] .cta .cta-link::before {
+  content: none;
+}
 
 @keyframes blink {
-  50% { filter: brightness(1.6); }
+  50% {
+    filter: brightness(1.6);
+  }
 }
 
 /* Footer like a web counter strip */
 html[data-theme="geocities"] .site-footer {
-  background:
-    repeating-linear-gradient(90deg, #000 0 10px, #111 10px 20px);
+  background: repeating-linear-gradient(90deg, #000 0 10px, #111 10px 20px);
   border-top: 6px dashed #ff00ff;
 }
 html[data-theme="geocities"] .site-footer .wrap {
   color: #00ff00;
   font-family: "Comic Sans MS", cursive, system-ui, sans-serif;
 }
-
-
 
 /* Main */
 .site-main .wrap {
@@ -864,9 +928,8 @@ html[data-theme="geocities"] .site-footer .wrap {
   border: 1px solid var(--glass-border);
   border-radius: 16px;
   background:
-    radial-gradient(250px 120px at 10% 10%, rgba(96,165,250,.12), transparent 60%),
-    radial-gradient(250px 120px at 90% 20%, rgba(99,102,241,.12), transparent 60%),
-    var(--glass);
+    radial-gradient(250px 120px at 10% 10%, rgba(96, 165, 250, 0.12), transparent 60%),
+    radial-gradient(250px 120px at 90% 20%, rgba(99, 102, 241, 0.12), transparent 60%), var(--glass);
   box-shadow: var(--shadow);
   backdrop-filter: saturate(160%) blur(12px);
 }
@@ -901,16 +964,21 @@ html[data-theme="geocities"] .site-footer .wrap {
   background: var(--chip-bg);
   color: var(--chip-text);
   font-weight: 700;
-  font-size: .9rem;
+  font-size: 0.9rem;
   line-height: 1;
   cursor: pointer;
   user-select: none;
   box-shadow:
-    0 2px 10px rgba(16,19,31,0.18),
-    0 0 0 1px rgba(255,255,255,0.06) inset;
+    0 2px 10px rgba(16, 19, 31, 0.18),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
   backdrop-filter: saturate(140%) blur(6px);
-  text-shadow: 0 1px 1px rgba(0,0,0,0.25);
-  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .filters .chip.is-active {
@@ -921,7 +989,7 @@ html[data-theme="geocities"] .site-footer .wrap {
 
 .filters .chip:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(59,130,246,.25);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
 .cta p {
@@ -940,28 +1008,33 @@ html[data-theme="geocities"] .site-footer .wrap {
   color: var(--accent);
   font-weight: 700;
   text-decoration: none;
-  background: linear-gradient(180deg, rgba(59,130,246,.15), rgba(59,130,246,0));
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0));
   padding: 6px 12px;
   border-radius: 10px;
-  border: 1px solid rgba(59,130,246,.35);
-  transition: transform .24s cubic-bezier(.2,.8,.2,1), box-shadow .24s cubic-bezier(.2,.8,.2,1), background-color .24s cubic-bezier(.2,.8,.2,1), color .24s cubic-bezier(.2,.8,.2,1), border-color .24s cubic-bezier(.2,.8,.2,1);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  transition:
+    transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.24s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.24s cubic-bezier(0.2, 0.8, 0.2, 1),
+    color 0.24s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .cta-link:hover {
   transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(59,130,246,.25);
-  border-color: rgba(59,130,246,.5);
-  background: linear-gradient(180deg, rgba(59,130,246,.22), rgba(59,130,246,.05));
+  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.5);
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.22), rgba(59, 130, 246, 0.05));
 }
 
 .cta-link:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(59,130,246,.25);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
 .cta-link:hover {
   transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(59,130,246,.25);
+  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.25);
 }
 
 /* Grid of curiosities */
@@ -974,15 +1047,20 @@ html[data-theme="geocities"] .site-footer .wrap {
 /* Card */
 .card {
   background:
-    radial-gradient(240px 120px at 15% 10%, rgba(255,255,255,.12), transparent 60%),
-    radial-gradient(240px 120px at 85% 20%, rgba(255,255,255,.08), transparent 60%),
+    radial-gradient(240px 120px at 15% 10%, rgba(255, 255, 255, 0.12), transparent 60%),
+    radial-gradient(240px 120px at 85% 20%, rgba(255, 255, 255, 0.08), transparent 60%),
     var(--glass);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: var(--shadow);
   backdrop-filter: saturate(160%) blur(12px);
-  transition: transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s cubic-bezier(.2,.8,.2,1), border-color .28s cubic-bezier(.2,.8,.2,1), backdrop-filter .28s cubic-bezier(.2,.8,.2,1), background-color .28s cubic-bezier(.2,.8,.2,1);
+  transition:
+    transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    backdrop-filter 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
   display: grid;
   grid-template-rows: auto 1fr; /* image + content */
   height: 100%;
@@ -1004,7 +1082,7 @@ html[data-theme="geocities"] .site-footer .wrap {
   aspect-ratio: 16 / 9;
   object-fit: cover;
   background: #0b1118;
-  transition: transform .35s cubic-bezier(.2,.8,.2,1);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform;
 }
 
@@ -1016,9 +1094,9 @@ html[data-theme="geocities"] .site-footer .wrap {
   width: 100%;
   aspect-ratio: 16 / 9;
   background:
-    radial-gradient(120px 80px at 20% 20%, rgba(96,165,250,.2), transparent 60%),
-    radial-gradient(120px 80px at 80% 50%, rgba(99,102,241,.2), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+    radial-gradient(120px 80px at 20% 20%, rgba(96, 165, 250, 0.2), transparent 60%),
+    radial-gradient(120px 80px at 80% 50%, rgba(99, 102, 241, 0.2), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0));
   border-bottom: 1px solid var(--card-border);
 }
 
@@ -1044,7 +1122,7 @@ html[data-theme="geocities"] .site-footer .wrap {
 
 .desc {
   color: var(--muted);
-  font-size: .95rem;
+  font-size: 0.95rem;
   line-height: 1.4;
   font-family: "Quicksand", system-ui, sans-serif;
   display: -webkit-box;
@@ -1056,9 +1134,9 @@ html[data-theme="geocities"] .site-footer .wrap {
 
 .card .meta {
   color: var(--muted);
-  font-size: .875rem;
+  font-size: 0.875rem;
   display: flex;
-  flex-direction: row;   /* byline on its own row */
+  flex-direction: row; /* byline on its own row */
   align-items: center;
   gap: 8px;
   white-space: nowrap;
@@ -1068,7 +1146,7 @@ html[data-theme="geocities"] .site-footer .wrap {
 
 .card .meta .byline {
   color: var(--muted);
-  font-size: .85rem;
+  font-size: 0.85rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1077,9 +1155,9 @@ html[data-theme="geocities"] .site-footer .wrap {
 .card .tags {
   display: inline-flex;
   align-items: center;
-  flex-wrap: nowrap;     /* one row */
+  flex-wrap: nowrap; /* one row */
   gap: 6px;
-  overflow: hidden;      /* hide overflowed chips */
+  overflow: hidden; /* hide overflowed chips */
   white-space: nowrap;
   min-height: var(--row-tags);
 }
@@ -1090,15 +1168,15 @@ html[data-theme="geocities"] .site-footer .wrap {
   line-height: 1;
   padding: 6px 10px;
   border-radius: 999px;
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   background: var(--glass-button-bg);
   border: 1px solid var(--glass-button-border);
   color: var(--accent-contrast);
   user-select: none;
-  white-space: nowrap;   /* keep chip text on one line */
-  flex: 0 0 auto;        /* prevent chips from shrinking */
+  white-space: nowrap; /* keep chip text on one line */
+  flex: 0 0 auto; /* prevent chips from shrinking */
 }
 
 .visit,
@@ -1106,12 +1184,12 @@ html[data-theme="geocities"] .site-footer .wrap {
   justify-self: start;
   display: inline-flex;
   align-items: center;
-  gap: .5rem;
+  gap: 0.5rem;
   text-decoration: none;
   position: relative;
   background: transparent; /* transparent bg */
-  color: var(--text);       /* theme-aware text color */
-  padding: .6rem .95rem;
+  color: var(--text); /* theme-aware text color */
+  padding: 0.6rem 0.95rem;
   border-radius: 12px;
   font-weight: 700;
   font-family: "Quicksand", system-ui, sans-serif;
@@ -1119,26 +1197,41 @@ html[data-theme="geocities"] .site-footer .wrap {
   box-shadow: none;
   margin-top: auto; /* pin to bottom of content */
   overflow: hidden; /* contain animated border */
-  transition: transform .2s ease, color .2s ease;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
 }
 
 .visit:hover,
-.cta .cta-link:hover { transform: translateY(-1px); }
+.cta .cta-link:hover {
+  transform: translateY(-1px);
+}
 .visit:active,
-.cta .cta-link:active { transform: translateY(0); }
+.cta .cta-link:active {
+  transform: translateY(0);
+}
 
-.card .visit { padding-left: 1.2rem; padding-right: 1.2rem; }
+.card .visit {
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+}
 
 .visit::before,
 .cta .cta-link::before {
   content: "";
   position: absolute;
-  inset: 0;              /* cover full button */
+  inset: 0; /* cover full button */
   border-radius: inherit;
-  padding: 2px;          /* border thickness */
-  background:
-    conic-gradient(from var(--shine-angle),
-      #ff4aa1, #9a63ff, #4cc9f0, #7cffcb, #ffd166, #ff4aa1);
+  padding: 2px; /* border thickness */
+  background: conic-gradient(
+    from var(--shine-angle),
+    #ff4aa1,
+    #9a63ff,
+    #4cc9f0,
+    #7cffcb,
+    #ffd166,
+    #ff4aa1
+  );
   /* Create a border ring by masking the center */
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
@@ -1151,7 +1244,7 @@ html[data-theme="geocities"] .site-footer .wrap {
 .visit:hover,
 .cta .cta-link:hover {
   transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(59,130,246,.3);
+  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.3);
 }
 
 /* Empty state */
@@ -1159,14 +1252,16 @@ html[data-theme="geocities"] .site-footer .wrap {
   text-align: center;
   color: var(--muted);
   margin: 24px 0 0;
-  font-size: .95rem;
+  font-size: 0.95rem;
 }
 
 /* Footer */
 .site-footer {
   border-top: 1px solid var(--header-border);
   background: var(--header-bg);
-  transition: background-color .3s ease, border-color .3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .site-footer .wrap {
@@ -1175,15 +1270,27 @@ html[data-theme="geocities"] .site-footer .wrap {
   align-items: center;
   justify-content: center;
   color: var(--muted);
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 /* Visibility helpers */
-.dark-only, .win98-only, .geocities-only { display: none; }
-html[data-theme="dark"] .dark-only { display: inline-flex; }
-html[data-theme="homepage"] .dark-only { display: inline-flex; }
-html[data-theme="win98"] .win98-only { display: inline-flex; }
-html[data-theme="geocities"] .geocities-only { display: inline-flex; }
+.dark-only,
+.win98-only,
+.geocities-only {
+  display: none;
+}
+html[data-theme="dark"] .dark-only {
+  display: inline-flex;
+}
+html[data-theme="homepage"] .dark-only {
+  display: inline-flex;
+}
+html[data-theme="win98"] .win98-only {
+  display: inline-flex;
+}
+html[data-theme="geocities"] .geocities-only {
+  display: inline-flex;
+}
 
 /* Dark theme hamburger (fixed, top-left) */
 .theme-menu-btn {
@@ -1197,7 +1304,7 @@ html[data-theme="geocities"] .geocities-only { display: inline-flex; }
   background: #0e141b;
   color: #e6eaf3;
   border-radius: 10px;
-  box-shadow: 0 6px 18px rgba(0,0,0,.45);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -1218,8 +1325,12 @@ html[data-theme="geocities"] .geocities-only { display: inline-flex; }
   height: 2px;
   background: currentColor;
 }
-.theme-menu-btn .hamburger::before { top: -6px; }
-.theme-menu-btn .hamburger::after { top: 6px; }
+.theme-menu-btn .hamburger::before {
+  top: -6px;
+}
+.theme-menu-btn .hamburger::after {
+  top: 6px;
+}
 
 /* Theme dropdown menus - base */
 .theme-menu {
@@ -1228,7 +1339,7 @@ html[data-theme="geocities"] .geocities-only { display: inline-flex; }
   min-width: 180px;
   border-radius: 10px;
   padding: 8px;
-  box-shadow: 0 12px 28px rgba(0,0,0,.45);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
   border: 1px solid var(--glass-border);
   background: var(--card);
 }
@@ -1244,11 +1355,14 @@ html[data-theme="geocities"] .geocities-only { display: inline-flex; }
   cursor: pointer;
 }
 .theme-menu button:hover {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Dark: dropdown appears under hamburger */
-.dark-menu { left: 12px; top: 58px; }
+.dark-menu {
+  left: 12px;
+  top: 58px;
+}
 
 /* Win98 Start button and menu */
 html[data-theme="win98"] .site-footer .wrap {
@@ -1278,7 +1392,9 @@ html[data-theme="win98"] .site-footer .wrap {
   font-family: "Comic Sans MS", cursive, system-ui, sans-serif;
   text-transform: uppercase;
   border-radius: 8px;
-  box-shadow: 0 0 12px #00ffff, inset 0 0 8px #ff00ff;
+  box-shadow:
+    0 0 12px #00ffff,
+    inset 0 0 8px #ff00ff;
   cursor: pointer;
 }
 .geocities-menu {
@@ -1299,12 +1415,18 @@ html[data-theme="win98"] .site-footer .wrap {
 }
 
 @keyframes spin-shine {
-  to { --shine-angle: 360deg; }
+  to {
+    --shine-angle: 360deg;
+  }
 }
 /* Motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
     transition: none !important;
     animation: none !important;
   }
@@ -1327,41 +1449,45 @@ html[data-theme="win98"] .site-footer .wrap {
   /* sunset sky with darker blues/purples in the upper half */
   background:
     /* sun halo (pink) centered on the horizon */
-    radial-gradient(40vmin 40vmin at 50% 50vh,
-      rgba(255,64,160,.36) 0%,
-      rgba(255,64,160,.28) 35%,
-      rgba(255,64,160,.14) 62%,
-      rgba(255,64,160,0) 75%),
+    radial-gradient(
+      40vmin 40vmin at 50% 50vh,
+      rgba(255, 64, 160, 0.36) 0%,
+      rgba(255, 64, 160, 0.28) 35%,
+      rgba(255, 64, 160, 0.14) 62%,
+      rgba(255, 64, 160, 0) 75%
+    ),
     /* sunset flare near the horizon (reds/oranges/pinks) */
-    radial-gradient(80vmin 48vmin at 50% 54vh,
-      rgba(255,59,107,.30) 0%,
-      rgba(255,112,89,.24) 25%,
-      rgba(255,138,61,.18) 45%,
-      rgba(255,64,160,.14) 60%,
-      rgba(255,64,160,0) 80%),
+    radial-gradient(
+        80vmin 48vmin at 50% 54vh,
+        rgba(255, 59, 107, 0.3) 0%,
+        rgba(255, 112, 89, 0.24) 25%,
+        rgba(255, 138, 61, 0.18) 45%,
+        rgba(255, 64, 160, 0.14) 60%,
+        rgba(255, 64, 160, 0) 80%
+      ),
     /* soft golden band above the horizon */
-    linear-gradient(to top,
-      rgba(255,206,130,.22) 47%,
-      rgba(255,174,94,.13) 55%,
-      rgba(0,0,0,0) 60%),
+    linear-gradient(
+        to top,
+        rgba(255, 206, 130, 0.22) 47%,
+        rgba(255, 174, 94, 0.13) 55%,
+        rgba(0, 0, 0, 0) 60%
+      ),
     /* top-sky deep indigo glow */
-    radial-gradient(90vmax 60vmax at 50% -10vmax,
-      rgba(28,33,74,.20) 0%,
-      rgba(28,33,74,0) 60%),
+    radial-gradient(90vmax 60vmax at 50% -10vmax, rgba(28, 33, 74, 0.2) 0%, rgba(28, 33, 74, 0) 60%),
     /* base sunset sky with darker upper half */
-    linear-gradient(to top,
-      /* lower half near horizon (warm band kept tight) */
-      #0a0d1a 0%,
-      #0a0d1a 44%,
-      #2b0f2e 48%,
-      #ff3b6b 50%,
-      #ff6f59 54%,
-      #ff8a3d 58%,
-      #d74c9f 62%,
-      /* upper half transitions to darker purples/blues */
-      #3a1a6e 70%,
-      #1a1440 82%,
-      #0e1226 100%);
+    linear-gradient(
+        to top,
+        /* lower half near horizon (warm band kept tight) */ #0a0d1a 0%,
+        #0a0d1a 44%,
+        #2b0f2e 48%,
+        #ff3b6b 50%,
+        #ff6f59 54%,
+        #ff8a3d 58%,
+        #d74c9f 62%,
+        /* upper half transitions to darker purples/blues */ #3a1a6e 70%,
+        #1a1440 82%,
+        #0e1226 100%
+      );
 }
 
 /* Sunset with scanline stripes */
@@ -1374,24 +1500,27 @@ html[data-theme="win98"] .site-footer .wrap {
   height: 38vmin;
   transform: translateX(-50%);
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 50% 60%,
-      #ffd166 0%,
-      #ff9a62 35%,
-      #ff4aa1 62%,
-      rgba(255,74,161,0) 66%);
+  background: radial-gradient(
+    circle at 50% 60%,
+    #ffd166 0%,
+    #ff9a62 35%,
+    #ff4aa1 62%,
+    rgba(255, 74, 161, 0) 66%
+  );
   /* striped mask */
-  -webkit-mask: repeating-linear-gradient(to bottom, rgba(0,0,0,1) 0 8px, rgba(0,0,0,0) 8px 14px);
-  mask: repeating-linear-gradient(to bottom, rgba(0,0,0,1) 0 8px, rgba(0,0,0,0) 8px 14px);
+  -webkit-mask: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0 8px,
+    rgba(0, 0, 0, 0) 8px 14px
+  );
+  mask: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 1) 0 8px, rgba(0, 0, 0, 0) 8px 14px);
   /* amplified glow around the sun (more pink) */
-  filter:
-    drop-shadow(0 0 34px rgba(255,74,161,.75))
-    drop-shadow(0 0 70px rgba(255,74,161,.45))
-    drop-shadow(0 0 110px rgba(255,74,161,.30));
+  filter: drop-shadow(0 0 34px rgba(255, 74, 161, 0.75))
+    drop-shadow(0 0 70px rgba(255, 74, 161, 0.45)) drop-shadow(0 0 110px rgba(255, 74, 161, 0.3));
   box-shadow:
-    0 0 90px 20px rgba(255,74,161,.24),
-    0 0 110px 30px rgba(255,74,161,.18) inset;
-  opacity: .97;
+    0 0 90px 20px rgba(255, 74, 161, 0.24),
+    0 0 110px 30px rgba(255, 74, 161, 0.18) inset;
+  opacity: 0.97;
   z-index: 1; /* place sun behind the grid */
 }
 
@@ -1401,25 +1530,26 @@ html[data-theme="win98"] .site-footer .wrap {
   position: absolute;
   left: -20vw;
   right: -20vw;
-  top: 50vh;      /* flat horizon at mid-screen */
-  bottom: -35vh;  /* extend beyond bottom to keep base filled */
+  top: 50vh; /* flat horizon at mid-screen */
+  bottom: -35vh; /* extend beyond bottom to keep base filled */
   transform-origin: top center; /* vanishing point aligned to sun (center) */
   /* strong perspective tilt to foreshorten horizontals while keeping horizon flat */
   transform: perspective(650px) rotateX(70deg);
   /* draw: atmosphere fade, converging verticals (conic), horizontal lines, dark blue base */
   background:
     /* atmospheric fade rising from the horizon */
-    linear-gradient(to top, rgba(20,0,40,.92), rgba(20,0,40,0) 60%),
+    linear-gradient(to top, rgba(20, 0, 40, 0.92), rgba(20, 0, 40, 0) 60%),
     /* converging vertical grid lines toward the sun (vanishing point at 50% 0%) */
-    repeating-conic-gradient(from -90deg at 50% 0%,
-      rgba(168,85,247,.65) 0 0.7deg,
-      transparent 0.7deg 12deg),
+    repeating-conic-gradient(
+        from -90deg at 50% 0%,
+        rgba(168, 85, 247, 0.65) 0 0.7deg,
+        transparent 0.7deg 12deg
+      ),
     /* horizontal grid lines (foreshortened by 3D transform) */
-    repeating-linear-gradient(to top, rgba(168,85,247,.55) 0 2px, transparent 2px 60px),
-    /* base plane fill to make squares dark blue */
-    linear-gradient(#061128, #061128);
+    repeating-linear-gradient(to top, rgba(168, 85, 247, 0.55) 0 2px, transparent 2px 60px),
+    /* base plane fill to make squares dark blue */ linear-gradient(#061128, #061128);
   box-shadow:
-    0 -10px 40px rgba(168,85,247,.28) inset,
-    0 0 60px rgba(99,102,241,.18) inset;
+    0 -10px 40px rgba(168, 85, 247, 0.28) inset,
+    0 0 60px rgba(99, 102, 241, 0.18) inset;
   z-index: 2; /* ensure grid overlays the lower half of the sun */
 }

@@ -18,11 +18,7 @@ body {
   height: 100%;
   width: 100%;
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-    90deg,
-    var(--left-bg-color) 50%,
-    var(--right-bg-color) 50%
-  );
+  background: linear-gradient(90deg, var(--left-bg-color) 50%, var(--right-bg-color) 50%);
   user-select: none;
 }
 
@@ -30,11 +26,7 @@ h1 {
   font-size: 6rem;
   line-height: 5rem;
   font-weight: 600;
-  background: linear-gradient(
-    90deg,
-    var(--right-bg-color) 50%,
-    var(--left-bg-color) 50%
-  );
+  background: linear-gradient(90deg, var(--right-bg-color) 50%, var(--left-bg-color) 50%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

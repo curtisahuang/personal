@@ -34,13 +34,7 @@ const SideSlogan = () => {
   );
 };
 
-const Text3D = ({
-  primary,
-  secondary,
-}: {
-  primary: string;
-  secondary: string;
-}) => {
+const Text3D = ({ primary, secondary }: { primary: string; secondary: string }) => {
   return (
     <div className={styles.textContainer}>
       <p className={styles.primary}>{primary}</p>

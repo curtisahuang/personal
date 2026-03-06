@@ -33,18 +33,12 @@ const SocialLinks = ({
         <Contact />
         <div className="flex flex-col sm:flex-row gap-10 items-center">
           <h5>
-            <a
-              className="hover-underline-animation"
-              href="https://github.com/curtisahuang"
-            >
+            <a className="hover-underline-animation" href="https://github.com/curtisahuang">
               <strong>github</strong>
             </a>
           </h5>
           <h5>
-            <a
-              className="hover-underline-animation"
-              href="https://instagram.com/curtisahuang"
-            >
+            <a className="hover-underline-animation" href="https://instagram.com/curtisahuang">
               <strong>instagram</strong>
             </a>
           </h5>

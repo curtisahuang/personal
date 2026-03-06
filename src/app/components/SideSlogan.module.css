@@ -22,7 +22,9 @@
   font-weight: 700;
   margin: 0px;
   color: white;
-  transition: transform 0.4s, opacity 0.4s;
+  transition:
+    transform 0.4s,
+    opacity 0.4s;
   text-align: left;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;

@@ -2,7 +2,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-**Requirements:**  
+**Requirements:**
+
 - [Node.js 18.17 or newer](https://nodejs.org/)
 
 First, run the development server:

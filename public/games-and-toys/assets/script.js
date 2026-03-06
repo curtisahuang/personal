@@ -17,7 +17,8 @@
 
   function getPreferredTheme() {
     const saved = localStorage.getItem(storageKey);
-    if (saved === "win98" || saved === "geocities" || saved === "dark" || saved === "homepage") return saved;
+    if (saved === "win98" || saved === "geocities" || saved === "dark" || saved === "homepage")
+      return saved;
     return "dark";
   }
 
@@ -36,14 +37,16 @@
       if (res.ok) {
         return await res.json();
       }
-    } catch (_) {
+    } catch {
       // ignore
     }
     return Array.isArray(window.CURIOSITIES) ? window.CURIOSITIES : [];
   }
 
   function normalizeTag(t) {
-    return String(t || "").trim().toLowerCase();
+    return String(t || "")
+      .trim()
+      .toLowerCase();
   }
 
   function collectUniqueTags(items) {
@@ -70,12 +73,16 @@
 
     // Allow explicit screenshot override per item
     let imgSrc = null;
-    const override = (site.screenshotUrl ? String(site.screenshotUrl).trim() : "");
+    const override = site.screenshotUrl ? String(site.screenshotUrl).trim() : "";
     if (override) {
       imgSrc = override;
     } else {
       // Build screenshot URL from INSTANT_SITE_DOMAIN (e.g., "cosine" -> "screenshot.cosine.show")
-      const domain = (typeof window.INSTANT_SITE_DOMAIN !== "undefined" ? String(window.INSTANT_SITE_DOMAIN) : "").trim().replace(/\/*$/, "");
+      const domain = (
+        typeof window.INSTANT_SITE_DOMAIN !== "undefined" ? String(window.INSTANT_SITE_DOMAIN) : ""
+      )
+        .trim()
+        .replace(/\/*$/, "");
       if (domain) {
         let host = `screenshot.${domain}`;
         if (!host.endsWith(".show")) host += ".show";
@@ -255,7 +262,9 @@
     updateFilterUI();
     applyFilter();
     if (filters) {
-      try { filters.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (_) {}
+      try {
+        filters.scrollIntoView({ behavior: "smooth", block: "center" });
+      } catch {}
     }
   });
 
@@ -281,7 +290,9 @@
       const t = btn.getAttribute("data-theme");
       if (!t) return;
       applyTheme(t);
-      try { localStorage.setItem(storageKey, t); } catch (_) {}
+      try {
+        localStorage.setItem(storageKey, t);
+      } catch {}
       hideAllMenus();
     });
   }
@@ -327,7 +338,8 @@
     let h = d.getHours();
     const m = d.getMinutes().toString().padStart(2, "0");
     const ampm = h >= 12 ? "PM" : "AM";
-    h = h % 12; if (h === 0) h = 12;
+    h = h % 12;
+    if (h === 0) h = 12;
     el.textContent = `${h}:${m} ${ampm}`;
   }
   setInterval(updateWinClock, 1000);

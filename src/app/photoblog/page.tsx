@@ -51,8 +51,7 @@ const PhotoblogPage = () => {
     return entries.map((entry, i) => ({
       id: i,
       // Prefer explicit src; else assume files live under /assets in public
-      src:
-        entry.src ?? (entry.filename ? `/assets/${entry.filename}` : vaporwave),
+      src: entry.src ?? (entry.filename ? `/assets/${entry.filename}` : vaporwave),
       alt: entry.alt ?? `photoblog-${i + 1}`,
       caption: entry.caption ?? "why oh just why",
       captionColor: entry.captionColor ?? "#ffffff",
@@ -63,9 +62,7 @@ const PhotoblogPage = () => {
   const desiredCount = 24;
   const photos: Photo[] = useMemo(() => {
     if (dynamicPhotos.length >= desiredCount) {
-      return dynamicPhotos
-        .slice(0, desiredCount)
-        .map((p, i) => ({ ...p, id: i }));
+      return dynamicPhotos.slice(0, desiredCount).map((p, i) => ({ ...p, id: i }));
     }
     // Fill remaining slots with placeholder
     return Array.from({ length: desiredCount }, (_, i) => {
@@ -93,8 +90,7 @@ const PhotoblogPage = () => {
     h: typeof window !== "undefined" ? window.innerHeight : 0,
   }));
   useEffect(() => {
-    const update = () =>
-      setViewport({ w: window.innerWidth, h: window.innerHeight });
+    const update = () => setViewport({ w: window.innerWidth, h: window.innerHeight });
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
@@ -122,20 +118,28 @@ const PhotoblogPage = () => {
   }, []);
 
   useEffect(() => {
-    setHighResLoaded(false);
-    setHighResPhaseStarted(false);
     if (activeIndex === null) return;
     const timeout = window.setTimeout(
       () => setHighResPhaseStarted(true),
-      shouldReduceMotion ? 0 : 180,
+      shouldReduceMotion ? 0 : 180
     );
     return () => window.clearTimeout(timeout);
   }, [activeIndex, shouldReduceMotion]);
 
-  const open = (index: number) => setActiveIndex(index);
-  const close = () => setActiveIndex(null);
+  const open = (index: number) => {
+    setHighResLoaded(false);
+    setHighResPhaseStarted(false);
+    setActiveIndex(index);
+  };
 
-  const gridClassName = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 w-full gap-1 m-0 p-0";
+  const close = () => {
+    setActiveIndex(null);
+    setHighResLoaded(false);
+    setHighResPhaseStarted(false);
+  };
+
+  const gridClassName =
+    "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 w-full gap-1 m-0 p-0";
 
   const tileTransition: Transition = shouldReduceMotion
     ? { duration: 0 }
@@ -189,79 +193,71 @@ const PhotoblogPage = () => {
           </motion.div>
         </div>
 
-      <AnimatePresence initial={false}>
-        {activeIndex !== null && (
-          <motion.div
-            className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 md:p-8 backdrop-blur-sm"
-            onClick={close}
-            role="dialog"
-            aria-modal="true"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
-          >
+        <AnimatePresence initial={false}>
+          {activeIndex !== null && (
             <motion.div
-              layout
-              layoutId={`photo-${photos[activeIndex].id}`}
-              className="relative"
-              style={{ width: fitted?.width, height: fitted?.height }}
-              transition={{ layout: modalTransition }}
+              className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 md:p-8 backdrop-blur-sm"
+              onClick={close}
+              role="dialog"
+              aria-modal="true"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
             >
-              <Image
-                src={photos[activeIndex].src}
-                alt={photos[activeIndex].alt}
-                width={
-                  fitted?.width ||
-                  (activePhoto
-                    ? (activePhoto.src as StaticImageData).width
-                    : 1000)
-                }
-                height={
-                  fitted?.height ||
-                  (activePhoto
-                    ? (activePhoto.src as StaticImageData).height
-                    : 600)
-                }
-                className="h-full w-full object-contain select-none"
-                quality={55}
-                priority
-              />
-
-              {highResPhaseStarted && (
+              <motion.div
+                layout
+                layoutId={`photo-${photos[activeIndex].id}`}
+                className="relative"
+                style={{ width: fitted?.width, height: fitted?.height }}
+                transition={{ layout: modalTransition }}
+              >
                 <Image
                   src={photos[activeIndex].src}
                   alt={photos[activeIndex].alt}
                   width={
                     fitted?.width ||
-                    (activePhoto
-                      ? (activePhoto.src as StaticImageData).width
-                      : 1000)
+                    (activePhoto ? (activePhoto.src as StaticImageData).width : 1000)
                   }
                   height={
                     fitted?.height ||
-                    (activePhoto
-                      ? (activePhoto.src as StaticImageData).height
-                      : 600)
+                    (activePhoto ? (activePhoto.src as StaticImageData).height : 600)
                   }
-                  className={`absolute inset-0 h-full w-full object-contain select-none transition-opacity duration-150 ${
-                    highResLoaded ? "opacity-100" : "opacity-0"
-                  }`}
-                  quality={100}
+                  className="h-full w-full object-contain select-none"
+                  quality={55}
                   priority
-                  onLoad={() => setHighResLoaded(true)}
                 />
-              )}
 
-              <Caption
-                text={photos[activeIndex].caption ?? "why oh just why"}
-                color={photos[activeIndex].captionColor ?? "#ffffff"}
-                position={photos[activeIndex].captionPosition ?? "right"}
-              />
+                {highResPhaseStarted && (
+                  <Image
+                    src={photos[activeIndex].src}
+                    alt={photos[activeIndex].alt}
+                    width={
+                      fitted?.width ||
+                      (activePhoto ? (activePhoto.src as StaticImageData).width : 1000)
+                    }
+                    height={
+                      fitted?.height ||
+                      (activePhoto ? (activePhoto.src as StaticImageData).height : 600)
+                    }
+                    className={`absolute inset-0 h-full w-full object-contain select-none transition-opacity duration-150 ${
+                      highResLoaded ? "opacity-100" : "opacity-0"
+                    }`}
+                    quality={100}
+                    priority
+                    onLoad={() => setHighResLoaded(true)}
+                  />
+                )}
+
+                <Caption
+                  text={photos[activeIndex].caption ?? "why oh just why"}
+                  color={photos[activeIndex].captionColor ?? "#ffffff"}
+                  position={photos[activeIndex].captionPosition ?? "right"}
+                />
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
       </LayoutGroup>
 
       <footer className="fixed bottom-0 left-0 right-0 z-40 bg-[#578b92]">
