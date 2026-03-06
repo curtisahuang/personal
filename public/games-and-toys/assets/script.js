@@ -19,7 +19,7 @@
     const saved = localStorage.getItem(storageKey);
     if (saved === "win98" || saved === "geocities" || saved === "dark" || saved === "homepage")
       return saved;
-    return "dark";
+    return "homepage";
   }
 
   function applyTheme(theme) {

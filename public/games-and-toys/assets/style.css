@@ -207,6 +207,10 @@ html[data-theme="homepage"] .card {
   backdrop-filter: saturate(155%) blur(8px);
 }
 
+html[data-theme="homepage"] .card:hover {
+  transform: translateY(0);
+}
+
 html[data-theme="homepage"] .grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
