@@ -35,6 +35,10 @@
   let win98ResizeStartRect = null;
   let win98WindowRestoreRect = null;
 
+  function getWin98DesktopRect() {
+    return document.getElementById("win98Desktop")?.getBoundingClientRect() || null;
+  }
+
   let ALL_ITEMS = [];
   const selectedTags = new Set();
 
@@ -56,10 +60,13 @@
   function openWin98Explorer() {
     if (!win98ExplorerWindow) return;
     win98ExplorerWindow.hidden = false;
+    win98ExplorerWindow.style.display = "flex";
   }
 
   function closeWin98Explorer() {
     if (!win98ExplorerWindow) return;
+    hideWin98ContextMenu();
+    win98ExplorerWindow.style.display = "none";
     win98ExplorerWindow.hidden = true;
   }
 
@@ -67,13 +74,18 @@
     if (!win98ExplorerWindow || !win98ExplorerMaximize) return;
     if (nextState) {
       const rect = win98ExplorerWindow.getBoundingClientRect();
+      const desktopRect = getWin98DesktopRect();
       win98WindowRestoreRect = {
-        left: rect.left,
-        top: rect.top,
+        left: desktopRect ? rect.left - desktopRect.left : rect.left,
+        top: desktopRect ? rect.top - desktopRect.top : rect.top,
         width: rect.width,
         height: rect.height,
       };
       win98ExplorerWindow.classList.add("is-maximized");
+      win98ExplorerWindow.style.left = "0px";
+      win98ExplorerWindow.style.top = "0px";
+      win98ExplorerWindow.style.width = "100%";
+      win98ExplorerWindow.style.height = "100%";
       win98ExplorerMaximize.textContent = "❐";
       win98ExplorerMaximize.title = "Restore";
       win98ExplorerMaximize.setAttribute("aria-label", "Restore Explorer");
@@ -482,7 +494,9 @@
   }
 
   if (win98ExplorerMaximize) {
-    win98ExplorerMaximize.addEventListener("click", () => {
+    win98ExplorerMaximize.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       setWin98Maximized(!win98IsMaximized);
     });
   }
@@ -498,7 +512,8 @@
       e.preventDefault();
     });
 
-    win98ExplorerTitlebar.addEventListener("dblclick", () => {
+    win98ExplorerTitlebar.addEventListener("dblclick", (e) => {
+      if (e.target.closest(".win98-window-control")) return;
       setWin98Maximized(!win98IsMaximized);
     });
   }
@@ -568,7 +583,7 @@
     }
 
     if (!win98IsDragging || !win98ExplorerWindow) return;
-    const desktopRect = document.getElementById("win98Desktop")?.getBoundingClientRect();
+    const desktopRect = getWin98DesktopRect();
     const nextLeft = e.clientX - win98DragOffsetX;
     const nextTop = e.clientY - win98DragOffsetY;
 
@@ -599,7 +614,7 @@
       const dir = handle.getAttribute("data-dir");
       if (!dir) return;
       const rect = win98ExplorerWindow.getBoundingClientRect();
-      const desktopRect = document.getElementById("win98Desktop")?.getBoundingClientRect();
+      const desktopRect = getWin98DesktopRect();
       win98ResizeStartX = e.clientX;
       win98ResizeStartY = e.clientY;
       win98ResizeDir = dir;
