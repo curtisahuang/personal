@@ -474,7 +474,9 @@
   }
 
   if (win98ExplorerClose) {
-    win98ExplorerClose.addEventListener("click", () => {
+    win98ExplorerClose.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       closeWin98Explorer();
     });
   }

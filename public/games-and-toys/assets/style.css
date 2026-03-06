@@ -691,13 +691,13 @@ html[data-theme="win98"] #win98Desktop {
 }
 
 .win98-resize-nw {
-  top: 0;
+  top: 24px;
   left: 0;
   cursor: nwse-resize;
 }
 
 .win98-resize-ne {
-  top: 0;
+  top: 24px;
   right: 0;
   cursor: nesw-resize;
 }
@@ -1392,6 +1392,7 @@ html[data-theme="geocities"] .site-footer .wrap {
   line-height: 1.4;
   font-family: "Quicksand", system-ui, sans-serif;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2; /* clamp to 2 lines */
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -1499,6 +1500,9 @@ html[data-theme="geocities"] .site-footer .wrap {
     #ff4aa1
   );
   /* Create a border ring by masking the center */
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
