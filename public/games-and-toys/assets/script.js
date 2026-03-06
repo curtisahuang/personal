@@ -11,6 +11,29 @@
   const grid = document.getElementById("grid");
   const empty = document.getElementById("empty");
   const filters = document.getElementById("filters");
+  const homeBackBtn = document.getElementById("homeBackBtn");
+  const win98ExplorerShortcut = document.getElementById("win98ExplorerShortcut");
+  const win98ExplorerWindow = document.getElementById("win98ExplorerWindow");
+  const win98ExplorerTitlebar = document.getElementById("win98ExplorerTitlebar");
+  const win98ExplorerClose = document.getElementById("win98ExplorerClose");
+  const win98ExplorerMaximize = document.getElementById("win98ExplorerMaximize");
+  const win98ResizeHandles = document.querySelectorAll(".win98-resize-handle");
+  const win98FileArea = document.getElementById("win98FileArea");
+  const win98ContextMenu = document.getElementById("win98ContextMenu");
+  const win98CtxVisitSite = document.getElementById("win98CtxVisitSite");
+  const win98CtxVisitGithub = document.getElementById("win98CtxVisitGithub");
+
+  let win98ContextTarget = null;
+  let win98IsDragging = false;
+  let win98IsMaximized = false;
+  let win98DragOffsetX = 0;
+  let win98DragOffsetY = 0;
+  let win98IsResizing = false;
+  let win98ResizeDir = "";
+  let win98ResizeStartX = 0;
+  let win98ResizeStartY = 0;
+  let win98ResizeStartRect = null;
+  let win98WindowRestoreRect = null;
 
   let ALL_ITEMS = [];
   const selectedTags = new Set();
@@ -19,11 +42,109 @@
     const saved = localStorage.getItem(storageKey);
     if (saved === "win98" || saved === "geocities" || saved === "dark" || saved === "homepage")
       return saved;
-    return "homepage";
+    return "win98";
   }
 
   function applyTheme(theme) {
     root.setAttribute("data-theme", theme);
+    if (theme !== "win98") {
+      closeWin98Explorer();
+      hideWin98ContextMenu();
+    }
+  }
+
+  function openWin98Explorer() {
+    if (!win98ExplorerWindow) return;
+    win98ExplorerWindow.hidden = false;
+  }
+
+  function closeWin98Explorer() {
+    if (!win98ExplorerWindow) return;
+    win98ExplorerWindow.hidden = true;
+  }
+
+  function setWin98Maximized(nextState) {
+    if (!win98ExplorerWindow || !win98ExplorerMaximize) return;
+    if (nextState) {
+      const rect = win98ExplorerWindow.getBoundingClientRect();
+      win98WindowRestoreRect = {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+      };
+      win98ExplorerWindow.classList.add("is-maximized");
+      win98ExplorerMaximize.textContent = "❐";
+      win98ExplorerMaximize.title = "Restore";
+      win98ExplorerMaximize.setAttribute("aria-label", "Restore Explorer");
+      win98IsMaximized = true;
+      return;
+    }
+
+    win98ExplorerWindow.classList.remove("is-maximized");
+    if (win98WindowRestoreRect) {
+      win98ExplorerWindow.style.left = `${win98WindowRestoreRect.left}px`;
+      win98ExplorerWindow.style.top = `${win98WindowRestoreRect.top}px`;
+      win98ExplorerWindow.style.width = `${win98WindowRestoreRect.width}px`;
+      win98ExplorerWindow.style.height = `${win98WindowRestoreRect.height}px`;
+    }
+    win98ExplorerMaximize.textContent = "□";
+    win98ExplorerMaximize.title = "Maximize";
+    win98ExplorerMaximize.setAttribute("aria-label", "Maximize Explorer");
+    win98IsMaximized = false;
+  }
+
+  function hideWin98ContextMenu() {
+    if (!win98ContextMenu) return;
+    win98ContextMenu.hidden = true;
+    win98ContextTarget = null;
+  }
+
+  function showWin98ContextMenu(x, y, site) {
+    if (!win98ContextMenu || !site) return;
+    win98ContextTarget = site;
+    win98ContextMenu.hidden = false;
+    win98ContextMenu.style.left = `${x}px`;
+    win98ContextMenu.style.top = `${y}px`;
+    win98CtxVisitGithub.disabled = !String(site.githubUrl || "").trim();
+  }
+
+  function renderWin98Files(items) {
+    if (!win98FileArea) return;
+    win98FileArea.innerHTML = "";
+    const fragment = document.createDocumentFragment();
+
+    items.forEach((site) => {
+      const fileBtn = document.createElement("button");
+      fileBtn.type = "button";
+      fileBtn.className = "win98-file-icon";
+
+      const img = new Image();
+      img.src = String(site.screenshotUrl || "").trim();
+      img.alt = String(site.title || "File");
+      img.loading = "lazy";
+      img.decoding = "async";
+      fileBtn.appendChild(img);
+
+      const title = document.createElement("span");
+      title.className = "win98-file-title";
+      title.textContent = String(site.title || "Untitled");
+      fileBtn.appendChild(title);
+
+      fileBtn.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        showWin98ContextMenu(e.clientX, e.clientY, site);
+      });
+
+      fileBtn.addEventListener("click", () => {
+        const url = String(site.url || "").trim();
+        if (url) window.open(url, "_blank", "noopener,noreferrer");
+      });
+
+      fragment.appendChild(fileBtn);
+    });
+
+    win98FileArea.appendChild(fragment);
   }
 
   function initTheme() {
@@ -285,6 +406,16 @@
   function attachThemeClicks(menuEl) {
     if (!menuEl) return;
     menuEl.addEventListener("click", (e) => {
+      const actionBtn = e.target.closest("button[data-action]");
+      if (actionBtn) {
+        const action = actionBtn.getAttribute("data-action");
+        if (action === "go-home") {
+          hideAllMenus();
+          window.location.href = "/";
+        }
+        return;
+      }
+
       const btn = e.target.closest("button[data-theme]");
       if (!btn) return;
       const t = btn.getAttribute("data-theme");
@@ -330,6 +461,182 @@
   bindMenu(winStartBtn, winStartMenu); // fixed CSS positions the menu above (upwards)
   bindMenu(geoThemeBtn, geoThemeMenu, "relative");
 
+  if (homeBackBtn) {
+    homeBackBtn.addEventListener("click", () => {
+      window.location.href = "/";
+    });
+  }
+
+  if (win98ExplorerShortcut) {
+    win98ExplorerShortcut.addEventListener("click", () => {
+      openWin98Explorer();
+    });
+  }
+
+  if (win98ExplorerClose) {
+    win98ExplorerClose.addEventListener("click", () => {
+      closeWin98Explorer();
+    });
+  }
+
+  if (win98ExplorerMaximize) {
+    win98ExplorerMaximize.addEventListener("click", () => {
+      setWin98Maximized(!win98IsMaximized);
+    });
+  }
+
+  if (win98ExplorerTitlebar) {
+    win98ExplorerTitlebar.addEventListener("mousedown", (e) => {
+      if (!win98ExplorerWindow || win98IsMaximized) return;
+      if (e.target.closest(".win98-window-control")) return;
+      const rect = win98ExplorerWindow.getBoundingClientRect();
+      win98DragOffsetX = e.clientX - rect.left;
+      win98DragOffsetY = e.clientY - rect.top;
+      win98IsDragging = true;
+      e.preventDefault();
+    });
+
+    win98ExplorerTitlebar.addEventListener("dblclick", () => {
+      setWin98Maximized(!win98IsMaximized);
+    });
+  }
+
+  document.addEventListener("mousemove", (e) => {
+    if (win98IsResizing && win98ExplorerWindow && win98ResizeStartRect) {
+      const desktopRect = document.getElementById("win98Desktop")?.getBoundingClientRect();
+      const minWidth = 360;
+      const minHeight = 260;
+      const dx = e.clientX - win98ResizeStartX;
+      const dy = e.clientY - win98ResizeStartY;
+
+      let left = win98ResizeStartRect.left;
+      let top = win98ResizeStartRect.top;
+      let width = win98ResizeStartRect.width;
+      let height = win98ResizeStartRect.height;
+
+      if (win98ResizeDir.includes("e")) {
+        width = win98ResizeStartRect.width + dx;
+      }
+      if (win98ResizeDir.includes("s")) {
+        height = win98ResizeStartRect.height + dy;
+      }
+      if (win98ResizeDir.includes("w")) {
+        left = win98ResizeStartRect.left + dx;
+        width = win98ResizeStartRect.width - dx;
+      }
+      if (win98ResizeDir.includes("n")) {
+        top = win98ResizeStartRect.top + dy;
+        height = win98ResizeStartRect.height - dy;
+      }
+
+      if (width < minWidth) {
+        if (win98ResizeDir.includes("w")) {
+          left -= minWidth - width;
+        }
+        width = minWidth;
+      }
+
+      if (height < minHeight) {
+        if (win98ResizeDir.includes("n")) {
+          top -= minHeight - height;
+        }
+        height = minHeight;
+      }
+
+      if (desktopRect) {
+        const maxWidth = desktopRect.width - left;
+        const maxHeight = desktopRect.height - top;
+        if (left < 0) {
+          width += left;
+          left = 0;
+        }
+        if (top < 0) {
+          height += top;
+          top = 0;
+        }
+        width = Math.min(width, maxWidth);
+        height = Math.min(height, maxHeight);
+      }
+
+      win98ExplorerWindow.style.left = `${left}px`;
+      win98ExplorerWindow.style.top = `${top}px`;
+      win98ExplorerWindow.style.width = `${Math.max(minWidth, width)}px`;
+      win98ExplorerWindow.style.height = `${Math.max(minHeight, height)}px`;
+      return;
+    }
+
+    if (!win98IsDragging || !win98ExplorerWindow) return;
+    const desktopRect = document.getElementById("win98Desktop")?.getBoundingClientRect();
+    const nextLeft = e.clientX - win98DragOffsetX;
+    const nextTop = e.clientY - win98DragOffsetY;
+
+    if (desktopRect) {
+      const relativeLeft = nextLeft - desktopRect.left;
+      const relativeTop = nextTop - desktopRect.top;
+      const maxLeft = desktopRect.width - win98ExplorerWindow.offsetWidth;
+      const maxTop = desktopRect.height - win98ExplorerWindow.offsetHeight;
+      win98ExplorerWindow.style.left = `${Math.max(0, Math.min(relativeLeft, maxLeft))}px`;
+      win98ExplorerWindow.style.top = `${Math.max(0, Math.min(relativeTop, maxTop))}px`;
+      return;
+    }
+
+    win98ExplorerWindow.style.left = `${Math.max(0, nextLeft)}px`;
+    win98ExplorerWindow.style.top = `${Math.max(0, nextTop)}px`;
+  });
+
+  document.addEventListener("mouseup", () => {
+    win98IsDragging = false;
+    win98IsResizing = false;
+    win98ResizeDir = "";
+    win98ResizeStartRect = null;
+  });
+
+  win98ResizeHandles.forEach((handle) => {
+    handle.addEventListener("mousedown", (e) => {
+      if (!win98ExplorerWindow || win98IsMaximized) return;
+      const dir = handle.getAttribute("data-dir");
+      if (!dir) return;
+      const rect = win98ExplorerWindow.getBoundingClientRect();
+      const desktopRect = document.getElementById("win98Desktop")?.getBoundingClientRect();
+      win98ResizeStartX = e.clientX;
+      win98ResizeStartY = e.clientY;
+      win98ResizeDir = dir;
+      win98ResizeStartRect = {
+        left: desktopRect ? rect.left - desktopRect.left : rect.left,
+        top: desktopRect ? rect.top - desktopRect.top : rect.top,
+        width: rect.width,
+        height: rect.height,
+      };
+      win98IsResizing = true;
+      e.preventDefault();
+      e.stopPropagation();
+    });
+  });
+
+  if (win98CtxVisitSite) {
+    win98CtxVisitSite.addEventListener("click", () => {
+      if (!win98ContextTarget) return;
+      const url = String(win98ContextTarget.url || "").trim();
+      hideWin98ContextMenu();
+      if (url) window.open(url, "_blank", "noopener,noreferrer");
+    });
+  }
+
+  if (win98CtxVisitGithub) {
+    win98CtxVisitGithub.addEventListener("click", () => {
+      if (!win98ContextTarget) return;
+      const githubUrl = String(win98ContextTarget.githubUrl || "").trim();
+      hideWin98ContextMenu();
+      if (githubUrl) window.open(githubUrl, "_blank", "noopener,noreferrer");
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#win98ContextMenu") && !e.target.closest(".win98-file-icon")) {
+      hideWin98ContextMenu();
+    }
+  });
+
   // Simple Win98 taskbar clock
   function updateWinClock() {
     const el = document.getElementById("winClock");
@@ -350,6 +657,7 @@
   loadCuriosities().then((items) => {
     ALL_ITEMS = Array.isArray(items) ? items : [];
     renderCuriosities(ALL_ITEMS);
+    renderWin98Files(ALL_ITEMS);
     const tagsList = collectUniqueTags(ALL_ITEMS);
     renderFilters(tagsList);
     updateFilterUI();

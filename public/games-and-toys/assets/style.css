@@ -612,6 +612,268 @@ html[data-theme="win98"] .site-footer {
   display: none;
 }
 
+html[data-theme="win98"] .site-main .wrap {
+  display: none;
+}
+
+#win98Desktop {
+  display: none;
+}
+
+html[data-theme="win98"] #win98Desktop {
+  position: fixed;
+  top: 44px;
+  right: 0;
+  bottom: 40px;
+  left: 0;
+  display: block;
+  padding: 12px;
+}
+
+.win98-shortcut {
+  width: 84px;
+  padding: 6px 4px;
+  border: 1px dashed transparent;
+  background: transparent;
+  color: #fff;
+  font-family: Tahoma, "MS Sans Serif", system-ui, sans-serif;
+  font-size: 12px;
+  text-shadow: 1px 1px 0 #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.win98-shortcut:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.win98-shortcut:focus-visible {
+  border: 1px dotted #ffffff;
+  background: #000080;
+  outline: none;
+}
+
+.win98-shortcut-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.win98-shortcut-label {
+  text-align: center;
+  line-height: 1.2;
+}
+
+.win98-window {
+  position: absolute;
+  top: 24px;
+  left: 120px;
+  width: min(920px, calc(100vw - 180px));
+  max-height: calc(100vh - 130px);
+  background: #c0c0c0;
+  border: 1px solid #000;
+  box-shadow:
+    inset 1px 1px 0 #fff,
+    inset -1px -1px 0 #7f7f7f,
+    1px 1px 0 #000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.win98-resize-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  z-index: 3;
+}
+
+.win98-resize-nw {
+  top: 0;
+  left: 0;
+  cursor: nwse-resize;
+}
+
+.win98-resize-ne {
+  top: 0;
+  right: 0;
+  cursor: nesw-resize;
+}
+
+.win98-resize-sw {
+  bottom: 0;
+  left: 0;
+  cursor: nesw-resize;
+}
+
+.win98-resize-se {
+  right: 0;
+  bottom: 0;
+  cursor: nwse-resize;
+}
+
+.win98-window.is-maximized .win98-resize-handle {
+  display: none;
+}
+
+.win98-window.is-maximized {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  max-height: none;
+  height: 100%;
+}
+
+.win98-window-titlebar {
+  height: 26px;
+  padding: 4px 8px;
+  background: linear-gradient(90deg, #000080, #1084d0);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Tahoma, "MS Sans Serif", system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: move;
+}
+
+.win98-window-controls {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.win98-window-control {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #000;
+  background: #c0c0c0;
+  color: #000;
+  box-shadow:
+    inset 1px 1px 0 #fff,
+    inset -1px -1px 0 #7f7f7f;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.win98-window-control:active {
+  box-shadow:
+    inset -1px -1px 0 #fff,
+    inset 1px 1px 0 #7f7f7f;
+}
+
+.win98-window-close {
+  font-size: 14px;
+}
+
+.win98-window-toolbar {
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #7f7f7f;
+  padding: 4px 8px;
+  font-family: Tahoma, "MS Sans Serif", system-ui, sans-serif;
+  font-size: 12px;
+}
+
+.win98-file-area {
+  height: auto;
+  min-height: 220px;
+  flex: 1;
+  overflow: auto;
+  background: #fff;
+  border-top: 1px solid #7f7f7f;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  align-content: start;
+  gap: 14px 8px;
+  padding: 12px;
+}
+
+.win98-file-icon {
+  border: 1px dashed transparent;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  text-align: center;
+  font-family: Tahoma, "MS Sans Serif", system-ui, sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.win98-file-icon:hover,
+.win98-file-icon:focus-visible {
+  border-color: #000080;
+  background: rgba(0, 0, 128, 0.08);
+  outline: none;
+}
+
+.win98-file-icon:focus-visible {
+  border: 1px dotted #000080;
+  background: #000080;
+}
+
+.win98-file-icon img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border: 1px solid #000;
+  background: #c0c0c0;
+}
+
+.win98-file-title {
+  color: #000;
+  line-height: 1.2;
+}
+
+.win98-file-icon:focus-visible .win98-file-title {
+  color: #fff;
+}
+
+.win98-context-menu {
+  position: fixed;
+  z-index: 1100;
+  border: 1px solid #000;
+  background: #c0c0c0;
+  box-shadow:
+    inset 1px 1px 0 #fff,
+    inset -1px -1px 0 #7f7f7f,
+    1px 1px 0 #000;
+  min-width: 180px;
+  padding: 2px;
+}
+
+.win98-context-menu button {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #000;
+  text-align: left;
+  padding: 6px 8px;
+  font-family: Tahoma, "MS Sans Serif", system-ui, sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.win98-context-menu button:hover {
+  background: #000080;
+  color: #fff;
+}
+
+.win98-context-menu button:disabled {
+  color: #7f7f7f;
+  cursor: default;
+}
+
+.win98-context-menu button:disabled:hover {
+  background: transparent;
+  color: #7f7f7f;
+}
+
 html[data-theme="win98"] .site-footer .wrap {
   color: #000;
   font-family: Tahoma, "MS Sans Serif", system-ui, sans-serif;
@@ -1312,6 +1574,28 @@ html[data-theme="geocities"] .geocities-only {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+.home-back-btn {
+  position: fixed;
+  right: 12px;
+  top: 12px;
+  z-index: 1000;
+  padding: 10px 12px;
+  border: 1px solid var(--glass-border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.home-back-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="win98"] .home-back-btn {
+  display: none;
 }
 .theme-menu-btn .hamburger {
   width: 20px;

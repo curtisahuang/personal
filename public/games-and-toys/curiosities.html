@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="homepage">
+<html lang="en" data-theme="win98">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -45,7 +45,55 @@
           No curiosities yet. Add entries to <code>assets/curiosities.json</code>.
         </p>
       </div>
+
+      <section id="win98Desktop" aria-label="Windows 98 desktop">
+        <button id="win98ExplorerShortcut" class="win98-shortcut" type="button">
+          <span class="win98-shortcut-icon" aria-hidden="true">📁</span>
+          <span class="win98-shortcut-label">Curiosities</span>
+        </button>
+
+        <section id="win98ExplorerWindow" class="win98-window" hidden aria-label="Explorer window">
+          <header id="win98ExplorerTitlebar" class="win98-window-titlebar">
+            <span class="win98-window-title">Curiosities Explorer</span>
+            <span class="win98-window-controls">
+              <button
+                id="win98ExplorerMaximize"
+                class="win98-window-control"
+                type="button"
+                aria-label="Maximize Explorer"
+                title="Maximize"
+              >
+                □
+              </button>
+              <button
+                id="win98ExplorerClose"
+                class="win98-window-close win98-window-control"
+                type="button"
+                aria-label="Close Explorer"
+                title="Close"
+              >
+                ×
+              </button>
+            </span>
+          </header>
+          <div class="win98-window-toolbar">C:\Curiosities</div>
+          <div id="win98FileArea" class="win98-file-area" aria-label="Curiosity files"></div>
+          <span class="win98-resize-handle win98-resize-nw" data-dir="nw" aria-hidden="true"></span>
+          <span class="win98-resize-handle win98-resize-ne" data-dir="ne" aria-hidden="true"></span>
+          <span class="win98-resize-handle win98-resize-sw" data-dir="sw" aria-hidden="true"></span>
+          <span class="win98-resize-handle win98-resize-se" data-dir="se" aria-hidden="true"></span>
+        </section>
+
+        <div id="win98ContextMenu" class="win98-context-menu" hidden>
+          <button id="win98CtxVisitSite" type="button">Visit Site</button>
+          <button id="win98CtxVisitGithub" type="button">Visit GitHub</button>
+        </div>
+      </section>
     </main>
+
+    <button id="homeBackBtn" class="home-back-btn" type="button" aria-label="Back to homepage">
+      ← Back
+    </button>
 
     <footer class="site-footer">
       <div class="wrap">
@@ -92,6 +140,7 @@
       <button type="button" data-theme="homepage">Default</button>
       <button type="button" data-theme="win98">Windows 98</button>
       <button type="button" data-theme="geocities">Geocities</button>
+      <button type="button" data-action="go-home">Shut down and go back</button>
     </div>
 
     <!-- Geocities launcher -->
