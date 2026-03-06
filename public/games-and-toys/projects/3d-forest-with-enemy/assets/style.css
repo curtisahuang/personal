@@ -1,0 +1,372 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  background: linear-gradient(120deg, #f8fafc 70%, #e7eaf2 100%);
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+header {
+  background: #23272f;
+  color: #fff;
+  padding: 1.2rem 0 1.2rem;
+  text-align: center;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 10px rgba(40,40,40,0.04);
+}
+
+main {
+  flex: 1 0 auto;
+  max-width: 750px;
+  width: 100%;
+  margin: 2.2rem auto 0 auto;
+  background: #fff;
+  padding: 2.8rem 2.2rem 2.4rem;
+  border-radius: 18px;
+  box-shadow: 0 6px 32px 0 rgba(42,54,96,0.07), 0 1.5px 6px 0 rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 65vh;
+  position: relative;
+  overflow-y: auto;
+}
+
+footer {
+  background: #23272f;
+  color: #fff;
+  text-align: center;
+  padding: 1.25rem 0;
+  margin-top: 2.4rem;
+  border-radius: 0 0 18px 18px;
+  font-size: 1rem;
+  box-shadow: 0 -2px 12px 0 rgba(40,40,40,0.06);
+  flex-shrink: 0;
+}
+
+/* Fullscreen canvas for 3D scene */
+canvas {
+  display: block;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  outline: none;
+}
+
+/* Pointer-lock overlay */
+#overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 12, 16, 0.55);
+  z-index: 100;
+}
+
+#overlay .panel {
+  background: rgba(20, 22, 28, 0.9);
+  color: #fff;
+  padding: 22px 26px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+#overlay h1 {
+  font-size: 1.6rem;
+  margin: 0 0 0.6rem 0;
+}
+
+#overlay p {
+  margin: 0.2rem 0;
+  opacity: 0.9;
+}
+
+#overlay button {
+  margin-top: 0.8rem;
+  padding: 0.55rem 1.1rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: none;
+  color: #fff;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+}
+
+#overlay button:focus {
+  outline: 2px solid rgba(255,255,255,0.5);
+  outline-offset: 2px;
+}
+
+/* HUD */
+#hud {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+#stamina {
+  width: 320px;
+  height: 12px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25), inset 0 1px 2px rgba(255,255,255,0.15);
+  overflow: hidden;
+}
+
+#stamina-fill {
+  height: 100%;
+  width: 100%;
+  background: #22c55e; /* default green */
+  border-radius: 999px;
+  transition: width 120ms ease, background-color 120ms ease;
+}
+
+@media (max-width: 850px) {
+  main {
+    max-width: 98vw;
+    padding: 1.2rem 1rem 1.3rem;
+  }
+
+}
+
+/* Inventory UI */
+#inventory {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 12;
+  display: none;
+  pointer-events: none;
+}
+
+#inventory .inv-panel {
+  background: rgba(20, 22, 28, 0.9);
+  color: #fff;
+  padding: 14px 16px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.30);
+  min-width: 220px;
+}
+
+#inventory h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+}
+
+#inventory #inventory-list .inv-item {
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+#inventory .emoji {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+#inventory .name {
+  opacity: 0.85;
+}
+
+#inventory .count {
+  font-weight: 600;
+}
+
+#inventory .inv-hint {
+  margin-top: 8px;
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+/* Pickup message (larger, supports long names) */
+#pickup-message {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+  background: rgba(20, 22, 28, 0.92);
+  color: #fff;
+  border-radius: 999px;
+  padding: 14px 20px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+  display: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  max-width: 80vw;
+  text-align: center;
+  white-space: normal;     /* allow wrapping */
+  word-break: break-word;  /* break long words if needed */
+}
+
+/* Interact prompt */
+#interact-prompt {
+  position: fixed;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+  background: rgba(20, 22, 28, 0.9);
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.30);
+  display: none;
+  opacity: 0.95;
+}
+
+/* Shelter wait panel */
+#shelter-panel {
+  position: fixed;
+  inset: 0;
+  display: none;           /* hidden by default */
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 12, 16, 0.55);
+  z-index: 110;
+}
+
+#shelter-panel .panel {
+  background: rgba(20, 22, 28, 0.92);
+  color: #fff;
+  padding: 18px 22px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 10px 34px rgba(0,0,0,0.35);
+  min-width: 320px;
+}
+
+#shelter-panel .wait-hours-display {
+  margin-top: 8px;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+#shelter-panel .wait-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+#shelter-panel .wait-actions button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: none;
+  color: #fff;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+}
+
+#shelter-panel .wait-actions button.secondary {
+  background: #6b7280;
+  box-shadow: none;
+}
+
+#shelter-panel input[type="range"] {
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* Clock (top-right) */
+#clock {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 12;
+  background: rgba(20, 22, 28, 0.92);
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.30);
+  font-size: 1rem;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+/* Debug info (top-left) */
+#debug {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 12;
+  background: rgba(20, 22, 28, 0.92);
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.30);
+  font-size: 0.95rem;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+/* Game over overlay */
+#death-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(1200px 700px at 50% 50%, rgba(60,0,0,0.22), rgba(10, 0, 0, 0.78));
+  z-index: 120;
+}
+
+#death-overlay .panel {
+  background: rgba(15, 16, 22, 0.95);
+  color: #fff;
+  padding: 20px 24px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.45), inset 0 0 40px rgba(180,0,0,0.15);
+  min-width: 300px;
+}
+
+#death-overlay .panel h2 {
+  margin: 0 0 8px 0;
+  letter-spacing: 0.04em;
+}
+
+#death-overlay .panel p {
+  margin: 0 0 14px 0;
+  opacity: 0.9;
+}
+
+#death-overlay .death-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+#death-overlay button {
+  padding: 0.55rem 1.1rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: none;
+  color: #fff;
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(185, 28, 28, 0.35);
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Text → Beeps</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main>
+    <h1>Text → Beeps</h1>
+
+    <section class="input-section">
+      <label for="inputText" class="label">Text</label>
+      <textarea id="inputText" rows="5" placeholder="Type the text to sonify..."></textarea>
+    </section>
+
+    <section class="controls">
+      <div class="transport">
+        <button id="playBtn" class="btn primary">Play</button>
+        <button id="pauseBtn" class="btn" disabled>Pause</button>
+        <button id="stopBtn" class="btn" disabled>Stop</button>
+      </div>
+
+      <div class="control">
+        <label for="bpm" class="label">BPM</label>
+        <div class="row">
+          <input type="range" id="bpm" min="30" max="300" value="120">
+          <span id="bpmVal" class="value">120</span>
+        </div>
+      </div>
+
+      <div class="control">
+        <label for="noteLen" class="label">Note length</label>
+        <div class="row">
+          <input type="range" id="noteLen" min="0.1" max="1.0" step="0.05" value="0.5">
+          <span id="noteLenVal" class="value">50%</span>
+        </div>
+      </div>
+
+      <div class="control">
+        <label for="volume" class="label">Volume</label>
+        <div class="row">
+          <input type="range" id="volume" min="0" max="1" step="0.01" value="0.2">
+          <span id="volumeVal" class="value">0.20</span>
+        </div>
+      </div>
+
+      <div class="control">
+        <label for="wave" class="label">Wave</label>
+        <select id="wave">
+          <option value="sine">Sine</option>
+          <option value="square">Square</option>
+          <option value="triangle">Triangle</option>
+          <option value="sawtooth">Saw</option>
+        </select>
+      </div>
+
+      <div class="control">
+        <label for="lengthMode" class="label">Length mode</label>
+        <select id="lengthMode">
+          <option value="mono">Monolength</option>
+          <option value="word">Word-based</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="seek">
+      <input type="range" id="seek" min="0" max="0" step="1" value="0">
+      <div class="seek-labels">
+        <span id="posLabel">0</span> / <span id="lenLabel">0</span>
+      </div>
+    </section>
+
+    <section class="mapping">
+      <div class="mapping-row">
+        <div class="control">
+          <label for="scaleSelect" class="label">Scale</label>
+          <select id="scaleSelect">
+            <option value="chromatic">Chromatic</option>
+            <option value="pentatonic">Pentatonic (major)</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label for="assignmentSelect" class="label">Assignment</label>
+          <select id="assignmentSelect">
+            <option value="alphabetical">Alphabetical</option>
+            <option value="random">Random</option>
+            <option value="frequency">Frequency-based</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label for="rootNote" class="label">Root</label>
+          <select id="rootNote"></select>
+        </div>
+
+        <button id="reshuffleBtn" class="btn" style="display:none;">Reshuffle</button>
+      </div>
+
+      <div id="customMappingContainer" class="custom-map hidden">
+        <label for="customMap" class="label">Custom mapping (JSON, letter→note or Hz)</label>
+        <textarea id="customMap" rows="3" placeholder='{"a":"A3","b":"A#3","c":"B3"}'></textarea>
+        <button id="applyCustomBtn" class="btn">Apply</button>
+      </div>
+
+      <details class="mapping-details">
+        <summary>Show current mapping</summary>
+        <div id="mappingTable" class="mapping-table"></div>
+      </details>
+    </section>
+
+    <section class="preview">
+      <div id="previewText" class="preview-text"></div>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2025 Your Name</p>
+  </footer>
+  <script src="assets/script.js"></script>
+</body>
+</html>

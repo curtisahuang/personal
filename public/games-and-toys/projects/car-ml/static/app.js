@@ -1,0 +1,463 @@
+/* global loadPyodide */
+(() => {
+  const canvas = document.getElementById('world');
+  const ctx = canvas.getContext('2d');
+
+  const mainEl = document.querySelector('main');
+  const BASE_AR = canvas.width / canvas.height;
+
+  function sizeCanvas() {
+    const rect = mainEl.getBoundingClientRect();
+    const styles = window.getComputedStyle(mainEl);
+    const padX = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+    const padY = parseFloat(styles.paddingTop) + parseFloat(styles.paddingBottom);
+    const availW = Math.max(0, rect.width - padX);
+    const availH = Math.max(0, rect.height - padY);
+
+    if (availW === 0 || availH === 0) return;
+
+    let dispW, dispH;
+    if (availW / availH > BASE_AR) {
+      // Letterbox horizontally: height-limited
+      dispH = availH;
+      dispW = Math.floor(dispH * BASE_AR);
+    } else {
+      // Pillarbox vertically: width-limited
+      dispW = availW;
+      dispH = Math.floor(dispW / BASE_AR);
+    }
+
+    canvas.style.width = dispW + 'px';
+    canvas.style.height = dispH + 'px';
+    canvas.style.marginLeft = 'auto';
+    canvas.style.marginRight = 'auto';
+  }
+
+  const playBtn = document.getElementById('playBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const speedRange = document.getElementById('speedRange');
+  const speedValue = document.getElementById('speedValue');
+
+  const attemptIdxEl = document.getElementById('attemptIdx');
+  const bestDistEl = document.getElementById('bestDist');
+  const curDistEl = document.getElementById('curDist');
+  // Evolution panel elements
+  const evoSourceEl = document.getElementById('evoSource');
+  const parentBestEl = document.getElementById('parentBestDist');
+  const geneRBackEl = document.getElementById('geneRBack');
+  const geneRFrontEl = document.getElementById('geneRFront');
+  const geneWBEl = document.getElementById('geneWheelbase');
+  const geneStripKindEl = document.getElementById('geneStripKind');
+  const geneStripCountEl = document.getElementById('geneStripCount');
+  
+  // World/view settings
+  const UNITS_X = 60; // how many world units fit across the canvas width
+  const xScale = canvas.width / UNITS_X;
+  const yScale = 25; // pixels per world unit
+  const marginLeftPx = 150;
+  const marginBottomPx = 60;
+
+  let pyodide = null;
+  let sim = null; // PyProxy to Simulator instance
+  let terrain = null; // {xs: Float64Array, ys: Float64Array, length: number}
+  let playing = false;
+  let rafId = null;
+
+  function toPxX(x, camX) {
+    return (x - camX) * xScale + marginLeftPx;
+  }
+  function toPxY(y) {
+    return canvas.height - (y * yScale + marginBottomPx);
+  }
+
+  function clear() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // subtle gradient sky already set by CSS background
+  }
+
+  function drawGrid(camX) {
+    ctx.save();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+
+    // vertical grid lines every 5 units
+    const startUnit = Math.floor((camX - marginLeftPx / xScale) / 5) * 5;
+    const endUnit = Math.ceil((camX + (canvas.width - marginLeftPx) / xScale) / 5) * 5;
+
+    for (let u = startUnit; u <= endUnit; u += 5) {
+      const x = toPxX(u, camX);
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, canvas.height);
+      ctx.stroke();
+    }
+
+    // horizontal grid lines every 1 unit in world y
+    const maxWorldY = (canvas.height - marginBottomPx) / yScale;
+    for (let y = 0; y <= maxWorldY; y += 1) {
+      const py = toPxY(y);
+      ctx.beginPath();
+      ctx.moveTo(0, py);
+      ctx.lineTo(canvas.width, py);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawTerrain(camX) {
+    if (!terrain) return;
+    const xs = terrain.xs;
+    const ys = terrain.ys;
+    const N = xs.length;
+
+    // Determine visible range of indices
+    const xMin = camX - marginLeftPx / xScale - 2;
+    const xMax = camX + (canvas.width - marginLeftPx) / xScale + 2;
+
+    let iStart = 0;
+    while (iStart < N - 1 && xs[iStart] < xMin) iStart++;
+    let iEnd = iStart;
+    while (iEnd < N && xs[iEnd] < xMax) iEnd++;
+
+    ctx.save();
+    ctx.lineWidth = 2;
+    const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    grad.addColorStop(0, '#1b2638');
+    grad.addColorStop(1, '#0b0f16');
+    ctx.strokeStyle = '#3f6ca7';
+    ctx.fillStyle = grad;
+
+    // Fill below terrain to bottom to give ground color
+    ctx.beginPath();
+    let first = true;
+    for (let i = Math.max(0, iStart - 1); i < Math.min(N, iEnd + 1); i++) {
+      const sx = toPxX(xs[i], camX);
+      const sy = toPxY(ys[i]);
+      if (first) {
+        ctx.moveTo(sx, sy);
+        first = false;
+      } else {
+        ctx.lineTo(sx, sy);
+      }
+    }
+    // close down to bottom right and bottom left
+    ctx.lineTo(toPxX(xs[Math.min(N - 1, iEnd)], camX), canvas.height);
+    ctx.lineTo(toPxX(xs[Math.max(0, iStart - 1)], camX), canvas.height);
+    ctx.closePath();
+    ctx.fill();
+
+    // Terrain stroke
+    ctx.beginPath();
+    first = true;
+    for (let i = Math.max(0, iStart - 1); i < Math.min(N, iEnd + 1); i++) {
+      const sx = toPxX(xs[i], camX);
+      const sy = toPxY(ys[i]);
+      if (first) {
+        ctx.moveTo(sx, sy);
+        first = false;
+      } else {
+        ctx.lineTo(sx, sy);
+      }
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawWheel(x, y, r, camX, colorOuter = '#94c5ff', colorInner = '#1f6bb3') {
+    const px = toPxX(x, camX);
+    const py = toPxY(y);
+    const pr = r * yScale;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(px, py, pr, 0, Math.PI * 2);
+    ctx.fillStyle = colorInner;
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = colorOuter;
+    ctx.stroke();
+
+    // spokes for motion hint
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+    for (let i = 0; i < 3; i++) {
+      const a = (i / 3) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.lineTo(px + pr * Math.cos(a), py + pr * Math.sin(a));
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
+  function drawBody(back, front, body, camX) {
+    // mid-point
+    const mx = 0.5 * (back.x + front.x);
+    const my = 0.5 * (back.y + front.y);
+    const phi = body.phi;
+    const halfBase = 0.5 * body.base_len;
+
+    // rotate by phi and translate to world, then to screen
+    const toScreen = (vx, vy) => {
+      const wx = mx + vx * Math.cos(phi) - vy * Math.sin(phi);
+      const wy = my + vx * Math.sin(phi) + vy * Math.cos(phi);
+      return [toPxX(wx, camX), toPxY(wy)];
+    };
+
+    ctx.save();
+
+    // Prefer explicit triangle strip (edge-attached triangles) if provided
+    const hasStrip = body.tri_strip && Array.isArray(body.tri_strip) && body.tri_strip.length >= 3 && Array.isArray(body.tri_strip[0]);
+    if (hasStrip) {
+      const v = body.tri_strip;
+      // Precompute transformed vertices (rigid body)
+      const vs = v.map(([vx, vy]) => toScreen(vx, vy));
+
+      // Single consistent fill for the whole body to avoid per-triangle \"elastic\" shading
+      const pL = vs[0];
+      const pR = vs[vs.length - 1];
+      const grad = ctx.createLinearGradient(pL[0], pL[1], pR[0], pR[1]);
+      grad.addColorStop(0, '#4b97d6');
+      grad.addColorStop(1, '#3dc5a1');
+      ctx.fillStyle = grad;
+
+      // Triangulate as a proper triangle strip with consistent fill
+      ctx.beginPath();
+      for (let i = 0; i < vs.length - 2; i++) {
+        const a = (i % 2 === 0) ? vs[i] : vs[i + 1];
+        const b = (i % 2 === 0) ? vs[i + 1] : vs[i];
+        const c = vs[i + 2];
+        ctx.moveTo(a[0], a[1]);
+        ctx.lineTo(b[0], b[1]);
+        ctx.lineTo(c[0], c[1]);
+        ctx.closePath();
+      }
+      ctx.fill();
+
+      // Subtle outline to emphasize rigid silhouette
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.beginPath();
+      ctx.moveTo(vs[0][0], vs[0][1]);
+      for (let i = 1; i < vs.length; i++) ctx.lineTo(vs[i][0], vs[i][1]);
+      ctx.stroke();
+    } else {
+      // Fallback: simple segmentation into N independent triangles (may attach at corners)
+      const hasTriHeights = body.tri_heights && (Array.isArray(body.tri_heights) || ArrayBuffer.isView(body.tri_heights)) && body.tri_heights.length > 0;
+      const heights = hasTriHeights ? body.tri_heights : [body.height];
+      const n = heights.length;
+      const segLen = body.base_len / n;
+
+      for (let i = 0; i < n; i++) {
+        const left = -halfBase + i * segLen;
+        const right = left + segLen;
+        const mid = (left + right) / 2;
+        const h = heights[i];
+
+        const pL = toScreen(left, 0);
+        const pR = toScreen(right, 0);
+        const pA = toScreen(mid, h);
+
+        const grad = ctx.createLinearGradient(pL[0], pA[1], pA[0], pL[1]);
+        grad.addColorStop(0, '#4b97d6');
+        grad.addColorStop(1, '#3dc5a1');
+
+        ctx.beginPath();
+        ctx.moveTo(pL[0], pL[1]);
+        ctx.lineTo(pR[0], pR[1]);
+        ctx.lineTo(pA[0], pA[1]);
+        ctx.closePath();
+        ctx.fillStyle = grad;
+        ctx.fill();
+      }
+    }
+
+    // axle
+    ctx.beginPath();
+    ctx.moveTo(toPxX(back.x, camX), toPxY(back.y));
+    ctx.lineTo(toPxX(front.x, camX), toPxY(front.y));
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  function updateStats(data) {
+    attemptIdxEl.textContent = String(data.attempt);
+    bestDistEl.textContent = data.best_distance.toFixed(2);
+    curDistEl.textContent = data.current_distance.toFixed(2);
+  }
+
+  function updateEvolution(data) {
+    if (!data || !data.evolution) return;
+    const evo = data.evolution;
+
+    const srcMap = {
+      mutated_from_best: 'Mutated from best',
+      exploration_random: 'Random exploration',
+      random_init: 'Initial random',
+    };
+    evoSourceEl.textContent = srcMap[evo.source] || '—';
+
+    const pbd = (typeof evo.parent_best_distance === 'number' && isFinite(evo.parent_best_distance))
+      ? evo.parent_best_distance : 0;
+    parentBestEl.textContent = pbd.toFixed(2);
+
+    const genes = evo.genes || {};
+    const rb = (typeof genes.r_back === 'number' ? genes.r_back : 0);
+    const rf = (typeof genes.r_front === 'number' ? genes.r_front : 0);
+    const wb = (typeof genes.wheelbase === 'number' ? genes.wheelbase : 0);
+    geneRBackEl.textContent = rb.toFixed(2);
+    geneRFrontEl.textContent = rf.toFixed(2);
+    geneWBEl.textContent = wb.toFixed(2);
+    geneStripKindEl.textContent = genes.strip_kind || '-';
+    const sc = (typeof genes.strip_count === 'number' ? genes.strip_count : 0);
+    geneStripCountEl.textContent = String(sc);
+  }
+
+  async function init() {
+    playBtn.disabled = true;
+    resetBtn.disabled = true;
+
+    const statusSpan = document.createElement('span');
+    statusSpan.textContent = 'Loading Python (Pyodide)...';
+    statusSpan.style.marginLeft = '12px';
+    statusSpan.style.color = '#9ca3af';
+    document.querySelector('.controls').appendChild(statusSpan);
+
+    pyodide = await loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.28.2/full/' });
+
+    // Load Python simulation code
+    const simCode = await (await fetch('static/py/sim.py')).text();
+    await pyodide.runPythonAsync(simCode);
+
+    // Create simulator instance in Python
+    const seed = Math.floor(Math.random() * 1e9);
+    sim = pyodide.runPython(`sim = Simulator(seed=${seed})
+sim`);
+
+    // Fetch a pre-sampled terrain profile for rendering
+    const profileProxy = pyodide.runPython('sim.export_terrain_profile()');
+    const profile = profileProxy.toJs();
+    profileProxy.destroy();
+
+    terrain = {
+      xs: profile.xs,
+      ys: profile.ys,
+      length: profile.length
+    };
+
+    statusSpan.remove();
+    playBtn.disabled = false;
+    resetBtn.disabled = false;
+
+    // initial draw
+    sizeCanvas();
+    const initialProxy = sim.next_frame(0); // just to read starting camera
+    const initial = initialProxy.toJs();
+    initialProxy.destroy();
+    clear();
+    drawGrid(initial.camera_x);
+    drawTerrain(initial.camera_x);
+    updateStats(initial);
+    updateEvolution(initial);
+  }
+
+  function loop() {
+    if (!playing) return;
+    const stepsPerFrame = parseInt(speedRange.value, 10);
+    const frameProxy = sim.next_frame(stepsPerFrame);
+    const frame = frameProxy.toJs();
+    frameProxy.destroy();
+
+    clear();
+    drawGrid(frame.camera_x);
+    drawTerrain(frame.camera_x);
+
+    const back = frame.back_wheel;
+    const front = frame.front_wheel;
+    const body = {
+      phi: frame.phi,
+      base_len: frame.body_base_len,
+      height: frame.body_height,
+      tri_heights: frame.tri_heights || null,
+      tri_strip: frame.tri_strip || null
+    };
+
+    drawWheel(back.x, back.y, back.r, frame.camera_x, '#93c5fd', '#1e3a8a');
+    drawWheel(front.x, front.y, front.r, frame.camera_x, '#86efac', '#064e3b');
+    drawBody(back, front, body, frame.camera_x);
+
+    updateStats(frame);
+    updateEvolution(frame);
+
+    if (frame.done) {
+      // Allow a small pause to let the viewer see end of run
+      // but keep loop going to next car
+    }
+
+    rafId = requestAnimationFrame(loop);
+  }
+
+  playBtn.addEventListener('click', () => {
+    if (playing) return;
+    playing = true;
+    playBtn.disabled = true;
+    stopBtn.disabled = false;
+    loop();
+  });
+
+  stopBtn.addEventListener('click', () => {
+    playing = false;
+    playBtn.disabled = false;
+    stopBtn.disabled = true;
+    if (rafId) cancelAnimationFrame(rafId);
+  });
+
+  speedRange.addEventListener('input', () => {
+    speedValue.textContent = `${speedRange.value}x`;
+  });
+
+  resetBtn.addEventListener('click', async () => {
+    // Stop current sim
+    playing = false;
+    playBtn.disabled = false;
+    stopBtn.disabled = true;
+    if (rafId) cancelAnimationFrame(rafId);
+
+    const seed = Math.floor(Math.random() * 1e9);
+    const resProxy = pyodide.runPython(`sim.reset(seed=${seed}); sim.export_terrain_profile()`);
+    const profile = resProxy.toJs();
+    resProxy.destroy();
+    terrain = {
+      xs: profile.xs,
+      ys: profile.ys,
+      length: profile.length
+    };
+    const initProxy = sim.next_frame(0);
+    const init = initProxy.toJs();
+    initProxy.destroy();
+    sizeCanvas();
+    clear();
+    drawGrid(init.camera_x);
+    drawTerrain(init.camera_x);
+    updateStats(init);
+    updateEvolution(init);
+  });
+
+  window.addEventListener('resize', () => {
+    sizeCanvas();
+  });
+
+  // Kick off
+  init().catch(err => {
+    console.error(err);
+    const msg = document.createElement('div');
+    msg.textContent = 'Failed to initialize Pyodide. Check your connection.';
+    msg.style.color = '#f87171';
+    document.body.appendChild(msg);
+  });
+})();

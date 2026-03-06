@@ -1,0 +1,279 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  background: linear-gradient(120deg, #f8fafc 70%, #e7eaf2 100%);
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+header {
+  background: #23272f;
+  color: #fff;
+  padding: 1.2rem 0 1.2rem;
+  text-align: center;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 10px rgba(40,40,40,0.04);
+}
+
+main {
+  flex: 1 0 auto;
+  max-width: 750px;
+  width: 100%;
+  margin: 2.2rem auto 0 auto;
+  background: #fff;
+  padding: 2.8rem 2.2rem 2.4rem;
+  border-radius: 18px;
+  box-shadow: 0 6px 32px 0 rgba(42,54,96,0.07), 0 1.5px 6px 0 rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 65vh;
+  position: relative;
+  overflow-y: auto;
+}
+
+footer {
+  background: #23272f;
+  color: #fff;
+  text-align: center;
+  padding: 1.25rem 0;
+  margin-top: 2.4rem;
+  border-radius: 0 0 18px 18px;
+  font-size: 1rem;
+  box-shadow: 0 -2px 12px 0 rgba(40,40,40,0.06);
+  flex-shrink: 0;
+}
+
+@media (max-width: 850px) {
+  main {
+    max-width: 98vw;
+    padding: 1.2rem 1.3rem 1.3rem;
+  }
+
+}
+
+/* Escape room UI */
+header {
+  background: #0b1020;
+  background: linear-gradient(90deg, #0b1020, #111827);
+  color: #e5e7eb;
+  text-align: center;
+  padding: 1.25rem 0 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: 0.03em;
+}
+header .tagline {
+  margin: .25rem 0 0;
+  font-size: .95rem;
+  color: #a3b3d3;
+}
+
+#game {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.output {
+  background: #0c0f17;
+  color: #e5e7eb;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  padding: 1rem 1.1rem;
+  border-radius: 12px;
+  height: 48vh;
+  overflow-y: auto;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+.output p {
+  margin: .35rem 0;
+  line-height: 1.45;
+}
+.output p.echo { color: #94a3b8; }
+.output p.system { color: #93c5fd; }
+
+.statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  flex-wrap: wrap;
+  color: #334155;
+  font-size: .95rem;
+}
+#inv-list .item {
+  display: inline-block;
+  background: #eef2ff;
+  color: #3730a3;
+  padding: .15rem .55rem;
+  border-radius: 999px;
+  margin-right: .25rem;
+  border: 1px solid #c7d2fe;
+}
+
+#command-form {
+  display: flex;
+  gap: .5rem;
+}
+#command-input {
+  flex: 1;
+  min-width: 0;
+  padding: .75rem .9rem;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  outline: none;
+  font-size: 1rem;
+  background: #f8fafc;
+}
+#command-form button {
+  padding: .75rem 1rem;
+  border-radius: 10px;
+  border: none;
+  background: #1f2937;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+#command-form button:hover {
+  background: #111827;
+}
+
+@media (max-width: 600px) {
+  /* Fit everything within the viewport; only the output scrolls */
+  html, body {
+    height: 100dvh;
+  }
+  body {
+    overflow: hidden;
+    font-size: 15px;
+  }
+
+  header {
+    padding: 0.7rem 0 0.6rem;
+  }
+  header h1 { font-size: 1.1rem; }
+  header .tagline { font-size: 0.8rem; }
+
+  main {
+    max-width: 100vw;
+    margin: 0;
+    padding: 0.75rem 0.8rem;
+    min-height: 0;
+    height: auto;
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
+
+  .display-wrapper {
+    gap: 0.6rem;
+    height: 100%;
+  }
+
+  #game {
+    flex: 1 1 auto;
+    min-height: 0;
+    gap: 0.6rem;
+  }
+
+  .output {
+    flex: 1 1 0;
+    min-height: 0;
+    height: auto;
+    font-size: 0.95rem;
+  }
+
+  .statusbar {
+    font-size: 0.85rem;
+  }
+
+  #command-form {
+    gap: 0.4rem;
+  }
+
+  #command-input {
+    padding: 0.6rem 0.7rem;
+    font-size: 1rem; /* keep ~16px to avoid iOS zoom */
+  }
+
+  #command-form button {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.95rem;
+  }
+
+  footer {
+    margin-top: 0.5rem;
+    padding: 0.6rem 0;
+    font-size: 0.9rem;
+  }
+}
+
+/* Display image layout */
+.display-wrapper {
+  display: flex;
+  flex-direction: column; /* vertical on mobile */
+  align-items: center;
+  gap: 1rem;
+}
+
+.art {
+  width: clamp(140px, 38vw, 220px);
+  aspect-ratio: 1 / 1; /* keep 1:1 */
+  max-width: 420px; /* reasonable size on mobile */
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  margin: 0 auto;
+}
+
+.art img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover; /* fill square nicely */
+}
+
+@media (min-width: 768px) {
+  .display-wrapper {
+    flex-direction: row; /* horizontal on tablet/desktop */
+    align-items: stretch;
+  }
+  .art {
+    max-width: none;
+    flex: 0 0 40%;
+  }
+  #game {
+    flex: 1 1 auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Widen the main container on wider screens */
+  main {
+    max-width: 1100px;
+  }
+}
+
+@media (min-width: 1280px) {
+  main {
+    max-width: 1200px;
+  }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mnemosyne Observatory — Escape Room</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header>
+    <h1>Mnemosyne Observatory</h1>
+    <p class="tagline">A text-based escape room</p>
+  </header>
+  <main>
+    <div class="display-wrapper" role="region" aria-label="Observatory display and game interface">
+      <figure class="art">
+        <img src="assets/images/observatory.png" alt="Observatory display image">
+      </figure>
+      <section id="game">
+        <div id="output" class="output" role="log" aria-live="polite"></div>
+        <div class="statusbar">
+          <div>Location: <span id="location"></span></div>
+          <div>Inventory: <span id="inv-list"></span></div>
+        </div>
+        <form id="command-form" autocomplete="off">
+          <input id="command-input" type="text" placeholder='Try: "inspect mural", "help", or "inventory"' aria-label="Command input" />
+          <button type="submit">Enter</button>
+        </form>
+      </section>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2025 Your Name</p>
+  </footer>
+  <script src="assets/script.js"></script>
+</body>
+</html>

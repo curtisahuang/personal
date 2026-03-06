@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Forest Walk</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div id="overlay">
+    <div class="panel">
+      <h1>Forest Walk</h1>
+      <p>Click the button to start</p>
+      <p>Mouse: look around<br>WASD or Arrow keys: move<br>Shift: sprint<br>Q: toggle inventory<br>F: toggle flashlight<br>E: interact</p>
+      <button id="start">Enter</button>
+    </div>
+  </div>
+
+  <div id="hud" aria-label="HUD">
+    <div id="stamina" aria-label="Stamina bar">
+      <div id="stamina-fill"></div>
+    </div>
+  </div>
+
+  <div id="pickup-message" aria-live="polite"></div>
+  <div id="interact-prompt" aria-live="polite"></div>
+  <div id="inventory" aria-label="Inventory">
+    <div class="inv-panel">
+      <h2>Inventory</h2>
+      <div id="inventory-list"></div>
+      <p class="inv-hint">Press Q to close</p>
+    </div>
+  </div>
+
+  <div id="clock" aria-label="Clock"></div>
+  <div id="debug" aria-label="Debug distance"></div>
+
+  <div id="shelter-panel" aria-label="Shelter wait panel">
+    <div class="panel wait-panel">
+      <h2>Shelter</h2>
+      <p>Select hours to wait (6h steps)</p>
+      <input id="wait-hours" type="range" min="6" max="72" step="6" value="6" aria-label="Hours to wait">
+      <div class="wait-hours-display"><span id="wait-hours-val">6</span> hours</div>
+      <div class="wait-actions">
+        <button id="wait-confirm">Wait</button>
+        <button id="wait-cancel" class="secondary">Cancel</button>
+      </div>
+      <p class="inv-hint">Shelter restores stamina</p>
+    </div>
+  </div>
+
+  <div id="death-overlay" aria-label="Game Over">
+    <div class="panel death-panel">
+      <h2>Game Over</h2>
+      <p id="death-message">You were taken by the thing in the woods.</p>
+      <div class="death-actions">
+        <button id="restart">Restart</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

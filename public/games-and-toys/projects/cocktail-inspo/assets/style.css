@@ -1,0 +1,326 @@
+:root {
+  --bg: #0e0f12;
+  --bg-2: #13161b;
+  --gold: #d4af37;
+  --gold-2: #b6932c;
+  --cream: #e9e5d6;
+  --muted: #b79d5e;
+  --ink: #0a0c0f;
+  --card: #14171d;
+  --text: #e7e4db;
+  --text-muted: #c8c3b3;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: var(--text);
+  background:
+    radial-gradient(1200px 600px at 15% 10%, #101319 0%, var(--bg) 55%),
+    radial-gradient(900px 500px at 85% 20%, #181b22 0%, var(--bg) 60%),
+    linear-gradient(135deg, var(--bg), var(--bg-2));
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.deco-header {
+  text-align: center;
+  padding: 2.4rem 1rem 1.6rem;
+  position: relative;
+}
+
+.deco-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.deco-title .line {
+  display: inline-block;
+  width: 140px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+.deco-title h1 {
+  margin: 0;
+  font-family: "Cinzel", serif;
+  font-weight: 900;
+  font-size: 2.6rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  text-shadow: 0 1px 0 #000;
+}
+
+.deco-subtitle {
+  margin: 0.2rem auto 0;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+/* Layout */
+.container {
+  width: 100%;
+  max-width: 980px;
+  margin: 1.8rem auto 2.2rem;
+  padding: 0 1.2rem;
+}
+
+/* Art Deco frame */
+.deco-frame {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--gold);
+  border-radius: 18px;
+  box-shadow:
+    inset 0 0 0 1px rgba(212, 175, 55, 0.25),
+    0 8px 24px rgba(0,0,0,0.35);
+  padding: 1.4rem;
+  overflow: hidden;
+}
+
+.deco-frame::before,
+.deco-frame::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border: 1px solid var(--gold);
+}
+
+.deco-frame::before {
+  width: 28px;
+  height: 28px;
+  top: 10px;
+  left: 10px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.deco-frame::after {
+  width: 28px;
+  height: 28px;
+  bottom: 10px;
+  right: 10px;
+  border-left: none;
+  border-top: none;
+}
+
+/* Controls */
+.controls {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.control-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+}
+
+.label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--cream);
+}
+
+.label .hint {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.ticks {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(to right, #333, #444);
+  border-radius: 6px;
+  border: 1px solid #2a2e37;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle at 50% 35%, var(--gold) 0%, var(--gold-2) 60%, #513d13 100%);
+  border: 1px solid #af8c2b;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+.deco-btn {
+  background: linear-gradient(180deg, var(--gold) 0%, var(--gold-2) 90%);
+  color: #1b1402;
+  border: 1px solid #9e7c20;
+  box-shadow: 0 6px 18px rgba(212,175,55,0.25), inset 0 1px 0 rgba(255,255,255,0.25);
+  border-radius: 14px;
+  padding: 0.9rem 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.06s ease, box-shadow 0.2s ease;
+}
+
+.deco-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(212,175,55,0.28), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+.deco-btn:active {
+  transform: translateY(0);
+}
+
+/* Recipe card */
+.recipe-card {
+  margin-top: 1rem;
+  padding: 1.6rem 1.6rem 1.3rem;
+}
+
+.name-row h2 {
+  margin: 0 0 0.5rem;
+  font-family: "Cinzel", serif;
+  font-size: 2rem;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  text-align: center;
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  margin: 0.6rem 0 1.0rem;
+  color: var(--text-muted);
+}
+
+.meta-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(212,175,55,0.25);
+  border-radius: 10px;
+  padding: 0.6rem 0.7rem;
+  text-align: center;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  margin: 1rem 0 1.2rem;
+}
+
+.ingredients h3,
+.instructions h3,
+.garnish h3 {
+  margin: 0 0 0.5rem;
+  font-family: "Cinzel", serif;
+  color: var(--cream);
+  letter-spacing: 0.04em;
+}
+
+#ingredients-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#ingredients-list li {
+  padding: 0.45rem 0.5rem;
+  border-bottom: 1px dashed rgba(212,175,55,0.25);
+}
+
+#ingredients-list li:last-child {
+  border-bottom: none;
+}
+
+.instructions p,
+.garnish p {
+  margin: 0.4rem 0 0.2rem;
+  color: var(--text);
+}
+
+/* Deco steps (ordered list for instructions) */
+.deco-steps {
+  counter-reset: step;
+  list-style: none;
+  padding: 0;
+  margin: 0.4rem 0 0.2rem;
+}
+
+.deco-steps li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  align-items: start;
+  gap: 0.6rem;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px dashed rgba(212,175,55,0.25);
+}
+
+.deco-steps li::before {
+  content: counter(step);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold);
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  background: rgba(212,175,55,0.08);
+  box-shadow: inset 0 0 0 1px rgba(212,175,55,0.24);
+}
+
+.deco-steps li:last-child {
+  border-bottom: none;
+}
+
+.deco-footer {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 1.8rem 1rem;
+  border-top: 1px solid rgba(212,175,55,0.22);
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .deco-title .line { width: 80px; }
+  .deco-title h1 { font-size: 2.1rem; }
+  .container { max-width: 96vw; }
+  .meta { grid-template-columns: 1fr; }
+}

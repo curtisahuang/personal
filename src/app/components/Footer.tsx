@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef } from "react";
 import { useScroll, useTransform, motion, MotionValue } from "framer-motion";
+import Link from "next/link";
 import Contact from "./Contact";
 
 const Footer = () => {
@@ -52,9 +53,9 @@ const SocialLinks = ({
           </h5>
         </div>
         <h5 className="text-center">
-          <a className="hover-underline-animation" href="/games-and-toys">
+          <Link className="hover-underline-animation" href="/games-and-toys">
             <strong>games & toys</strong>
-          </a>
+          </Link>
         </h5>
       </motion.div>
     </div>

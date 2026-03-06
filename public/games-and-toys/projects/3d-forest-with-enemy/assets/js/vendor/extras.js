@@ -1,0 +1,2 @@
+export { mergeVertices } from 'https://esm.sh/three@0.180.0/examples/jsm/utils/BufferGeometryUtils.js';
+export { ConvexGeometry } from 'https://esm.sh/three@0.180.0/examples/jsm/geometries/ConvexGeometry.js';

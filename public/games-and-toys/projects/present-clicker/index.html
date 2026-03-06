@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>You are an overworked elf. Santa wants numbers, not excuses.</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="header-title">
+        <h1>You are an overworked elf. Santa wants numbers, not excuses.</h1>
+      </div>
+      <button
+        id="settings-button"
+        class="settings-button"
+        type="button"
+        aria-haspopup="dialog"
+        aria-controls="settings-modal"
+        aria-expanded="false"
+      >
+        Settings
+      </button>
+    </div>
+  </header>
+
+  <div
+    id="settings-modal"
+    class="settings-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="settings-modal-title"
+    hidden
+  >
+    <div class="settings-modal-dialog">
+      <div class="settings-modal-header">
+        <h2 id="settings-modal-title">Workshop Settings</h2>
+        <button type="button" class="settings-close-button" aria-label="Close settings">×</button>
+      </div>
+      <div class="settings-modal-body">
+        <p class="settings-intro">
+          Small tweaks to how the workshop presents information.
+        </p>
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <div class="settings-row-title">Shop visibility</div>
+            <div class="settings-row-help">
+              Toggle to reveal all shops &amp; upgrades, or only show what you've unlocked.
+            </div>
+          </div>
+          <button id="shops-toggle-button" class="shops-toggle-button" type="button" aria-pressed="true">
+            Show only unlocked
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="game-shell">
+    <section class="game-left">
+      <button id="present-button" class="present-button" type="button" aria-label="Make presents">
+        <div class="present-emoji" aria-hidden="true">🎁</div>
+      </button>
+
+      <section class="story-panel">
+        <h2 id="story-title">Santa's Orders</h2>
+        <p id="story-paragraph-1">
+          Santa has a list. It is long. You are an elf with exactly one job:
+          manufacture an impossible number of presents before dawn.
+        </p>
+        <p id="story-paragraph-2">
+          Start by clicking the present. Hire assistants. Build factories.
+          Ignore the whispering from the shadows. Definitely do not misread
+          <strong>Santa</strong> as <strong>Satan</strong>.
+        </p>
+      </section>
+
+      <section class="stats-panel">
+        <div class="stat stat--compact">
+          <div class="stat-row">
+            <span class="stat-label-inline">presents</span>
+            <span class="stat-value" id="present-count">0</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label-inline">presents/second</span>
+            <span class="stat-value" id="pps-count">0</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="log-panel" aria-live="polite" aria-atomic="false">
+        <h2 class="log-title">Workshop Rumours</h2>
+        <ul id="log" class="log-list"></ul>
+      </section>
+    </section>
+
+    <section class="game-right">
+
+      <section class="shop-panel">
+        <h2>Helpers &amp; Factories</h2>
+        <p class="shop-hint">
+          Spend presents to automate production. Costs rise each time you buy.
+        </p>
+        <div id="producers-list" class="card-list"></div>
+      </section>
+
+      <section class="shop-panel">
+        <h2>Upgrades &amp; Anomalies</h2>
+        <p class="shop-hint">
+          Tweaks, exploits, and reality violations to boost productivity.
+        </p>
+        <div id="upgrades-list" class="card-list"></div>
+      </section>
+    </section>
+  </main>
+
+  
+
+  <script src="assets/config.producers.js"></script>
+  <script src="assets/config.upgrades.js"></script>
+
+  <script src="assets/game-state.js"></script>
+  <script src="assets/game-logging.js"></script>
+  <script src="assets/game-ui.js"></script>
+  <script src="assets/game-dev-console.js"></script>
+  <script src="assets/script.js"></script>
+</body>
+</html>

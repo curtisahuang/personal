@@ -1,166 +1,194 @@
 [
   {
     "title": "Just a Day in the Forest",
-    "url": "https://just-a-day-in-the-forest.cosine.show/",
+    "url": "/games-and-toys/3d-forest-with-enemy",
     "description": "Just a walk through a 3D forest with zero monsters in sight!",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://just-a-day-in-the-forest.cosine.show",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/3d-forest-with-enemy.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/3d-forest-with-enemy",
-    "tags": ["games"]
+    "tags": [
+      "games"
+    ]
   },
   {
     "title": "Bookworm",
-    "url": "https://bookworm.cosine.show/",
+    "url": "/games-and-toys/bookworm",
     "description": "Word-focused game inspired by classic bookish puzzlers",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://bookworm.cosine.show/",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/bookworm.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/bookworm",
-    "tags": ["games"]
+    "tags": [
+      "games"
+    ]
   },
-
   {
     "title": "Reign of the Necromancer",
-    "url": "https://reign-of-the-necromancer.cosine.show/",
+    "url": "/games-and-toys/rpg-game-custom",
     "description": "A retro turn-based RPG with a secret quest!",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://reign-of-the-necromancer.cosine.show",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/rpg-game-custom.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/rpg-game-custom",
-    "tags": ["games"]
+    "tags": [
+      "games"
+    ]
   },
   {
     "title": "Cosine Noise Maker",
-    "url": "https://cosine-noise-maker.cosine.show/",
+    "url": "/games-and-toys/another-music-toy-noise",
     "description": "A droning experimental music maker with numerous filters.",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://cosine-noise-maker.cosine.show",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/another-music-toy-noise.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/another-music-toy-noise",
-    "tags": ["music"]
+    "tags": [
+      "music"
+    ]
   },
   {
     "title": "Piano Smasher Rhythm Game",
-    "url": "https://piano-smasher.cosine.show/",
+    "url": "/games-and-toys/rhythm-game-test",
     "description": "Upload an mp3 and play it!",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://piano-smasher.cosine.show",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/rhythm-game-test.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/rhythm-game-test",
-    "tags": ["games", "music"]
+    "tags": [
+      "games",
+      "music"
+    ]
   },
   {
     "title": "14 Days Until Christmas Game",
-    "url": "https://14-days-until-christmas-game.cosine.show/",
+    "url": "/games-and-toys/14-days-until-christmas",
     "description": "A dating simulator with music and choices that determine whether you can get a date by Christmas!",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://14-days-until-christmas-game.cosine.show/",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/14-days-until-christmas.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/14-days-until-christmas",
-    "tags": ["games"]
-  },
-  {
-    "title": "winamp music visualiser",
-    "url": "https://music-visualiser-winamp.cosine.page/",
-    "description": "Share a tab's audio with this page to see some retro visualisations!",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://music-visualiser-winamp.cosine.page/",
-    "author": "curtisahuang",
-    "githubUrl": "https://github.com/curtisahuang",
-    "tags": ["music"]
+    "tags": [
+      "games"
+    ]
   },
   {
     "title": "Markov Music Maker",
-    "url": "https://markov-music-maker.cosine.page/",
+    "url": "/games-and-toys/markov-music-maker",
     "description": "Generative music toy powered by Markov-style sequencing",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://markov-music-maker.cosine.page/",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/markov-music-maker.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/markov-music-maker",
-    "tags": ["music", "toys"]
+    "tags": [
+      "music",
+      "toys"
+    ]
   },
   {
     "title": "Escape Room",
-    "url": "https://oiq7d76uywq5.cosine.show/",
+    "url": "/games-and-toys/escape-room",
     "description": "Old school escape room text adventure game",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://oiq7d76uywq5.cosine.show",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/escape-room.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/escape-room",
-    "tags": ["games"]
+    "tags": [
+      "games"
+    ]
   },
   {
     "title": "Isometric Walker Demo",
-    "url": "https://isometric-walker-demo.cosine.show/",
+    "url": "/games-and-toys/isometric-walker",
     "description": "A basic engine with some testing for sprite animations and isometric movements",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://isometric-walker-demo.cosine.show",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/isometric-walker.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/isometric-walker",
-    "tags": ["games"]
+    "tags": [
+      "games"
+    ]
   },
   {
     "title": "Strange Correlations",
-    "url": "https://2ipvm3r5a620.cosine.show/",
+    "url": "/games-and-toys/strange-correlations",
     "description": "Funny graphs grabbing random public data sets to find correlations",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://2ipvm3r5a620.cosine.show",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/strange-correlations.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/strange-correlations",
-    "tags": ["toys", "data"]
+    "tags": [
+      "toys",
+      "data"
+    ]
   },
   {
     "title": "Cosine Music Maker",
-    "url": "https://cosine-music-maker.cosine.show/",
+    "url": "/games-and-toys/music-maker",
     "description": "Make beats and drones",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://cosine-music-maker.cosine.show",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/music-maker.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/music-maker",
-    "tags": ["music"]
+    "tags": [
+      "music"
+    ]
   },
   {
     "title": "Car ML",
-    "url": "https://77aizdrw75fy.cosine.show/",
+    "url": "/games-and-toys/car-ml",
     "description": "Self evolving car algorithm simulation",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://77aizdrw75fy.cosine.show",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/car-ml.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/car-ML",
-    "tags": ["toys", "machine learning"]
+    "tags": [
+      "toys",
+      "machine learning"
+    ]
   },
-
   {
     "title": "North Pole Clicker",
-    "url": "https://north-pole-clicker.cosine.page/",
+    "url": "/games-and-toys/present-clicker",
     "description": "A holiday clicker game with festive progression",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://north-pole-clicker.cosine.page/",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/present-clicker.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/present-clicker",
-    "tags": ["games"]
+    "tags": [
+      "games"
+    ]
   },
   {
     "title": "Drinkspo",
-    "url": "https://drinkspo.cosine.show/",
+    "url": "/games-and-toys/cocktail-inspo",
     "description": "A playful drinks inspiration toy",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://drinkspo.cosine.show/",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/cocktail-inspo.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/cocktail-inspo",
-    "tags": ["toys"]
+    "tags": [
+      "toys"
+    ]
   },
   {
     "title": "Puzzle League",
-    "url": "https://puzzle-league.cosine.page/",
+    "url": "/games-and-toys/puzzle-league",
     "description": "A puzzle game with quick sessions and satisfying combos",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://puzzle-league.cosine.page/",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/puzzle-league.png",
     "author": "curtisahuang",
-    "githubUrl": "https://github.com/curtisahuang",
-    "tags": ["games"]
+    "githubUrl": "https://github.com/CosineAI/battle-jewels",
+    "tags": [
+      "games"
+    ]
   },
   {
     "title": "Text2Beeps",
-    "url": "https://text2beeps.cosine.show/",
+    "url": "/games-and-toys/text2beeps",
     "description": "Convert text into playful beep melodies",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://text2beeps.cosine.show/",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/text2beeps.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/text2beeps",
-    "tags": ["music", "toys"]
+    "tags": [
+      "music",
+      "toys"
+    ]
   },
   {
     "title": "poke the bear",
-    "url": "https://poke-the-bear.cosine.page",
+    "url": "/games-and-toys/poke-the-bear",
     "description": "Poke the bear.",
-    "screenshotUrl": "https://screenshot.cosine.show/?url=https://poke-the-bear.cosine.page",
+    "screenshotUrl": "/games-and-toys/assets/screenshots/poke-the-bear.png",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/poke-the-bear",
-    "tags": ["games"]
+    "tags": [
+      "games"
+    ]
   }
 ]

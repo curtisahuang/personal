@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Art Deco Cocktail Generator</title>
+
+  <!-- Fonts for an Art Deco vibe -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="deco-header">
+    <div class="deco-title">
+      <span class="line"></span>
+      <h1>The Gilded Shaker</h1>
+      <span class="line"></span>
+    </div>
+    <p class="deco-subtitle">A cocktail generator</p>
+  </header>
+
+  <main class="container">
+    <section class="controls deco-frame">
+      <div class="control-row">
+        <label for="creativity" class="label">
+          Creativity
+          <small class="hint">(Classic → Experimental → Wild)</small>
+        </label>
+        <input id="creativity" type="range" min="0" max="100" value="25" step="1" />
+        <div class="ticks">
+          <span>Classic</span>
+          <span>Experimental</span>
+          <span>Wild</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="generate" class="deco-btn">Generate Cocktail</button>
+      </div>
+    </section>
+
+    <section id="result" class="recipe-card deco-frame">
+      <div class="name-row">
+        <h2 id="drink-name">—</h2>
+      </div>
+
+      <div class="meta">
+        <div class="meta-item"><strong>Technique:</strong> <span id="technique">—</span></div>
+        <div class="meta-item"><strong>Glassware:</strong> <span id="glassware">—</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="ingredients">
+        <h3>Ingredients</h3>
+        <ul id="ingredients-list"></ul>
+      </div>
+
+      <div class="instructions">
+        <h3>Method</h3>
+        <ol id="instructions-list" class="deco-steps"></ol>
+      </div>
+
+      <div class="garnish">
+        <h3>Garnish</h3>
+        <p id="garnish-text">—</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="deco-footer">
+    <p>&copy; 2025 The Gilded Shaker</p>
+  </footer>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A Battle of Writs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jacquard+24&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header>
+    <h1 class="site-title">A Battle of Writs</h1>
+  </header>
+
+  <div class="content-wrap">
+
+  <main>
+    <section class="hud">
+      <div class="hud-side">
+        <div class="hud-row">
+          <span class="hud-label">You</span>
+          <span id="playerHearts" class="hearts">❤️❤️❤️❤️❤️❤️</span>
+        </div>
+        <div class="hud-row small">
+          <span class="hud-label">Attack</span>
+          <span id="attackVal">0</span>
+          <span class="muted">= sum of tile values</span>
+        </div>
+        <div class="hud-row small">
+          <details id="equipmentDetails" class="equip-details">
+              <summary class="hud-label">Equipment <span class="muted">(Toggle current equipment)</span></summary>
+              <div id="equipmentList" class="equip-list"></div>
+            </details>
+        </div>
+      </div>
+
+      <div class="hud-side right">
+        <div class="hud-row">
+          <span id="enemyName" class="hud-label">Enemy</span>
+          <span id="enemyHearts" class="hearts">❤️❤️❤️❤️❤️❤️</span>
+        </div>
+        <div class="hud-row small">
+          <span class="hud-label">Next</span>
+          <span id="enemyStatus" class="pill enemy-status muted">—</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="board" class="board">
+      <!-- Knight video, aligned with the grid -->
+      <video
+        id="sideVideo"
+        class="side-video"
+        src="assets/images/social_curtisahuang_cartoon_knight_with_armor_made_up_of_alphabet_le_5d578297-5aef-4c6e-b51d-52c0fdbce530_0.mp4"
+        autoplay
+        muted
+        playsinline
+        loop
+        aria-label="Decorative knight video"
+      ></video>
+      <div id="grid" class="grid" aria-label="Letter grid"></div>
+    </section>
+
+    <section class="wordbar">
+      <div class="word">
+        <span class="muted">Word:</span> <strong id="currentWord">(none)</strong>
+        <span class="muted sep">|</span>
+        <span class="muted">Letters:</span> <strong id="letterCount">0</strong>
+        <span class="muted sep">|</span>
+        <span class="muted">Attack:</span> <strong id="attackDisplay">0</strong>
+      </div>
+      <div class="controls">
+        <button id="submitBtn" class="btn primary" disabled>Attack</button>
+        <button id="clearBtn" class="btn">Clear</button>
+        <button id="shuffleBtn" class="btn">Skip turn and Shuffle</button>
+        <button id="newGameBtn" class="btn success" style="display:none;">New Game</button>
+      </div>
+    </section>
+
+    <section class="statusbar">
+      <div id="dictStatus" class="pill muted">Loading dictionary…</div>
+      <div id="message" class="message"></div>
+    </section>
+
+    <section id="log" class="log" aria-live="polite">
+      <div class="log-header">
+        <button id="logToggleBtn" class="btn">Show full log</button>
+      </div>
+      <div id="logList"></div>
+      <div class="log-header" style="margin-top:.6rem;">
+        <button id="rulesBtn" class="btn">How to Play</button>
+        <button id="newRunBtn" class="btn success">New Game</button>
+        <button id="hardModeBtn" class="btn warning">Hard Mode</button>
+        <button id="extremeModeBtn" class="btn danger">Extreme Mode</button>
+      </div>
+    </section>
+
+    <!-- Shop overlay -->
+    <div id="shopOverlay" class="shop-overlay" aria-hidden="true">
+      <div class="shop-modal" role="dialog" aria-labelledby="shopTitle" aria-modal="true">
+        <h2 id="shopTitle">Between Battles: Shop</h2>
+        <p id="shopInfo" class="muted" style="margin-top:.2rem;">Choose ONE: heal to full OR equip one item for your next battles.</p>
+        <div class="shop-items">
+          <!-- Heal option -->
+          <div class="shop-item">
+            <div class="shop-item-info">
+              <strong>Heal to Full</strong>
+              <div class="muted">Restore all hearts immediately.</div>
+            </div>
+            <button id="healBtn" class="btn success">Heal</button>
+          </div>
+          <!-- Item 1 -->
+          <div class="shop-item">
+            <div class="shop-item-info">
+              <strong id="item1Name">Item A</strong>
+              <div id="item1Desc" class="muted">Description A</div>
+            </div>
+            <button id="equipItem1Btn" class="btn success">Equip</button>
+          </div>
+          <!-- Item 2 -->
+          <div class="shop-item">
+            <div class="shop-item-info">
+              <strong id="item2Name">Item B</strong>
+              <div id="item2Desc" class="muted">Description B</div>
+            </div>
+            <button id="equipItem2Btn" class="btn success">Equip</button>
+          </div>
+        </div>
+        <div class="shop-actions">
+          <button id="continueBtn" class="btn primary">Skip shop</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ending overlay -->
+    <div id="endingOverlay" class="shop-overlay" aria-hidden="true">
+      <div class="shop-modal" role="dialog" aria-labelledby="endingTitle" aria-modal="true">
+        <h2 id="endingTitle">Congratulations!</h2>
+        <p id="endingMessage" class="muted" style="margin-top:.2rem;">You defeated the <strong id="endingEnemyName">Dragonlord</strong>! Here are your best words:</p>
+        <div class="shop-items">
+          <div class="shop-item">
+            <div class="shop-item-info">
+              <strong>Longest word</strong>
+              <div id="endingLongest" class="muted">(none)</div>
+            </div>
+          </div>
+          <div class="shop-item">
+            <div class="shop-item-info">
+              <strong>Highest attack</strong>
+              <div id="endingHighest" class="muted">(none)</div>
+            </div>
+          </div>
+          <div class="shop-item">
+            <div class="shop-item-info">
+              <strong>Most effects</strong>
+              <div id="endingEffects" class="muted">(none)</div>
+            </div>
+          </div>
+        </div>
+        <div class="shop-actions">
+          <button id="endingRestartBtn" class="btn primary">New Run</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Defeat overlay -->
+    <div id="defeatOverlay" class="shop-overlay" aria-hidden="true">
+      <div class="shop-modal" role="dialog" aria-labelledby="defeatTitle" aria-modal="true">
+        <h2 id="defeatTitle">Defeat</h2>
+        <p id="defeatMessage" class="muted" style="margin-top:.2rem;">You were defeated by the <strong id="defeatEnemyName">Enemy</strong>. Here are your best words:</p>
+        <div class="shop-items">
+          <div class="shop-item">
+            <div class="shop-item-info">
+              <strong>Longest word</strong>
+              <div id="defeatLongest" class="muted">(none)</div>
+            </div>
+          </div>
+          <div class="shop-item">
+            <div class="shop-item-info">
+              <strong>Highest attack</strong>
+              <div id="defeatHighest" class="muted">(none)</div>
+            </div>
+          </div>
+          <div class="shop-item">
+            <div class="shop-item-info">
+              <strong>Most effects</strong>
+              <div id="defeatEffects" class="muted">(none)</div>
+            </div>
+          </div>
+        </div>
+        <div class="shop-actions">
+          <button id="defeatRestartBtn" class="btn primary">New Run</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rules / Introduction overlay -->
+    <div id="rulesOverlay" class="shop-overlay" aria-hidden="true">
+      <div class="shop-modal" role="dialog" aria-labelledby="rulesTitle" aria-modal="true">
+        <h2 id="rulesTitle">How to Play</h2>
+        <p class="muted" style="margin-top:.2rem;">Form valid words to attack, manage effects, and defeat enemies.</p>
+        <div class="rules-content">
+          <div class="shop-items">
+            <div class="shop-item">
+              <div class="shop-item-info">
+                <strong>Basics</strong>
+                <div class="muted">Form valid English words by selecting tiles. They do not have to be touching in order to form words. The attack value is computed from your tiles, which is based on letter rarity and length of the word. Using up tiles will drop in new tiles. Strategically use the special tiles to defeat your enemy and win the game!</div>
+              </div>
+            </div>
+            <div class="shop-item">
+              <div class="shop-item-info">
+                <strong>Tile Effects</strong>
+                <ul class="muted rules-list" aria-label="Tile effects list">
+                  <li>Red: This letter deals double damage when used.</li>
+                  <li>Green: Heals you by ½ heart when used.</li>
+                  <li>Gray: Contributes no damage when used.</li>
+                  <li>Fire: Burns you for ½ heart at the end of each enemy turn until removed.</li>
+                  <li>Poison: Halves the enemy’s next attack when used.</li>
+                  <li>Cursed: Odd count halves total attack; even count increases attack by 1.5×.</li>
+                  <li>Frozen: Halves your total attack this turn but the enemy skips their turn (including specials).</li>
+                </ul>
+              </div>
+            </div>
+            <div class="shop-item">
+              <div class="shop-item-info">
+                <strong>Enemy Turns</strong>
+                <div class="muted">Enemies strike each turn and may apply specials or debuffs (gray/fire tiles). Fire hazards deal damage based on fire tiles present.</div>
+              </div>
+            </div>
+            <div class="shop-item">
+              <div class="shop-item-info">
+                <strong>Between Battles</strong>
+                <div class="muted">Choose ONE: heal to full OR equip one item. Equipment modifies effects or spawn rates.</div>
+              </div>
+            </div>
+            <div class="shop-item">
+              <div class="shop-item-info">
+                <strong>Difficulty</strong>
+                <div class="muted">Difficulty will increase enemy HP. This can be quite challenging!</div>
+              </div>
+            </div>
+          </div>
+          <!-- Items list section -->
+          <div class="shop-items" style="margin-top:.6rem;">
+            <div class="shop-item">
+              <div class="shop-item-info">
+                <strong>Items</strong>
+                <div class="muted">All equipment and word-based items available in the game:</div>
+              </div>
+            </div>
+            <ul id="itemsList" class="muted rules-list" aria-label="Items list"></ul>
+          </div>
+        </div>
+        <div class="shop-actions">
+          <button id="rulesCloseBtn" class="btn primary">Close</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Word Battle</p>
+  </footer>
+
+  <script type="module" src="assets/script.js"></script>
+</body>
+</html>

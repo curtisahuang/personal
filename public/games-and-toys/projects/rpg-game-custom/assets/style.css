@@ -1,0 +1,1218 @@
+:root{
+  --blue:#3b82f6;
+  --green:#22c55e;
+  --red:#ef4444;
+  --ink:#111827;
+  --muted:#6b7280;
+  --panel:#0b1220cc;
+  --panel-bg:#0b1220f2;
+  --cream:#f8fafc;
+}
+
+*{box-sizing:border-box}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  font-family: 'Press Start 2P', cursive;
+  margin: 0;
+  background: radial-gradient(1200px 800px at 50% -10%, #c7d2fe 0%, #e5e7eb 38%, #eef2ff 70%, #f8fafc 100%);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+}
+
+/* Game root */
+#app{
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #0b1120;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+/* OVERWORLD MAP */
+#map{
+  position:absolute;
+  inset: 0;
+  display:grid;
+  place-content:center;
+}
+
+.map-grid{
+  display:grid;
+  gap: 0;
+  image-rendering: pixelated;
+  /* Ensure rounded land corners reveal ocean blue rather than app black */
+  background: var(--blue);
+}
+
+.tile{
+  width: 28px;
+  height: 28px;
+  position: relative;
+}
+
+/* Water tiles: draw blue as an overlay so rounded corners reveal land green behind */
+.tile.water{ background: var(--green); }
+.tile.water::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--blue);
+  border-radius: var(--br-tl, 0px) var(--br-tr, 0px) var(--br-br, 0px) var(--br-bl, 0px);
+}
+.tile.land{ background: var(--green); }
+/* Desert tiles: draw sand as an overlay so rounded corners reveal land green behind */
+.tile.desert{
+  background: var(--green); /* base shows at rounded corners */
+  position: relative;
+}
+.tile.desert::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #e9c46a; /* sandy yellow */
+  background-image:
+    radial-gradient(rgba(124,77,27,.26) 0.8px, transparent 0.9px),
+    radial-gradient(rgba(124,77,27,.20) 0.8px, transparent 0.9px);
+  background-size: 14px 14px;
+  background-position: 0 0, 7px 7px;
+  border-radius: var(--des-br-tl, 0px) var(--des-br-tr, 0px) var(--des-br-br, 0px) var(--des-br-bl, 0px);
+} /* desert speckle texture overlay */
+
+/* Swamp tiles: draw murky overlay so rounded corners reveal land green behind */
+.tile.swamp{
+  background: var(--green); /* base shows at rounded corners */
+  position: relative;
+}
+.tile.swamp::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #2d6a4f; /* murky swamp green */
+  /* subtle mottled texture */
+  background-image:
+    radial-gradient(rgba(0,0,0,.18) 0.8px, transparent 0.9px),
+    radial-gradient(rgba(0,0,0,.10) 0.8px, transparent 0.9px);
+  background-size: 14px 14px;
+  background-position: 0 0, 7px 7px;
+  border-radius: var(--swp-br-tl, 0px) var(--swp-br-tr, 0px) var(--swp-br-br, 0px) var(--swp-br-bl, 0px);
+} /* swamp mottled overlay */
+.tile.forest{
+  background-color: var(--green); /* match land color under sprite */
+  background-image: url('./images/overworld/forest.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+} /* forest texture */
+.tile.mountain{
+  background-color: var(--green); /* match land color under sprite */
+  background-image: url('./images/overworld/mountain.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+} /* mountain texture */
+/* Special POI tiles: draw vendor color as overlay so rounded corners show land green behind */
+.tile.goal,
+.tile.shop,
+.tile.smith,
+.tile.temple,
+.tile.inn{
+  position: relative;
+  background: var(--green); /* base shows in the corner cutouts */
+}
+
+/* Vendor overlays (rounded squares) */
+.tile.goal::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #facc15; /* yellow */
+  border-radius: 6px;
+}
+.tile.shop::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #f97316; /* orange */
+  border-radius: 6px;
+}
+.tile.smith::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #374151; /* dark gray */
+  border-radius: 6px;
+}
+.tile.temple::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #8b5cf6; /* purple */
+  border-radius: 6px;
+}
+.tile.inn::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #ffffff; /* white */
+  border-radius: 6px;
+}
+
+/* Subtle shimmer overlay for unique biome tiles */
+.tile .shimmer{
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+.tile .shimmer::before{
+  content: "";
+  position: absolute;
+  top: -50%;
+  bottom: -50%;
+  left: -120%;
+  width: 60%;
+  transform: rotate(25deg);
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.12), rgba(255,255,255,0));
+  animation: tileShimmer 2200ms linear infinite;
+}
+@keyframes tileShimmer{
+  0%{ left: -120%; }
+  100%{ left: 160%; }
+}
+
+.tile .player{
+  width: 100%;
+  height: 100%;
+  background-image: url('./images/player/knight.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  position: relative;
+  z-index: 2;
+}
+
+/* CUTSCENE DIALOGUE */
+#dialogue{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  padding: 14px 16px 12px;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,.3) 18%, rgba(0,0,0,.42) 40%, rgba(0,0,0,.55) 100%);
+  color:#e5e7eb;
+  z-index: 80; /* ensure dialogue overlays map tiles and vendor UI */
+}
+
+.dialogue-box{
+  background: rgba(17,24,39,.82);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 14px 16px 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+.dialogue-text{
+  font-size: 16px;
+  line-height: 1.5;
+  height: calc(1.5em * 5); /* fixed to 5 lines */
+  overflow: hidden;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.dialogue-hint{
+  font-size: 12px;
+  color: #cbd5e1;
+  opacity: .85;
+  margin-top: 8px;
+}
+
+/* OVERWORLD HUD */
+#ow-status{
+  position:absolute;
+  top: 48px;
+  left: 8px;
+  width: min(320px, 46vw);
+  color:#e5e7eb;
+  z-index: 25;
+  font-size: 12px; /* match hint font size */
+}
+#ow-status .ow-panel{
+  background: rgba(17,24,39,.82);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  backdrop-filter: blur(2px);
+}
+#ow-status .ow-title{
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+#ow-status .ow-grid{
+  display:grid;
+  grid-template-columns: auto 1fr 72px; /* label | value | fixed-width modifiers */
+  gap: 6px 10px;
+  font-size: 12px;
+}
+#ow-status .ow-grid .val{
+  justify-self:end;
+}
+#ow-status .ow-grid .mod-col{
+  width: 72px;
+  justify-self:end;
+  text-align:right;
+}
+#ow-status .ow-subtitle{
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+#ow-status .ow-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  max-height: 24vh;
+  overflow:auto;
+}
+#ow-status .ow-list li{
+  display:flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(10,15,25,.35);
+  font-size: 12px;
+}
+#ow-status .ow-list .muted{
+  color:#93a3b8;
+  border: 1px dashed rgba(255,255,255,.14);
+  background: rgba(10,15,25,.2);
+}
+
+/* Color coding for equipment modifiers in status */
+#ow-status .mod.pos{ color: var(--green); font-weight: 600; }
+#ow-status .mod.neg{ color: var(--red); font-weight: 600; }
+
+/* COMBAT */
+#combat{
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  z-index: 60; /* above UI */
+  background: rgba(3,7,18,0.9); /* dark overlay backdrop */
+}
+
+#statusbar{
+  height: 64px;
+  display:flex;
+  align-items:center;
+  gap: 14px;
+  padding: 0 18px;
+  color:#e5e7eb;
+  background: rgba(10,15,25,.75);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+  width: min(90vw, 720px);
+  justify-self: center; /* center within grid */
+  margin: 10px auto 8px;
+  font-size: 14px; /* smaller font for battle status */
+}
+
+#statusbar .label{
+  color:#9ca3af;
+}
+
+/* Compact info groups in status bar */
+#statusbar .sb-group{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  white-space: nowrap;
+}
+#statusbar .sb-group.col{
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+#statusbar .sb-label{
+  font-size: 11px;
+  color:#9ca3af;
+  line-height: 1;
+}
+#statusbar .sb-group strong{
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* HP bars */
+.hpbar{
+  position: relative;
+  height: 10px;
+  background: var(--green);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.hpbar .missing{
+  position: absolute;
+  top: 0; right: 0;
+  height: 100%;
+  width: 0%;
+  background: var(--red);
+  transition: none;
+  will-change: width;
+}
+.hpbar .text{
+  position: absolute;
+  inset: 0;
+  display:grid;
+  place-items:center;
+  font-size: 12px;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0,0,0,.85);
+  pointer-events: none;
+}
+
+/* Animate only when class 'anim' present (decreasing HP) */
+.hpbar.anim .missing{
+  transition: width 220ms ease-out;
+}
+
+/* Small shake animation using margin-left so it doesn't clash with transforms */
+@keyframes shakeX {
+  0%, 100% { margin-left: 0; }
+  20% { margin-left: -4px; }
+  40% { margin-left: 4px; }
+  60% { margin-left: -3px; }
+  80% { margin-left: 3px; }
+}
+.shake-x{
+  animation: shakeX 180ms ease-in-out;
+}
+
+#statusbar .hp-block{
+  display:flex;
+  flex-direction: column;
+  align-items:flex-start;
+  gap: 6px;
+}
+#statusbar .hp-block .bar-row{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+}
+#statusbar .hp-block .hpbar{
+  width: clamp(140px, 26vw, 280px);
+  height: 16px;
+}
+#statusbar .hp-block .spbar{
+  width: clamp(140px, 26vw, 280px);
+  height: 16px;
+}
+
+/* SP bar color overrides (base blue, dark missing overlay) */
+.spbar{ background: var(--blue); }
+.spbar .missing{ background: rgba(0,0,0,.35); }
+
+/* Enemy HP bar (above monster) */
+.enemy-hpbar{
+  position:absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 10px;
+  background: var(--green);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 2;
+}
+
+
+.turn-panel .turn-title{
+  font-size: 12px;
+  color: #cbd5e1;
+  margin-bottom: 6px;
+}
+.turn-panel .turn-text{
+  font-size: 14px;
+  line-height: 1.5;
+  height: calc(1.5em * 5);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  overflow: hidden;
+}
+
+.combat-display{
+  display:grid;
+  place-items:center;
+  position:relative;
+}
+
+.monster{
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
+  background-image: url('./images/battle/SlimeA.png');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  transform: scale(16);
+  transform-origin: center;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,.45));
+}
+
+.combat-message{
+  position:absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(90vw, 720px); /* fixed width to avoid resizing with content */
+  box-sizing: border-box;
+  padding: 8px 12px;
+  background: rgba(17,24,39,.8);
+  border: 1px solid rgba(255,255,255,.08);
+  color: #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5; /* stable line height */
+  height: calc(1.5em * 5); /* fixed to 5 lines */
+  white-space: pre-line; /* allow multi-line battle log */
+  overflow-wrap: anywhere; /* keep long words inside */
+  overflow: hidden; /* keep box height stable */
+}
+
+.choices{
+  display:flex;
+  justify-content:center;
+  gap: 10px;
+  padding: 12px 0 16px;
+  margin-bottom: 5%;
+}
+#combat .choices.is-invisible{
+  visibility: hidden;
+  pointer-events: none;
+}
+.choice{
+  min-width: 120px;
+  text-align:center;
+  padding: 10px 14px;
+  background: rgba(17,24,39,.82);
+  border: 1px solid rgba(255,255,255,.08);
+  color: #e5e7eb;
+  border-radius: 10px;
+  cursor: default;
+  user-select:none;
+}
+.choice.selected{
+  outline: none;
+  box-shadow: 0 0 0 6px var(--blue); /* thick blue ring for selected action */
+}
+
+/* SHOP OVERLAY */
+#shop{
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  z-index: 60;
+  background: rgba(229,231,235,0.8); /* light gray with transparency */
+}
+#shop .shop-content{
+  display:grid;
+  place-items:center;
+  position:relative;
+  height: 100%;
+  width: 100%;
+  background-color: transparent; /* show underlying semi-transparent gray overlay */
+}
+#shop .shop-banner{
+  position:absolute;
+  top: 5vh; /* nudge down ~10% of the top-half height */
+  left:0;
+  right:0;
+  height: 50vh; /* occupy the top half */
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size: contain; /* don't force full width; respect max height */
+  z-index: 0;
+}
+#shop .shop-square{
+  width: 120px;
+  height: 120px;
+  background: transparent; /* let the container's background show through */
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  position: relative;
+  z-index: 1;
+}
+#shop .shop-message{
+  position:absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(90vw, 720px);
+  box-sizing: border-box;
+  padding: 8px 12px;
+  background: rgba(17,24,39,.8);
+  border: 1px solid rgba(255,255,255,.08);
+  color: #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  /* Ensure true 5-line content height under border-box (padding 8+8, border 1+1 = 18px) */
+  height: calc(1.5em * 5 + 18px);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  overflow: hidden;
+  z-index: 1;
+}
+#shop .shop-choices{
+  display:flex;
+  justify-content:center;
+  gap: 10px;
+  padding: 12px 0 16px;
+  position: absolute; /* place just above message box */
+  left: 0;
+  right: 0;
+  /* 10px (message bottom) + message height (5 lines) + 12px gap */
+  bottom: calc(1.5em * 5 + 22px);
+  z-index: 1;
+}
+#shop .shop-choices.is-invisible{
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* DEV CONSOLE */
+#dev-toggle{
+  position:absolute;
+  top:8px; right:8px;
+  width: 28px; height: 28px;
+  background: rgba(17,24,39,.8);
+  border: 1px solid rgba(255,255,255,.08);
+  color:#e5e7eb;
+  font-size: 14px;
+  display:none !important; place-items:center;
+  border-radius: 8px;
+  cursor:pointer;
+  user-select:none;
+  z-index: 30;
+}
+
+
+#dev-console{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(11,18,32,0.98), rgba(11,18,32,0.9));
+  color: #e5e7eb;
+  backdrop-filter: blur(4px);
+  border-left: none;
+  padding: 12px;
+  z-index: 1000; /* ensure it overlays game UI */
+  display: grid; /* align containers in a grid */
+  grid-auto-rows: min-content;
+  gap: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 13px; /* slightly smaller to reduce scrolling */
+}
+
+.dev-title{
+  font-weight: 700;
+  letter-spacing:.02em;
+  color: var(--blue);
+}
+
+.dev-row{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.dev-row-3{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+}
+
+/* Four-column row for even alignment of button groups */
+.dev-row-4{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+/* Make controls fill their grid cells consistently */
+#dev-console .dev-row button,
+#dev-console .dev-row-3 button,
+#dev-console .dev-row-4 button{
+  width: 100%;
+  min-width: 0;
+}
+
+#dev-console .dev-row .input,
+#dev-console .dev-row select,
+#dev-console .dev-row input,
+#dev-console .dev-row-3 .input,
+#dev-console .dev-row-3 select,
+#dev-console .dev-row-3 input,
+#dev-console .dev-row-4 .input,
+#dev-console .dev-row-4 select,
+#dev-console .dev-row-4 input{
+  width: 100%;
+  min-width: 0;
+}
+
+/* Single-button rows span full width */
+#dev-console .dev-row > button:only-child,
+#dev-console .dev-row-3 > button:only-child,
+#dev-console .dev-row-4 > button:only-child{
+  grid-column: 1 / -1;
+}
+
+/* Align labels nicely */
+#dev-console .dev-row > label,
+#dev-console .dev-row-3 > label,
+#dev-console .dev-row-4 > label{
+  align-self: center;
+}
+
+.dev-grid{
+  display:grid;
+  gap: 8px;
+}
+
+.dev-console small{
+  color:#93a3b8;
+}
+.dev-console label{
+  color:#cbd5e1;
+}
+
+@media (max-width: 640px){
+  #dev-console{
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Tighter form controls inside dev console + clearer contrast */
+#dev-console .input,
+#dev-console select{
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(96,165,250,.28); /* blue-400 */
+  background: rgba(15,23,42,.75); /* slate-900 with alpha */
+  color: #e5e7eb;
+}
+#dev-console button{
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(96,165,250,.45);
+  background: rgba(37,99,235,0.12); /* blue-600 tint */
+  color: #e5e7eb;
+  transition: background-color 120ms ease, border-color 120ms ease, filter 120ms ease;
+}
+#dev-console button:hover{
+  background: rgba(37,99,235,0.22);
+  border-color: rgba(96,165,250,.65);
+}
+#dev-console .input:focus,
+#dev-console select:focus,
+#dev-console button:focus{
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(59,130,246,.35); /* ring */
+}
+
+/* Match name prompt controls to dev console style */
+#name-prompt .input,
+#name-prompt select{
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(96,165,250,.28);
+  background: rgba(15,23,42,.75);
+  color: #e5e7eb;
+}
+#name-prompt button{
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(96,165,250,.45);
+  background: rgba(37,99,235,0.12);
+  color: #e5e7eb;
+  transition: background-color 120ms ease, border-color 120ms ease, filter 120ms ease;
+}
+#name-prompt button:hover{
+  background: rgba(37,99,235,0.22);
+  border-color: rgba(96,165,250,.65);
+}
+#name-prompt .input:focus,
+#name-prompt select:focus,
+#name-prompt button:focus{
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(59,130,246,.35);
+}
+/* Center a single action button row inside name prompt */
+#name-prompt .dev-row > button:only-child{
+  grid-column: 1 / -1;
+  justify-self: center;
+}
+
+/* Add vertical spacing between elements on the name screen */
+#name-prompt .menu-panel > * + *{
+  margin-top: 12px;
+}
+
+/* Collapsible details styling */
+#dev-console details.section{
+  padding: 0;
+  border-radius: 12px;
+}
+#dev-console details.section > summary{
+  list-style: none;
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(96,165,250,.25); /* blue-400 border */
+  background: rgba(17,24,39,.92);
+  color: #dbeafe; /* blue-100 text */
+  border-left: 3px solid var(--blue);
+}
+#dev-console details.section[open]{
+  background: rgba(17,24,39,.5);
+  border: 1px solid rgba(96,165,250,.22);
+}
+#dev-console details.section[open] > summary{
+  margin-bottom: 8px;
+}
+#dev-console details.section > *:not(summary){
+  padding: 0 8px 8px 8px;
+}
+
+/* small scroll area to cap large lists */
+#dev-console .dev-scroll{
+  max-height: 180px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+button.primary{
+  background: #16a34a;
+  border-color: rgba(255,255,255,.12);
+}
+button.warn{
+  background: #ef4444;
+  border-color: rgba(255,255,255,.12);
+}
+#dev-console button.primary:hover,
+#dev-console button.warn:hover{
+  filter: brightness(1.08);
+}
+
+.section{
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.06);
+  background: rgba(0,0,0,.15);
+}
+#dev-console .section{
+  background: rgba(17,24,39,.4);
+  border-color: rgba(96,165,250,.18);
+}
+
+#item-menu,
+#shop-menu,
+#equip-menu{
+  position:absolute;
+  top:50%; left:50%;
+  transform: translate(-50%, -50%);
+  width: min(90vw, 520px);
+  max-height: 60vh;
+  z-index: 2;
+}
+/* Elevate equipment menu above overworld status panel */
+#equip-menu{
+  z-index: 30;
+}
+/* Fullscreen name prompt overlay (no image) */
+#name-prompt{
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 40;
+  background: linear-gradient(180deg, rgba(11,18,32,0.96), rgba(11,18,32,0.88));
+  backdrop-filter: blur(2px);
+}
+
+/* Larger layout for blacksmith to fit all weapons */
+#shop-menu.is-large{
+  width: min(96vw, 720px);
+  max-height: 78vh;
+  top: 38%; /* shift upward to avoid overlap with bottom dialogue/message box */
+}
+#shop-menu.is-large .menu-list{
+  max-height: 64vh;
+}
+#item-menu .menu-panel,
+#shop-menu .menu-panel,
+#equip-menu .menu-panel,
+#name-prompt .menu-panel{
+  background: rgba(17,24,39,.9);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 10px;
+  color:#e5e7eb;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+/* Title screen overlay */
+#title{
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 50;
+  background: linear-gradient(180deg, rgba(11,18,32,0.96), rgba(11,18,32,0.88));
+  backdrop-filter: blur(2px);
+}
+#title .title-panel{
+  text-align: center;
+  background: rgba(17,24,39,.9);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 18px 22px;
+  color:#e5e7eb;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+#title .game-title{
+  font-family: 'Press Start 2P', cursive;
+  font-weight: 800;
+  letter-spacing: .02em;
+  font-size: clamp(28px, 6vw, 56px);
+  margin-bottom: 8px;
+}
+#title .title-hint{
+  font-size: 14px;
+  color: #cbd5e1;
+  opacity: .9;
+  margin-top: 8px;
+}
+
+#item-menu .menu-title,
+#shop-menu .menu-title,
+#equip-menu .menu-title,
+#name-prompt .menu-title{
+  font-weight: 700;
+  margin: 4px 6px 8px;
+}
+#item-menu .menu-list,
+#shop-menu .menu-list,
+#equip-menu .menu-list{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  max-height: 46vh;
+  overflow:auto;
+  padding: 4px 2px;
+}
+.item-row{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(10,15,25,.35);
+}
+.item-row.selected{
+  outline: 4px solid #000000;
+  box-shadow: none;
+}
+.item-row .item-main{
+  display:flex;
+  flex-direction:column;
+}
+.item-row .item-name{
+  font-weight: 600;
+}
+.item-row .item-desc{
+  color:#93a3b8;
+  font-size: 12px;
+}
+#item-menu .menu-hint,
+#shop-menu .menu-hint,
+#equip-menu .menu-hint{
+  color:#93a3b8;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.hidden{ display:none !important; }
+
+/* Accessibility hint bubble */
+.hint{
+  position:absolute;
+  top: 8px; left: 8px;
+  color:#cbd5e1;
+  background: rgba(17,24,39,.7);
+  border:1px solid rgba(255,255,255,.08);
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  z-index: 20;
+}
+
+/* Overworld fantasy icons */
+.tile .ow-icon{
+  position:absolute;
+  inset: 0;
+  display: none; /* hidden by default; enabled in fantasy mode */
+  place-items:center;
+  pointer-events:none;
+  z-index: 1;
+}
+.tile .ow-icon .ra{
+  font-size: 18px;
+  line-height: 1;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,0.25));
+}
+
+/* Enable icon overlay (PNG textures remain for forest/mountain) */
+#app.icons-fantasy .tile .ow-icon{ display: grid; }
+
+/* Icon color themes */
+#app.icons-fantasy.icons-mono .tile .ow-icon .ra{ color: var(--cream); }
+
+#app.icons-fantasy.icons-colored .tile.forest .ow-icon .ra{ color: #d1fae5; }   /* mint on green */
+#app.icons-fantasy.icons-colored .tile.mountain .ow-icon .ra{ color: #e5e7eb; } /* stone on grass */
+#app.icons-fantasy.icons-colored .tile.desert .ow-icon .ra{ color: #7c4d1b; }   /* brown on sand */
+#app.icons-fantasy.icons-colored .tile.goal .ow-icon .ra{ color: #7c2d12; }     /* deep brown on gold */
+#app.icons-fantasy.icons-colored .tile.shop .ow-icon .ra{ color: #1f2937; }     /* slate on orange */
+#app.icons-fantasy.icons-colored .tile.smith .ow-icon .ra{ color: #e5e7eb; }    /* light on dark */
+#app.icons-fantasy.icons-colored .tile.temple .ow-icon .ra{ color: #f5d0fe; }   /* lilac on purple */
+#app.icons-fantasy.icons-colored .tile.inn .ow-icon .ra{ color: #b45309; }      /* amber on white */
+
+/* Shimmer effect for unique biome tiles (forest, mountain, desert) */
+/* Clip shimmer strictly inside the tile so it doesn't bleed into neighbors */
+.tile.is-shimmer{ overflow: hidden; }
+.tile.is-shimmer .shimmer{
+  position: absolute;
+  inset: 0;
+  border-radius: inherit; /* match coastline rounding on container */
+  pointer-events: none;
+  z-index: 2; /* above tile overlays, below player */
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0) 42%,
+    rgba(255,255,255,0.26) 50%,
+    rgba(255,255,255,0) 58%);
+  background-size: 220% 220%;
+  animation: tileShimmer 4200ms linear infinite;
+  /* blend softly with underlying texture/colors */
+  mix-blend-mode: soft-light;
+  /* feather edges so it doesn't clash with adjacent tiles */
+  -webkit-mask-image: radial-gradient(closest-side, rgba(0,0,0,1) 62%, rgba(0,0,0,0) 100%);
+          mask-image: radial-gradient(closest-side, rgba(0,0,0,1) 62%, rgba(0,0,0,0) 100%);
+  /* subtle inner glow so effect is visible even on flat colors */
+  box-shadow: inset 0 0 6px rgba(255,255,255,0.1);
+}
+/* Desert uses custom overlay radii via CSS vars */
+.tile.desert.is-shimmer .shimmer{
+  border-radius: var(--des-br-tl, 0px) var(--des-br-tr, 0px) var(--des-br-br, 0px) var(--des-br-bl, 0px);
+}
+
+@keyframes tileShimmer{
+  0% { background-position: -120% -120%; }
+  100% { background-position: 120% 120%; }
+}
+
+/* === Bright theme overrides (retro blue dialogue with white border) === */
+
+/* Global UI blue */
+:root{ --blue:#0096FF; }
+
+/* Overall app background brighter */
+#app{
+  background: radial-gradient(1200px 800px at 50% -10%, #dbeafe 0%, #e5e7eb 38%, #eff6ff 70%, #ffffff 100%);
+}
+
+/* Dialogue: retro blue box with thick white border */
+#dialogue{
+  background: none;
+  color: inherit;
+}
+.dialogue-box{
+  background: #10118c;           /* requested dialogue blue */
+  border: 4px solid #ffffff;     /* thick white border */
+  border-radius: 10px;
+  color: #ffffff;                /* white text in blue dialogue */
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+.dialogue-box .dialogue-text{
+  color: #ffffff;
+  font-family: 'Press Start 2P', cursive;
+  font-weight: 400;
+  line-height: 1.5;
+  height: calc(1.5em * 5); /* fixed to 5 lines */
+}
+.dialogue-box .dialogue-hint{
+  color: #ffffff;
+  font-family: 'Press Start 2P', cursive;
+  font-weight: 400;
+}
+
+/* Battles: keep black background; message box matches dialogue */
+#combat{
+  background: #000000;
+}
+.combat-message{
+  background: #10118c;
+  border: 4px solid #ffffff;
+  color: #ffffff;
+  font-family: 'Press Start 2P', cursive;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+
+
+/* Shop message uses same retro dialogue styling */
+#shop .shop-message{
+  background: #10118c;
+  border: 4px solid #ffffff;
+  color: #ffffff;
+  font-family: 'Press Start 2P', cursive;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: 16px; /* match story dialogue sizing */
+  line-height: 1.5;
+  /* Ensure true 5-line content height under border-box (padding 8+8, border 4+4 = 24px) */
+  height: calc(1.5em * 5 + 24px);
+}
+
+/* Adjust choices offset to sit just above the taller message box (10px bottom + message height + 12px gap) */
+#shop .shop-choices{
+  bottom: calc(1.5em * 5 + 46px);
+}
+
+/* Overworld status panel brighter */
+#ow-status{
+  color: #0f172a;
+}
+#ow-status .ow-panel{
+  background: rgba(255,255,255,.95);
+  border: 2px solid #0096FF;
+  color: #0f172a;
+}
+#ow-status .ow-list li{
+  border: 1px solid #0096FF;
+  background: rgba(255,255,255,.85);
+  color: #0f172a;
+}
+#ow-status .ow-list .muted{
+  color: #64748b;
+  border: 1px dashed #0096FF;
+  background: rgba(255,255,255,.65);
+}
+
+/* Choice buttons brighter */
+.choice{
+  background: #ffffff;
+  border: 2px solid #0096FF;
+  color: #0f172a;
+}
+
+/* Combat status bar brighter */
+#statusbar{
+  background: rgba(255,255,255,.94);
+  border: 2px solid #0096FF;
+  color: #0f172a;
+}
+
+/* Menus and panels brighter */
+#item-menu .menu-panel,
+#shop-menu .menu-panel,
+#equip-menu .menu-panel,
+#name-prompt .menu-panel{
+  background: rgba(255,255,255,.96);
+  border: 2px solid #0096FF;
+  color: #0f172a;
+}
+
+/* Item rows in lists brighter */
+.item-row{
+  border: 1px solid #0096FF;
+  background: rgba(255,255,255,.9);
+  color: #0f172a;
+}
+.item-row .item-desc{
+  color: #475569;
+}
+
+/* Title and name prompt overlays brighter */
+#title{
+  background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.75));
+}
+#title .title-panel{
+  background: #ffffff;
+  border: 2px solid #0096FF;
+  color: #0f172a;
+}
+#name-prompt{
+  background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.75));
+}
+
+/* Accessibility hint bubble brighter */
+.hint{
+  color: #0f172a;
+  background: rgba(255,255,255,.9);
+  border: 1px solid #0096FF;
+}
+
+/* Name prompt controls: bright inputs and buttons */
+#name-prompt .input,
+#name-prompt select{
+  background: #ffffff;
+  border: 2px solid #0096FF;
+  color: #0f172a;
+}
+#name-prompt .input::placeholder{
+  color: #64748b;
+}
+#name-prompt button{
+  background: #ffffff;
+  border: 2px solid #0096FF;
+  color: #0f172a;
+}
+#name-prompt button:hover{
+  background: #f8fafc;
+  border-color: #0096FF;
+}

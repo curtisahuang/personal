@@ -1,0 +1,640 @@
+import THREE from './vendor/three.module.js';
+import { mergeVertices, ConvexGeometry } from './vendor/extras.js';
+import { scene, dirLight, GROUND_SIZE } from './core.js';
+
+export const treeFootprints = [];
+export const rockFootprints = [];
+
+// Soft blob shadow texture used for cheap tree shadows
+function createShadowTexture() {
+  const size = 128;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  const g = ctx.createRadialGradient(size / 2, size / 2, size * 0.1, size / 2, size / 2, size * 0.5);
+  g.addColorStop(0, 'rgba(0,0,0,0.45)');
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = THREE.ClampToEdgeWrapping;
+  tex.wrapT = THREE.ClampToEdgeWrapping;
+  tex.anisotropy = 4;
+  tex.needsUpdate = true;
+  return tex;
+}
+
+// Trees (instanced for performance) — multiple species
+export function addForestInstanced(treeCount = 4000) {
+  const forest = new THREE.Group();
+
+  // Base unit geometries
+  const trunkGeo = new THREE.CylinderGeometry(1, 1, 1, 8);
+  const coneGeo = new THREE.ConeGeometry(1, 1, 10);
+  const sphereGeo = new THREE.SphereGeometry(1, 12, 10);
+
+  // Materials
+  const trunkBrownMat = new THREE.MeshStandardMaterial({ color: 0x7a4a21, roughness: 1.0, metalness: 0.0 });
+  const trunkBirchMat = new THREE.MeshStandardMaterial({ color: 0xe7ded0, roughness: 0.95 });
+  const trunkDeadMat  = new THREE.MeshStandardMaterial({ color: 0x6b5b53, roughness: 1.0 });
+
+  const foliageConiferMat      = new THREE.MeshStandardMaterial({ color: 0x2e8b57, roughness: 0.9 });
+  const foliageConiferDarkMat  = new THREE.MeshStandardMaterial({ color: 0x1f6d3c, roughness: 0.95 });
+  const foliageDeciduousMat    = new THREE.MeshStandardMaterial({ color: 0x3ea24a, roughness: 0.9 });
+  const foliageBirchMat        = new THREE.MeshStandardMaterial({ color: 0x6abd45, roughness: 0.95 });
+
+  // Transform buffers per species/part
+  const transforms = {
+    trunkBrown: [], trunkBirch: [], trunkDead: [],
+    pineC1: [], pineC2: [], pineC3: [],
+    spruceC1: [], spruceC2: [], spruceC3: [],
+    decidBot: [], decidTop: [],
+    birchBot: [], birchTop: [],
+    shadowBlobs: [],
+  };
+
+  // Helper to push transforms
+  const tmp = new THREE.Object3D();
+  const push = (arr, x, y, z, sx, sy, sz) => {
+    tmp.position.set(x, y, z);
+    tmp.rotation.set(0, 0, 0);
+    tmp.scale.set(sx, sy, sz);
+    tmp.updateMatrix();
+    arr.push(tmp.matrix.clone());
+  };
+
+  // Align blob shadows with the sun direction and offset them accordingly
+  const sunDir = new THREE.Vector3().subVectors(dirLight.target.position, dirLight.position).normalize();
+  const sunDirXZ = new THREE.Vector3(sunDir.x, 0, sunDir.z);
+  let shadowAngleY = 0;
+  let shadowOffsetFactor = 0;
+  if (sunDirXZ.lengthSq() > 1e-6) {
+    sunDirXZ.normalize();
+    shadowAngleY = Math.atan2(sunDirXZ.x, sunDirXZ.z);
+    shadowOffsetFactor = 1.2 / Math.max(0.3, Math.abs(sunDir.y));
+  } else {
+    sunDirXZ.set(1, 0, 0);
+    shadowAngleY = 0;
+    shadowOffsetFactor = 0;
+  }
+
+  const addShadow = (x, z, radius) => {
+    const base = 1.7 * (0.95 + Math.random() * 0.1);
+    const rx = Math.max(2, radius * base);
+    const rz = Math.max(2, radius * (base + shadowOffsetFactor));
+    const offset = radius * shadowOffsetFactor;
+
+    tmp.position.set(x + sunDirXZ.x * offset, 0.02, z + sunDirXZ.z * offset);
+    tmp.rotation.set(0, shadowAngleY, 0);
+    tmp.scale.set(rx, 1, rz);
+    tmp.updateMatrix();
+    transforms.shadowBlobs.push(tmp.matrix.clone());
+  };
+
+  // Spatial hashing to reduce tree overlaps
+  const CELL_SIZE = 12;
+  const MAX_TREE_RADIUS = 10;
+  const grid = new Map();
+  const cellIndex = (v) => Math.floor(v / CELL_SIZE);
+  const key = (ix, iz) => ix + ',' + iz;
+
+  function canPlaceAt(x, z, r) {
+    const ix = cellIndex(x);
+    const iz = cellIndex(z);
+    const range = Math.ceil((r + MAX_TREE_RADIUS) / CELL_SIZE);
+    for (let dx = -range; dx <= range; dx++) {
+      for (let dz = -range; dz <= range; dz++) {
+        const k = key(ix + dx, iz + dz);
+        const cell = grid.get(k);
+        if (!cell) continue;
+        for (let i = 0; i < cell.length; i++) {
+          const p = cell[i];
+          const minDist = r + p.r;
+          const dxp = x - p.x;
+          const dzp = z - p.z;
+          if ((dxp * dxp + dzp * dzp) < (minDist * minDist)) return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  function insertAt(x, z, r) {
+    const ix = cellIndex(x);
+    const iz = cellIndex(z);
+    const k = key(ix, iz);
+    if (!grid.has(k)) grid.set(k, []);
+    grid.get(k).push({ x, z, r });
+    treeFootprints.push({ x, z, r });
+  }
+
+  // Distribute trees
+  let placed = 0;
+  let attempts = 0;
+  const MAX_ATTEMPTS = treeCount * 20;
+  while (placed < treeCount && attempts < MAX_ATTEMPTS) {
+    attempts++;
+
+    const x = (Math.random() - 0.5) * (GROUND_SIZE - 100);
+    const z = (Math.random() - 0.5) * (GROUND_SIZE - 100);
+
+    const minRadius = 20;
+    if (Math.hypot(x, z) < minRadius) continue;
+
+    const r = Math.random();
+
+    if (r < 0.35) {
+      // Pine
+      const trunkH = 5 + Math.random() * 4;
+      const trunkR = 0.25 + Math.random() * 0.15;
+
+      const h1 = trunkH * 1.00, r1 = trunkH * 0.55;
+      const h2 = trunkH * 0.80, r2 = trunkH * 0.45;
+      const h3 = trunkH * 0.60, r3 = trunkH * 0.32;
+
+      const widthMul = 1.15 + Math.random() * 0.10;
+      const R1 = r1 * widthMul;
+      const R2 = r2 * widthMul;
+      const R3 = r3 * widthMul;
+
+      const overlapBase = h1 * 0.06;
+      const overlap12   = h2 * 0.18;
+      const overlap23   = h3 * 0.22;
+
+      const footR = Math.max(R1, R2, R3) * 0.9;
+      if (!canPlaceAt(x, z, footR)) continue;
+
+      push(transforms.trunkBrown, x, trunkH / 2, z, trunkR, trunkH, trunkR);
+      push(transforms.pineC1, x, trunkH + h1 / 2 - overlapBase,           z, R1, h1, R1);
+      push(transforms.pineC2, x, trunkH + h1 - overlap12 + h2 / 2,        z, R2, h2, R2);
+      push(transforms.pineC3, x, trunkH + h1 + h2 - overlap23 + h3 / 2,   z, R3, h3, R3);
+
+      const shadowR = Math.max(R1, R2, R3) * 1.1;
+      addShadow(x, z, shadowR);
+      insertAt(x, z, footR);
+
+    } else if (r < 0.60) {
+      // Spruce
+      const trunkH = 6.5 + Math.random() * 5;
+      const trunkR = 0.22 + Math.random() * 0.12;
+
+      const h1 = trunkH * 1.30, r1 = trunkH * 0.42;
+      const h2 = trunkH * 1.00, r2 = trunkH * 0.33;
+      const h3 = trunkH * 0.70, r3 = trunkH * 0.24;
+
+      const widthMul = 1.12 + Math.random() * 0.08;
+      const R1 = r1 * widthMul;
+      const R2 = r2 * widthMul;
+      const R3 = r3 * widthMul;
+
+      const overlapBase = h1 * 0.05;
+      const overlap12   = h2 * 0.16;
+      const overlap23   = h3 * 0.20;
+
+      const footR = Math.max(R1, R2, R3) * 0.9;
+      if (!canPlaceAt(x, z, footR)) continue;
+
+      push(transforms.trunkBrown, x, trunkH / 2, z, trunkR, trunkH, trunkR);
+      push(transforms.spruceC1, x, trunkH + h1 / 2 - overlapBase,         z, R1, h1, R1);
+      push(transforms.spruceC2, x, trunkH + h1 - overlap12 + h2 / 2,      z, R2, h2, R2);
+      push(transforms.spruceC3, x, trunkH + h1 + h2 - overlap23 + h3 / 2, z, R3, h3, R3);
+
+      const shadowR = Math.max(R1, R2, R3) * 1.05;
+      addShadow(x, z, shadowR);
+      insertAt(x, z, footR);
+
+    } else if (r < 0.85) {
+      // Deciduous
+      const trunkH = 4.5 + Math.random() * 3.5;
+      const trunkR = 0.28 + Math.random() * 0.18;
+
+      const rB = trunkH * (0.85 + Math.random() * 0.15);
+      const syB = rB * 0.75;
+
+      const rT = trunkH * (0.60 + Math.random() * 0.10);
+      const syT = rT * 0.80;
+
+      const footR = Math.max(rB, rT);
+      if (!canPlaceAt(x, z, footR)) continue;
+
+      push(transforms.trunkBrown, x, trunkH / 2, z, trunkR, trunkH, trunkR);
+      push(transforms.decidBot, x, trunkH + syB * 0.6, z, rB, syB, rB);
+      push(transforms.decidTop, x, trunkH + syB + syT * 0.5, z, rT, syT, rT);
+
+      const shadowR = Math.max(rB, rT) * 1.15;
+      addShadow(x, z, shadowR);
+      insertAt(x, z, footR);
+
+    } else if (r < 0.97) {
+      // Birch
+      const trunkH = 5 + Math.random() * 3;
+      const trunkR = 0.18 + Math.random() * 0.12;
+
+      const rB = trunkH * (0.70 + Math.random() * 0.15);
+      const syB = rB * 0.60;
+      const rT = trunkH * (0.45 + Math.random() * 0.10);
+      const syT = rT * 0.70;
+
+      const footR = Math.max(rB, rT);
+      if (!canPlaceAt(x, z, footR)) continue;
+
+      push(transforms.trunkBirch, x, trunkH / 2, z, trunkR, trunkH, trunkR);
+      push(transforms.birchBot, x, trunkH + syB * 0.65, z, rB, syB, rB);
+      push(transforms.birchTop, x, trunkH + syB + syT * 0.55, z, rT, syT, rT);
+
+      const shadowR = Math.max(rB, rT) * 1.1;
+      addShadow(x, z, shadowR);
+      insertAt(x, z, footR);
+
+    } else {
+      // Dead tree
+      const trunkH = 5 + Math.random() * 5;
+      const trunkR = 0.23 + Math.random() * 0.15;
+
+      const footR = trunkR * 2.0;
+      if (!canPlaceAt(x, z, footR)) continue;
+
+      push(transforms.trunkDead, x, trunkH / 2, z, trunkR, trunkH, trunkR);
+      addShadow(x, z, trunkR * 1.5);
+      insertAt(x, z, footR);
+    }
+
+    placed++;
+  }
+
+  // Helper to build InstancedMeshes from transform arrays
+  function build(geo, mat, matrices, receiveShadow = false) {
+    if (!matrices.length) return null;
+    const mesh = new THREE.InstancedMesh(geo, mat, matrices.length);
+    for (let i = 0; i < matrices.length; i++) {
+      mesh.setMatrixAt(i, matrices[i]);
+    }
+    mesh.castShadow = false;
+    mesh.receiveShadow = receiveShadow;
+    mesh.instanceMatrix.needsUpdate = true;
+    return mesh;
+  }
+
+  const meshes = [
+    build(trunkGeo,  trunkBrownMat, transforms.trunkBrown, true),
+    build(trunkGeo,  trunkBirchMat, transforms.trunkBirch, true),
+    build(trunkGeo,  trunkDeadMat,  transforms.trunkDead,  true),
+
+    build(coneGeo,   foliageConiferMat,     transforms.pineC1),
+    build(coneGeo,   foliageConiferMat,     transforms.pineC2),
+    build(coneGeo,   foliageConiferMat,     transforms.pineC3),
+
+    build(coneGeo,   foliageConiferDarkMat, transforms.spruceC1),
+    build(coneGeo,   foliageConiferDarkMat, transforms.spruceC2),
+    build(coneGeo,   foliageConiferDarkMat, transforms.spruceC3),
+
+    build(sphereGeo, foliageDeciduousMat,   transforms.decidBot),
+    build(sphereGeo, foliageDeciduousMat,   transforms.decidTop),
+
+    build(sphereGeo, foliageBirchMat,       transforms.birchBot),
+    build(sphereGeo, foliageBirchMat,       transforms.birchTop),
+  ];
+
+  // Build blob shadows
+  const shadowGeo = new THREE.PlaneGeometry(1, 1);
+  shadowGeo.rotateX(-Math.PI / 2);
+  const shadowMat = new THREE.MeshBasicMaterial({
+    map: createShadowTexture(),
+    transparent: true,
+    depthWrite: false,
+  });
+  const shadowMesh = build(shadowGeo, shadowMat, transforms.shadowBlobs);
+  if (shadowMesh) {
+    shadowMesh.renderOrder = 1;
+    forest.add(shadowMesh);
+  }
+
+  for (const m of meshes) {
+    if (m) forest.add(m);
+  }
+
+  scene.add(forest);
+}
+
+// Add rocks scattered on the ground, avoiding trees and each other
+export function addRocksInstanced(rockCount = 1200) {
+  const group = new THREE.Group();
+
+  // Base geometries (low-poly rocks)
+  let rockGeoA = new THREE.IcosahedronGeometry(1, 0);
+  let rockGeoB = new THREE.IcosahedronGeometry(1, 1);
+
+  function displaceAlongNormals(geo, amplitude = 0.18, yFactor = 0.8) {
+    geo.computeVertexNormals();
+    const pos = geo.getAttribute('position');
+    const nrm = geo.getAttribute('normal');
+    const pArr = pos.array;
+    const nArr = nrm.array;
+    for (let i = 0; i < pArr.length; i += 3) {
+      const amp = amplitude * (0.6 + Math.random() * 0.8);
+      pArr[i]     += nArr[i]     * amp;
+      pArr[i + 1] += nArr[i + 1] * amp * yFactor;
+      pArr[i + 2] += nArr[i + 2] * amp;
+    }
+    pos.needsUpdate = true;
+    geo.computeVertexNormals();
+    return geo;
+  }
+
+  function toConvexFlatBottom(geo) {
+    const pos = geo.getAttribute('position');
+    const points = [];
+    for (let i = 0; i < pos.count; i++) {
+      points.push(new THREE.Vector3(
+        pos.getX(i),
+        Math.max(0, pos.getY(i)),
+        pos.getZ(i)
+      ));
+    }
+    const convex = new ConvexGeometry(points);
+    convex.computeVertexNormals();
+    return convex;
+  }
+
+  function prepareRockGeometry(baseGeo, amp, yFactor) {
+    const merged = mergeVertices(baseGeo, 1e-5);
+    displaceAlongNormals(merged, amp, yFactor);
+    const convex = toConvexFlatBottom(merged);
+    return convex;
+  }
+
+  let rockGeoC = new THREE.DodecahedronGeometry(1, 0);
+  let rockGeoD = new THREE.BoxGeometry(1.2, 0.7, 1.2, 2, 1, 2);
+  let rockGeoE = new THREE.OctahedronGeometry(1, 0);
+
+  rockGeoA = prepareRockGeometry(rockGeoA, 0.15, 0.7);
+  rockGeoB = prepareRockGeometry(rockGeoB, 0.12, 0.8);
+  rockGeoC = prepareRockGeometry(rockGeoC, 0.15, 0.8);
+  rockGeoD = prepareRockGeometry(rockGeoD, 0.08, 0.6);
+  rockGeoE = prepareRockGeometry(rockGeoE, 0.20, 0.9);
+
+  const rockMatA = new THREE.MeshStandardMaterial({ color: 0x8a8f98, roughness: 0.98, metalness: 0.0, flatShading: true });
+  const rockMatB = new THREE.MeshStandardMaterial({ color: 0x70757d, roughness: 0.98, metalness: 0.0, flatShading: true });
+  const rockMatC = new THREE.MeshStandardMaterial({ color: 0x7a6e65, roughness: 0.98, metalness: 0.0, flatShading: true });
+  const rockMatD = new THREE.MeshStandardMaterial({ color: 0x5f6a58, roughness: 0.98, metalness: 0.0, flatShading: true });
+  const rockMatE = new THREE.MeshStandardMaterial({ color: 0x6b7685, roughness: 0.98, metalness: 0.0, flatShading: true });
+
+  const matsA = [];
+  const matsB = [];
+  const matsC = [];
+  const matsD = [];
+  const matsE = [];
+
+  const tmp = new THREE.Object3D();
+  const push = (arr, x, y, z, sx, sy, sz, ry) => {
+    tmp.position.set(x, y, z);
+    tmp.rotation.set(0, ry, 0);
+    tmp.scale.set(sx, sy, sz);
+    tmp.updateMatrix();
+    arr.push(tmp.matrix.clone());
+  };
+  const rand = (a, b) => a + Math.random() * (b - a);
+
+  // Build a spatial grid for trees to quickly reject collisions
+  const CELL_SIZE_TREES = 12;
+  const tCellIndex = (v) => Math.floor(v / CELL_SIZE_TREES);
+  const tKey = (ix, iz) => ix + ',' + iz;
+  const treeGrid = new Map();
+  for (const p of treeFootprints) {
+    const ix = tCellIndex(p.x);
+    const iz = tCellIndex(p.z);
+    const k = tKey(ix, iz);
+    if (!treeGrid.has(k)) treeGrid.set(k, []);
+    treeGrid.get(k).push(p);
+  }
+
+  // Rock spatial grid (avoid rock-rock overlaps)
+  const CELL_SIZE_ROCKS = 6;
+  const rCellIndex = (v) => Math.floor(v / CELL_SIZE_ROCKS);
+  const rKey = (ix, iz) => ix + ',' + iz;
+  const rockGrid = new Map();
+
+  function canPlaceAgainstTrees(x, z, r) {
+    const ix = tCellIndex(x);
+    const iz = tCellIndex(z);
+    const range = Math.ceil((r + 10) / CELL_SIZE_TREES);
+    for (let dx = -range; dx <= range; dx++) {
+      for (let dz = -range; dz <= range; dz++) {
+        const k = tKey(ix + dx, iz + dz);
+        const cell = treeGrid.get(k);
+        if (!cell) continue;
+        for (let i = 0; i < cell.length; i++) {
+          const p = cell[i];
+          const minDist = r + p.r * 0.8;
+          const dxp = x - p.x;
+          const dzp = z - p.z;
+          if ((dxp * dxp + dzp * dzp) < (minDist * minDist)) return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  function canPlaceAgainstRocks(x, z, r) {
+    const ix = rCellIndex(x);
+    const iz = rCellIndex(z);
+    const range = Math.ceil(r / CELL_SIZE_ROCKS) + 1;
+    for (let dx = -range; dx <= range; dx++) {
+      for (let dz = -range; dz <= range; dz++) {
+        const k = rKey(ix + dx, iz + dz);
+        const cell = rockGrid.get(k);
+        if (!cell) continue;
+        for (let i = 0; i < cell.length; i++) {
+          const p = cell[i];
+          const minDist = r + p.r;
+          const dxp = x - p.x;
+          const dzp = z - p.z;
+          if ((dxp * dxp + dzp * dzp) < (minDist * minDist)) return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  function insertRock(x, z, r) {
+    const ix = rCellIndex(x);
+    const iz = rCellIndex(z);
+    const k = rKey(ix, iz);
+    if (!rockGrid.has(k)) rockGrid.set(k, []);
+    rockGrid.get(k).push({ x, z, r });
+    rockFootprints.push({ x, z, r });
+  }
+
+  let placed = 0;
+  let attempts = 0;
+  const MAX_ATTEMPTS = rockCount * 30;
+
+  while (placed < rockCount && attempts < MAX_ATTEMPTS) {
+    attempts++;
+
+    const x = (Math.random() - 0.5) * (GROUND_SIZE - 100);
+    const z = (Math.random() - 0.5) * (GROUND_SIZE - 100);
+    const minRadius = 18;
+    if (Math.hypot(x, z) < minRadius) continue;
+
+    const scaleMul = 10;
+
+    const v = Math.random();
+    let variant = 'A';
+    if (v < 0.25) variant = 'A';
+    else if (v < 0.50) variant = 'B';
+    else if (v < 0.70) variant = 'C';
+    else if (v < 0.90) variant = 'D';
+    else variant = 'E';
+
+    let sx, sy, sz;
+    if (variant === 'A') {
+      sx = rand(0.25, 1.10) * scaleMul;
+      sz = rand(0.25, 1.10) * scaleMul;
+      sy = rand(0.18, 0.70) * scaleMul;
+    } else if (variant === 'B') {
+      sx = rand(0.30, 1.40) * scaleMul;
+      sz = rand(0.30, 1.40) * scaleMul;
+      sy = rand(0.25, 0.90) * scaleMul;
+    } else if (variant === 'C') {
+      sx = rand(0.40, 1.60) * scaleMul;
+      sz = rand(0.40, 1.60) * scaleMul;
+      sy = rand(0.20, 1.20) * scaleMul;
+    } else if (variant === 'D') {
+      sx = rand(0.80, 2.20) * scaleMul;
+      sz = rand(0.80, 2.20) * scaleMul;
+      sy = rand(0.15, 0.35) * scaleMul;
+    } else {
+      const bigMul = scaleMul * 2.0;
+      sx = rand(1.00, 1.80) * bigMul;
+      sz = rand(1.00, 1.80) * bigMul;
+      sy = rand(0.90, 2.50) * bigMul;
+    }
+
+    const r = Math.max(sx, sz) * 0.9;
+
+    if (!canPlaceAgainstTrees(x, z, r)) continue;
+    if (!canPlaceAgainstRocks(x, z, r)) continue;
+
+    const ry = rand(0, Math.PI * 2);
+    const y = -rand(0.05, 0.20) * sy;
+
+    if (variant === 'A') {
+      push(matsA, x, y, z, sx, sy, sz, ry);
+    } else if (variant === 'B') {
+      push(matsB, x, y, z, sx, sy, sz, ry);
+    } else if (variant === 'C') {
+      push(matsC, x, y, z, sx, sy, sz, ry);
+    } else if (variant === 'D') {
+      push(matsD, x, y, z, sx, sy, sz, ry);
+    } else {
+      push(matsE, x, y, z, sx, sy, sz, ry);
+    }
+
+    insertRock(x, z, r);
+    placed++;
+  }
+
+  function build(geo, mat, matrices) {
+    if (!matrices.length) return null;
+    const mesh = new THREE.InstancedMesh(geo, mat, matrices.length);
+    for (let i = 0; i < matrices.length; i++) {
+      mesh.setMatrixAt(i, matrices[i]);
+    }
+    mesh.castShadow = false;
+    mesh.receiveShadow = true;
+    mesh.instanceMatrix.needsUpdate = true;
+    return mesh;
+  }
+
+  const mA = build(rockGeoA, rockMatA, matsA);
+  const mB = build(rockGeoB, rockMatB, matsB);
+  const mC = build(rockGeoC, rockMatC, matsC);
+  const mD = build(rockGeoD, rockMatD, matsD);
+  const mE = build(rockGeoE, rockMatE, matsE);
+  if (mA) group.add(mA);
+  if (mB) group.add(mB);
+  if (mC) group.add(mC);
+  if (mD) group.add(mD);
+  if (mE) group.add(mE);
+
+  scene.add(group);
+}
+
+// Add a border of tall rocks along the map edges
+export function addBoundaryRocks(options = {}) {
+  const group = new THREE.Group();
+  const half = GROUND_SIZE * 0.5 - 6;
+  const spacing = options.spacing ?? 28;
+
+  const minW = options.minW ?? 10;
+  const maxW = options.maxW ?? 22;
+  const minD = options.minD ?? 12;
+  const maxD = options.maxD ?? 26;
+  const minH = options.minH ?? 60;
+  const maxH = options.maxH ?? 120;
+
+  const geo = new THREE.BoxGeometry(1, 1, 1);
+  const mat = new THREE.MeshStandardMaterial({
+    color: 0x6b7685, roughness: 0.98, metalness: 0.0, flatShading: true
+  });
+
+  const matrices = [];
+  const tmp = new THREE.Object3D();
+  const rand = (a, b) => a + Math.random() * (b - a);
+
+  function push(x, y, z, sx, sy, sz, ry) {
+    tmp.position.set(x, y, z);
+    tmp.rotation.set(0, ry, 0);
+    tmp.scale.set(sx, sy, sz);
+    tmp.updateMatrix();
+    matrices.push(tmp.matrix.clone());
+  }
+
+  function placeEdgeLine(edge) {
+    if (edge === 'top' || edge === 'bottom') {
+      const z = edge === 'top' ? -half : half;
+      for (let x = -half; x <= half; x += spacing) {
+        const sx = rand(minW, maxW);
+        const sz = rand(minD, maxD);
+        const sy = rand(minH, maxH);
+        const ry = rand(0, Math.PI * 2);
+        const jx = rand(-2, 2);
+        const jz = rand(-2, 2);
+        push(x + jx, sy * 0.5, z + jz, sx, sy, sz, ry);
+        rockFootprints.push({ x: x + jx, z: z + jz, r: Math.max(sx, sz) * 0.9 });
+      }
+    } else {
+      const x = edge === 'left' ? -half : half;
+      for (let z = -half; z <= half; z += spacing) {
+        const sx = rand(minW, maxW);
+        const sz = rand(minD, maxD);
+        const sy = rand(minH, maxH);
+        const ry = rand(0, Math.PI * 2);
+        const jx = rand(-2, 2);
+        const jz = rand(-2, 2);
+        push(x + jx, sy * 0.5, z + jz, sx, sy, sz, ry);
+        rockFootprints.push({ x: x + jx, z: z + jz, r: Math.max(sx, sz) * 0.9 });
+      }
+    }
+  }
+
+  placeEdgeLine('top');
+  placeEdgeLine('bottom');
+  placeEdgeLine('left');
+  placeEdgeLine('right');
+
+  if (matrices.length) {
+    const mesh = new THREE.InstancedMesh(geo, mat, matrices.length);
+    for (let i = 0; i < matrices.length; i++) {
+      mesh.setMatrixAt(i, matrices[i]);
+    }
+    mesh.castShadow = false;
+    mesh.receiveShadow = true;
+    mesh.instanceMatrix.needsUpdate = true;
+    group.add(mesh);
+  }
+
+  scene.add(group);
+}

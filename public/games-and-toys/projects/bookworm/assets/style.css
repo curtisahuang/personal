@@ -1,0 +1,646 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  margin: 0;
+  background: #1f3d2b; /* solid forest green, no gradients */
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  overflow: auto; /* allow page scrolling */
+}
+
+header {
+  position: relative;
+  /* Wood signboard background with subtle grain */
+  background:
+    linear-gradient(180deg, #c8a165 0%, #a4743b 100%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 3px, rgba(0,0,0,0.05) 3px, rgba(0,0,0,0.05) 6px);
+  color: #f3e8a1;
+  padding: 0; /* keep header padding removed as requested */
+  text-align: center;
+  letter-spacing: 0.02em;
+  border: 8px solid #6b4f2a; /* wood edge */
+  border-radius: 18px;        /* rounded signboard corners */
+  /* Add a golden outer border ring using box-shadow spread */
+  box-shadow: 0 0 0 6px #d4af37, 0 14px 28px rgba(0,0,0,0.25), inset 0 2px 0 rgba(255,255,255,0.08), inset 0 -2px 0 rgba(0,0,0,0.12);
+}
+/* Hanging ropes */
+header::before,
+header::after {
+  content: "";
+  position: absolute;
+  top: -28px;
+  width: 8px;
+  height: 38px;
+  background: repeating-linear-gradient(180deg, #d2b48c 0px, #b48a62 6px, #a8794f 12px);
+  border-radius: 6px;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+}
+header::before { left: 18%; }
+header::after  { right: 18%; }
+
+header h1 {
+  position: relative; /* allow decorative fasteners */
+  font-family: "Jacquard 24", serif;
+  color: #f3e8a1;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  font-size: 9rem;
+  line-height: 0.9;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.18); /* slight engraved effect */
+}
+/* Iron fasteners on the signboard */
+header h1::before,
+header h1::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #3f3f46;
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.08), 0 2px 0 rgba(0,0,0,0.25);
+}
+header h1::before { left: 18%; }
+header h1::after  { right: 18%; }
+
+main {
+  flex: 1 0 auto;
+  max-width: 860px;
+  width: 100%;
+  margin: 2.2rem auto 0 auto;
+  background: #faf3dd; /* parchment */
+  padding: 2.0rem 2.0rem 2.0rem;
+  border-radius: 18px;
+  border: 1px solid #e6d3a3;
+  box-shadow: 0 6px 32px 0 rgba(58, 42, 31, 0.12), 0 1.5px 6px 0 rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 70vh;
+  position: relative;
+  overflow-y: auto;
+}
+
+footer {
+  background: #6b4f2a; /* brown */
+  color: #f3e8a1;
+  text-align: center;
+  padding: 1.0rem 0;
+  margin-top: 2.4rem;
+  border-radius: 0 0 18px 18px;
+  font-size: 0.95rem;
+  box-shadow: 0 -2px 12px 0 rgba(40,40,40,0.12);
+  flex-shrink: 0;
+}
+
+.hud {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* left and right only */
+  align-items: start;
+  gap: 1rem;
+  margin-bottom: .6rem;
+}
+.hud-side {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+.hud-side.right {
+  align-items: flex-start;
+}
+/* Ensure rows in enemy column take full width so "Next" aligns with enemy name */
+.hud-side.right .hud-row {
+  width: 100%;
+  justify-content: flex-start;
+}
+.hud-row {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: 1.05rem;
+}
+.hud-row.small {
+  font-size: 0.9rem;
+}
+.hud-label {
+  font-weight: 600;
+  color: #3a2e1a;
+  padding: .2rem .5rem;
+  border-radius: 8px;
+  background: #f6e5b8; /* pale gold */
+}
+.hearts {
+  font-size: 1.25rem;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+/* Render hearts with true half-fill using layered emoji and clipping */
+.hearts {
+  display: inline-flex;
+  gap: 4px;
+  letter-spacing: 0; /* spacing now handled by gap */
+  flex-wrap: wrap;   /* allow hearts to wrap onto multiple lines */
+  white-space: normal;
+}
+.heart {
+  position: relative;
+  display: inline-block;
+  width: 1.25em;
+  height: 1.25em;
+  line-height: 1;
+}
+.heart::before,
+.heart::after {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.heart.empty::before { content: '🤍'; }
+.heart.full::before { content: '❤️'; }
+/* Half: base is empty heart, overlay left half of red heart */
+.heart.half::before { content: '🤍'; }
+.heart.half::after {
+  content: '❤️';
+  /* show left half */
+  clip-path: inset(0 50% 0 0);
+}
+
+/* Full-width status bar above the grid with fixed height to avoid content shifts */
+.statusbar {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  height: 56px; /* fixed height */
+  margin: .2rem 0 .8rem 0;
+  padding: .4rem .6rem;
+  border-radius: 12px;
+  background: #faf3dd; /* parchment */
+  border: 1px solid #e6d3a3;
+}
+.statusbar .message {
+  flex: 1;
+  text-align: center;
+}
+
+/* Equipment list */
+.equip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  align-items: center;
+}
+.equip-list .pill {
+  background: #f6e5b8; /* pale gold */
+  color: #3a2e1a
+}
+
+/* Expandable equipment container */
+.equip-details {
+  width: 100%;
+}
+.equip-details summary {
+  list-style: none;
+  cursor: pointer;
+  display: inline-block;
+}
+.equip-details .equip-list {
+  margin-top: .35rem;
+}
+
+.pill {
+  padding: .35rem .65rem;
+  border-radius: 999px;
+  background: #ede7d3; /* parchment tint */
+  font-size: .85rem;
+}
+.enemy-status {
+  margin-left: 0;
+}
+.enemy-status.charging {
+  background: #fde68a; /* amber */
+  color: #7a3c00;
+}
+
+/* Hide dictionary status container */
+#dictStatus {
+  display: none;
+}
+.muted {
+  color: #6b7280;
+}
+.message {
+  min-height: 1.2rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin: 0.6rem 0 0.8rem 0;
+  /* Reserve space to prevent layout shift while grid renders */
+  min-height: calc(4 * min(120px, 21vw) + 3 * 12px);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, min(120px, 21vw));
+  grid-auto-rows: min(120px, 21vw);
+  gap: 12px;
+  /* Fix grid container height to avoid component shifting during render */
+  height: calc(4 * min(120px, 21vw) + 3 * 12px);
+  min-height: calc(4 * min(120px, 21vw) + 3 * 12px);
+}
+.tile {
+  display: grid;
+  place-items: center;
+  background: #f6f0e0; /* parchment tile */
+  border-radius: 14px;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.05), 0 1px 4px rgba(0,0,0,0.04);
+  font-size: clamp(1.6rem, 5.5vw, 2.2rem);
+  font-weight: 800;
+  color: #1f2937;
+  user-select: none;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .08s ease, background .1s ease, color .1s ease;
+  position: relative;
+}
+.tile:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.06), 0 8px 18px rgba(0,0,0,0.06);
+}
+.tile.selected {
+  background: #dfe9d8; /* soft green */
+  color: #111827;
+  box-shadow: inset 0 -2px 0 rgba(34,197,94,0.25), 0 6px 16px rgba(34,197,94,0.18);
+  /* Thicker, darker selection ring for visibility */
+  outline: 5px solid #1f2937;
+}
+/* Visible focus for keyboard navigation */
+.tile:focus {
+  /* Thicker, dark focus ring */
+  outline: 5px solid #1f2937;
+  outline-offset: 2px;
+  box-shadow: inset 0 -2px 0 rgba(34,197,94,0.25), 0 6px 16px rgba(34,197,94,0.18);
+}
+.tile .badge {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-size: .75rem;
+  color: #6b7280;
+}
+
+/* Special tile types */
+.tile.type-red { background: #fee2e2; outline: 2px solid #fecaca; }
+.tile.type-green { background: #dcfce7; outline: 2px solid #bbf7d0; }
+.tile.type-gray {
+  background: #1f2937; /* dark gray */
+  color: #ffffff;
+  outline: 2px solid #4b5563;
+}
+.tile.type-fire {
+  background: #7f1d1d; /* darker red */
+  outline: 2px solid #b91c1c;
+  color: #ffffff;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.1), 0 10px 24px rgba(127,29,29,0.25);
+  animation: flameFlicker 1.2s ease-in-out infinite;
+}
+.tile.type-poison {
+  background: radial-gradient(70% 70% at 50% 50%, #ecfeff 0%, #c7d2fe 40%, #a78bfa 75%, #7c3aed 100%);
+  outline: 2px solid #c4b5fd;
+  color: #111827;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.08), 0 8px 18px rgba(124,58,237,0.16);
+}
+.tile.type-cursed {
+  background: #1e3a8a; /* dark blue */
+  outline: 2px solid #3b82f6; /* blue */
+  color: #ffffff;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.08), 0 8px 18px rgba(59,130,246,0.2);
+}
+.tile.type-frozen {
+  background: radial-gradient(70% 70% at 50% 50%, #e0f2fe 0%, #bae6fd 40%, #93c5fd 75%, #60a5fa 100%);
+  outline: 2px solid #93c5fd;
+  color: #0f172a;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.06), 0 8px 18px rgba(59,130,246,0.12);
+}
+
+@keyframes flameFlicker {
+  0% { filter: brightness(1); transform: translateY(0); }
+  30% { filter: brightness(1.05); transform: translateY(-1px); }
+  45% { filter: brightness(0.95); transform: translateY(0); }
+  60% { filter: brightness(1.1); transform: translateY(-1px); }
+  100% { filter: brightness(1); transform: translateY(0); }
+}
+
+/* Falling animation for newly refilled letters */
+.tile.fall-in {
+  animation: fallIn 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: transform;
+}
+
+@keyframes fallIn {
+  0%   { transform: translateY(-64px); }
+  70%  { transform: translateY(2px); }
+  100% { transform: translateY(0); }
+}
+
+/* Gravity drop animation for existing tiles moving down */
+.tile.drop {
+  animation: dropDown 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: 120ms;        /* small lag before dropping */
+  animation-fill-mode: both;     /* apply 0% styles during the delay */
+  will-change: transform, opacity;
+}
+
+/* Uses CSS variables:
+   --drop-rows: how many rows the tile moved down (integer)
+   --grid-gap: gap size in px set on the grid container (row gap) */
+@keyframes dropDown {
+  /* Start from the original spot (visible), then drop to the new settled position */
+  0%   { transform: translateY(calc(-1 * var(--drop-rows, 0) * (100% + var(--grid-gap, 12px)))); opacity: 1; }
+  70%  { transform: translateY(2px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Invisible placeholder during gravity phase to keep layout stable */
+.tile.empty {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.wordbar {
+  margin-top: 1.0rem;
+  margin-bottom: .4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+.word {
+  font-size: 1.05rem;
+}
+.word .sep {
+  margin: 0 .5rem;
+}
+
+.controls {
+  display: flex;
+  gap: .6rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.btn {
+  appearance: none;
+  border: 0;
+  border-radius: 10px;
+  background: #f3f4f6;
+  color: #111827;
+  font-weight: 600;
+  padding: .6rem .9rem;
+  cursor: pointer;
+  transition: transform .06s ease, box-shadow .06s ease, background .1s ease, color .1s ease, opacity .1s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn[disabled] {
+  opacity: .6;
+  cursor: not-allowed;
+}
+/* Ensure buttons show a clear focus ring */
+.btn:focus {
+  outline: 3px solid rgba(37,99,235,0.6);
+  outline-offset: 2px;
+}
+/* Active game mode ring */
+.btn.mode-active {
+  outline: 4px solid #1f2937;
+  outline-offset: 2px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.btn.primary {
+  background: #2f6f3e; /* forest green */
+  color: white;
+}
+.btn.success {
+  background: #b8860b; /* gold */
+  color: white;
+}
+
+/* Hard/Extreme styles */
+.btn.warning {
+  background: #b91c1c; /* red */
+  color: #fff;
+}
+.btn.danger {
+  background: #7f1d1d; /* deeper red */
+  color: #fff;
+  box-shadow: 0 0 0 rgba(185, 28, 28, 0.0), 0 2px 6px rgba(0,0,0,0.15);
+  animation: glowPulse 2.2s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%   { box-shadow: 0 0 0 rgba(185,28,28,0.0), 0 2px 6px rgba(0,0,0,0.15); }
+  50%  { box-shadow: 0 0 16px rgba(239,68,68,0.55), 0 6px 18px rgba(0,0,0,0.20); }
+  100% { box-shadow: 0 0 0 rgba(185,28,28,0.0), 0 2px 6px rgba(0,0,0,0.15); }
+}
+
+.log {
+  margin-top: 1.0rem;
+  padding-top: .5rem;
+  border-top: 1px dashed #e5e7eb;
+  min-height: 1.25rem;
+  font-size: .95rem;
+  color: #374151;
+}
+.log-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: .4rem;
+  gap: .6rem; /* spacing between action buttons */
+}
+
+.damage-float {
+  position: absolute;
+  pointer-events: none;
+  font-weight: 800;
+  color: #ef4444;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.08);
+  animation: popfade 0.9s ease forwards;
+  font-size: 1.1rem;
+}
+.damage-float.player {
+  color: #ef4444;
+}
+.damage-float.enemy {
+  color: #16a34a;
+}
+.damage-float.heal {
+  color: #10b981;
+}
+
+@keyframes popfade {
+  0% { opacity: 0; transform: translateY(6px) scale(0.9); }
+  10% { opacity: 1; transform: translateY(-2px) scale(1.02); }
+  100% { opacity: 0; transform: translateY(-26px) scale(1); }
+}
+
+/* Shop overlay */
+.shop-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17,24,39,0.35);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+.shop-overlay.show {
+  display: flex;
+}
+.shop-modal {
+  background: #ffffff;
+  border-radius: 16px;
+  width: min(560px, 92vw);
+  padding: 1.2rem 1.2rem 1.2rem;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.18), 0 6px 20px rgba(0,0,0,0.12);
+}
+.shop-items {
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+  margin-top: .6rem;
+}
+.shop-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: .8rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: .8rem;
+}
+.shop-item-info strong {
+  font-weight: 700;
+}
+.shop-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.0rem;
+}
+
+/* Rules modal scroll container */
+.rules-content {
+  max-height: 60vh;
+  overflow-y: auto;
+  margin-top: .6rem;
+  padding-right: 8px; /* prevent scrollbar overlaying content */
+}
+
+/* Better list formatting for tile effects */
+.rules-list {
+  margin: .3rem 0 0;
+  padding-left: 1.2rem;
+}
+.rules-list li {
+  margin: .2rem 0;
+  line-height: 1.4;
+}
+
+@media (max-width: 850px) {
+  /* Shrink header and heading on narrower screens */
+  header {
+    max-width: 96vw;
+    margin: 1.0rem auto 0;
+    border-width: 6px;
+  }
+  header h1 {
+    font-size: 5rem;
+    letter-spacing: 0.03em;
+    line-height: 0.9;
+  }
+
+  main {
+    max-width: 98vw;
+    padding: 1.0rem 1rem 1.2rem;
+  }
+  .grid {
+    grid-template-columns: repeat(4, min(80px, 22vw));
+    grid-auto-rows: min(80px, 22vw);
+    gap: 10px;
+    /* Match fixed height to mobile tile size + gaps */
+    height: calc(4 * min(80px, 22vw) + 3 * 10px);
+    min-height: calc(4 * min(80px, 22vw) + 3 * 10px);
+  }
+  /* Ensure the board container tightly fits the grid on smaller screens */
+  .board {
+    height: calc(4 * min(80px, 22vw) + 3 * 10px);
+    min-height: calc(4 * min(80px, 22vw) + 3 * 10px);
+  }
+  .hearts { font-size: 1.15rem; }
+}
+
+/* Extra-small phones: shrink the header further */
+@media (max-width: 520px) {
+  header {
+    max-width: 96vw;
+    margin: .8rem auto 0;
+    border-width: 5px;
+  }
+  header h1 {
+    font-size: 3.8rem;
+    letter-spacing: 0.02em;
+    line-height: 0.9;
+  }
+}
+
+/* Layout wrapper to center the whole composition */
+.content-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Side video (hidden by default, shown on xl screens) */
+.side-video {
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  .side-video {
+    display: block;
+    width: 360px;
+    height: auto;
+    aspect-ratio: 1 / 1; /* square container */
+    border-radius: 18px;  /* softened rounded corners */
+    overflow: hidden;     /* ensure video corners are clipped to radius */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.12);
+    outline: 1px solid rgba(0,0,0,0.06);
+    background: #ffffff; /* white background */
+    object-fit: cover;   /* fill the square container */
+    object-position: center;
+  }
+}
+
+/* Ensure selected/focused ring overrides type-specific outlines */
+.tile.selected,
+.tile:focus,
+.tile.selected:focus {
+  outline: 5px solid #1f2937 !important;
+  outline-offset: 2px;
+}

@@ -1,0 +1,8 @@
+export const State = {
+  TITLE: 'TITLE',
+  CUTSCENE: 'CUTSCENE',
+  OVERWORLD: 'OVERWORLD',
+  SHOP: 'SHOP',
+  COMBAT: 'COMBAT',
+  GOOD_ENDING: 'GOOD_ENDING',
+};

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>14 Days Until Christmas!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div id="game">
+    <div id="hud">
+      <div id="dayCounter">Days until Christmas: 14</div>
+      <div id="hardModeBadge" aria-live="polite" aria-hidden="true">Hard Mode</div>
+      <button id="muteToggle" title="Mute/Unmute (M)" aria-pressed="false" aria-label="Mute or unmute audio" class="icon-btn" data-icon="unmuted" aria-live="polite">
+        <span class="icon" aria-hidden="true">🔊</span>
+      </button>
+      <button id="devToggle" title="Toggle Developer Tools (D)" aria-label="Toggle Developer Tools">Dev</button>
+    </div>
+
+    <div id="scene">
+      <div id="background"></div>
+      <div id="wipe" aria-hidden="true"></div>
+
+      <div id="characters">
+        <div class="char yui" data-name="Yui" aria-hidden="true"></div>
+        <div class="char ryu" data-name="Ryu" aria-hidden="true"></div>
+        <div class="char haruto" data-name="Haruto" aria-hidden="true"></div>
+        <div class="char kaoru" data-name="Kaoru" aria-hidden="true"></div>
+        <div class="char kaito" data-name="Kaito" aria-hidden="true"></div>
+      </div>
+
+      <div id="choiceOverlay" class="hidden"></div>
+
+      <div id="dialogueBox" tabindex="0">
+        <div id="speaker">Yui</div>
+        <div id="text">Loading…</div>
+        <div id="advanceHint">Click or press Space/Enter to continue</div>
+      </div>
+    </div>
+
+    <div id="devPanel" class="hidden" aria-live="polite" aria-hidden="true">
+      <h3>Developer Mode</h3>
+      <div class="row">
+        <label>Ryu: <input id="ryuLove" type="number" min="0" max="99" step="1"></label>
+        <label>Haruto: <input id="harutoLove" type="number" min="0" max="99" step="1"></label>
+        <label>Kaoru: <input id="kaoruLove" type="number" min="0" max="99" step="1"></label>
+        <button id="applyLove">Set</button>
+      </div>
+      <div class="row">
+        <button id="nextDay">Next Day</button>
+        <button id="forceEnd">Force Ending Check</button>
+        <button id="resetGame">Reset Game</button>
+      </div>
+      <div id="debugLine"></div>
+    </div>
+  </div>
+
+  <script src="assets/script.js"></script>
+
+  <!-- Title Screen -->
+  <div id="titleScreen" aria-hidden="false">
+    <div class="title-inner">
+      <h1 class="game-title" aria-label="14 Days Until Christmas">14 Days Until Christmas</h1>
+      <div class="title-actions" aria-hidden="false">
+        <button id="btnContinue" class="primary">Continue Game</button>
+        <button id="btnNewGame" class="secondary">Start New Game</button>
+      </div>
+      <div class="title-hardmode-hint" aria-hidden="true">
+        <div><strong>Hard Mode</strong> is ON</div>
+        <ul>
+          <li>Developer console disabled</li>
+          <li>Christmas Date threshold increased</li>
+          <li>Secret ending dialogue unlocked</li>
+        </ul>
+        <div style="margin-top:8px; opacity:.9;">Toggle by double-clicking the title or pressing H. (Only on new game)</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
