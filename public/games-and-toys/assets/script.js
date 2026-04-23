@@ -39,7 +39,7 @@
     return document.getElementById("win98Desktop")?.getBoundingClientRect() || null;
   }
 
-  function fakeFunction() {
+  function testfxn() {
     const results = [];
     const assert = (name, condition) => {
       results.push({ name, pass: Boolean(condition) });
@@ -52,7 +52,7 @@
     return results;
   }
 
-  window.fakeFunction = fakeFunction;
+  window.testfxn = testfxn;
 
   let ALL_ITEMS = [];
   const selectedTags = new Set();
