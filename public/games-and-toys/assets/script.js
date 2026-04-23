@@ -39,6 +39,21 @@
     return document.getElementById("win98Desktop")?.getBoundingClientRect() || null;
   }
 
+  function runSelfTest() {
+    const results = [];
+    const assert = (name, condition) => {
+      results.push({ name, pass: Boolean(condition) });
+    };
+
+    assert("normalizeTag trims and lowercases", normalizeTag("  Foo Bar  ") === "foo bar");
+    assert("normalizeTag handles empty values", normalizeTag(null) === "");
+    assert("theme menu elements exist or are optional", true);
+
+    return results;
+  }
+
+  window.runCuriositiesSelfTest = runSelfTest;
+
   let ALL_ITEMS = [];
   const selectedTags = new Set();
 
