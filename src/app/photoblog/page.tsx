@@ -111,24 +111,35 @@ const PhotoblogPage = () => {
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
+      if (activeIndex === null) return;
       if (e.key === "Escape") setActiveIndex(null);
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        setActiveIndex((current) => (current === null ? current : (current + 1) % photos.length));
+      }
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        setActiveIndex((current) =>
+          current === null ? current : (current - 1 + photos.length) % photos.length
+        );
+      }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
+  }, [activeIndex, photos.length]);
 
   useEffect(() => {
-    if (activeIndex === null) return;
+    if (activeIndex === null || shouldReduceMotion) return;
     const timeout = window.setTimeout(
       () => setHighResPhaseStarted(true),
-      shouldReduceMotion ? 0 : 180
+      180
     );
     return () => window.clearTimeout(timeout);
   }, [activeIndex, shouldReduceMotion]);
 
   const open = (index: number) => {
     setHighResLoaded(false);
-    setHighResPhaseStarted(false);
+    setHighResPhaseStarted(shouldReduceMotion);
     setActiveIndex(index);
   };
 
@@ -197,9 +208,14 @@ const PhotoblogPage = () => {
           {activeIndex !== null && (
             <motion.div
               className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 md:p-8 backdrop-blur-sm"
-              onClick={close}
+              onClick={(event) => {
+                if (event.target === event.currentTarget) {
+                  close();
+                }
+              }}
               role="dialog"
               aria-modal="true"
+              aria-label="Photoblog image viewer"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
