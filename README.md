@@ -1,40 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# person-website
 
-## Getting Started
+A personal portfolio site built with Next.js App Router.
 
-**Requirements:**
+## What’s here
 
-- [Node.js 18.17 or newer](https://nodejs.org/)
+- `/` — landing page with decorative UI and contact links
+- `/photoblog` — photo gallery with fullscreen modal viewing
+- `/games-and-toys` — archive of small interactive projects
 
-First, run the development server:
+## Getting started
+
+### Requirements
+
+- Node.js 20.9 or newer
+
+### Install and run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- `npm run dev` — start the development server
+- `npm run build` — create a production build
+- `npm run start` — start the production server
+- `npm run lint` — run ESLint
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+- `src/app/layout.tsx` — root layout and metadata
+- `src/app/page.tsx` — homepage
+- `src/app/photoblog/page.tsx` — photoblog route
+- `src/app/games-and-toys/page.tsx` — games-and-toys archive
+- `src/app/components/` — shared UI components
+- `src/assets/` — imported static assets
+- `public/` — public static files
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- The app uses Next.js, React, TypeScript, and Tailwind CSS.
+- Content for the photoblog is stored in `src/app/photoblog/photos.json`.
+- The games-and-toys page is backed by files under `public/games-and-toys/`.

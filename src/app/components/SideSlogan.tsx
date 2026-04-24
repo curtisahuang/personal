@@ -1,13 +1,16 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./SideSlogan.module.css";
 
 const SideSlogan = () => {
   const plane = useRef<HTMLDivElement>(null);
 
   const maxRotate = 45;
+  const shouldReduceMotion =
+    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const manageMouseMove = (e: React.MouseEvent) => {
+    if (shouldReduceMotion) return;
     const x = e.clientX / window.innerWidth;
     const y = e.clientY / window.innerHeight;
     const perspective = window.innerWidth * 4;
@@ -17,6 +20,12 @@ const SideSlogan = () => {
       plane.current.style.transform = `perspective(${perspective}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg)`;
     }
   };
+
+  useEffect(() => {
+    if (shouldReduceMotion && plane.current) {
+      plane.current.style.transform = "none";
+    }
+  }, [shouldReduceMotion]);
 
   return (
     <div
