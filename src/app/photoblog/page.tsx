@@ -99,6 +99,21 @@ const scenes: Scene[] = [
     },
   },
   {
+    copy: "You are not",
+    word: "alone",
+    caption: "雲のすきま、月が笑っている",
+    position: {
+      left: "54vw",
+      top: "58vh",
+      translate: "-6%, 0",
+      align: "right",
+    },
+    captionPosition: {
+      side: "left",
+      top: "16vh",
+    },
+  },
+  {
     copy: "Please be",
     word: "lovely",
     caption: "星の雨、静かな庭に降る",
@@ -146,6 +161,21 @@ const scenes: Scene[] = [
   {
     copy: "Smile in the",
     word: "skytime",
+    caption: "水色の夢、鳥はまだ眠らない",
+    position: {
+      left: "45vw",
+      top: "67vh",
+      translate: "-50%, 0",
+      align: "center",
+    },
+    captionPosition: {
+      side: "left",
+      top: "30vh",
+    },
+  },
+  {
+    copy: "Shine is from",
+    word: "you",
     caption: "水色の夢、鳥はまだ眠らない",
     position: {
       left: "45vw",
