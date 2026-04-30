@@ -26,8 +26,11 @@ const images = [
 ];
 
 const initialSceneImages = images.slice(0, 3);
+const layoutVariants = ["collage", "cinematic", "topStrip"] as const;
 
-const getRandomSceneImages = () => {
+type LayoutVariant = (typeof layoutVariants)[number];
+
+const getRandomSceneImages = (count: number) => {
   const shuffled = [...images];
 
   for (let index = shuffled.length - 1; index > 0; index -= 1) {
@@ -35,7 +38,22 @@ const getRandomSceneImages = () => {
     [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
   }
 
-  return shuffled.slice(0, 3);
+  return shuffled.slice(0, count);
+};
+
+const getRandomLayoutVariant = () => (
+  layoutVariants[Math.floor(Math.random() * layoutVariants.length)]
+);
+
+const getLayoutImageCount = (layout: LayoutVariant) => (layout === "topStrip" ? 4 : 3);
+
+const getRandomImageScene = () => {
+  const layout = getRandomLayoutVariant();
+
+  return {
+    layout,
+    images: getRandomSceneImages(getLayoutImageCount(layout)),
+  };
 };
 
 type CopyAlign = "left" | "right" | "center";
@@ -150,6 +168,7 @@ const PhotoblogPage = () => {
   const initialShuffleRef = useRef<number | null>(null);
   const [activeScene, setActiveScene] = useState(0);
   const [sceneImages, setSceneImages] = useState(initialSceneImages);
+  const [layoutVariant, setLayoutVariant] = useState<LayoutVariant>("collage");
   const [copyAnimationKey, setCopyAnimationKey] = useState(0);
   const [isChanging, setIsChanging] = useState(false);
   const [isGlitching, setIsGlitching] = useState(false);
@@ -203,8 +222,11 @@ const PhotoblogPage = () => {
     setIsChanging(true);
 
     changeTimeoutRef.current = window.setTimeout(() => {
+      const nextImageScene = getRandomImageScene();
+
       setActiveScene((index) => (index + 1) % scenes.length);
-      setSceneImages(getRandomSceneImages());
+      setLayoutVariant(nextImageScene.layout);
+      setSceneImages(nextImageScene.images);
       setCopyAnimationKey((key) => key + 1);
       setIsChanging(false);
       setIsGlitching(true);
@@ -218,7 +240,10 @@ const PhotoblogPage = () => {
 
   useEffect(() => {
     initialShuffleRef.current = window.requestAnimationFrame(() => {
-      setSceneImages(getRandomSceneImages());
+      const nextImageScene = getRandomImageScene();
+
+      setLayoutVariant(nextImageScene.layout);
+      setSceneImages(nextImageScene.images);
       initialShuffleRef.current = null;
     });
 
@@ -252,7 +277,7 @@ const PhotoblogPage = () => {
       data-caption-side={currentScene.captionPosition.side}
       aria-label="Retro Japanese photo collage"
     >
-      <section className={styles.collage} aria-hidden="true">
+      <section className={`${styles.collage} ${styles[layoutVariant]}`} aria-hidden="true">
         {sceneImages.map((image, index) => (
           <figure className={styles.photo} key={`${image}-${index}`}>
             <Image
