@@ -1,277 +1,320 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import Image, { StaticImageData } from "next/image";
-import {
-  AnimatePresence,
-  LayoutGroup,
-  motion,
-  type Transition,
-  useReducedMotion,
-} from "framer-motion";
-import vaporwave from "@/assets/vaporwave.png";
-import { Caption } from "../components/";
-import { useRouter } from "next/navigation";
+import type { CSSProperties } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Shippori_Mincho } from "next/font/google";
+import Image from "next/image";
+import Link from "next/link";
+import styles from "./photoblog.module.css";
 
-type CaptionPosition =
-  | "right"
-  | "left"
-  | "center"
-  | "topRight"
-  | "topLeft"
-  | "top"
-  | "bottomRight"
-  | "bottomLeft"
-  | "bottom";
+const shipporiMincho = Shippori_Mincho({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
 
-type Photo = {
-  id: number;
-  src: string | StaticImageData;
-  alt: string;
-  caption?: string;
-  captionColor?: string;
-  captionPosition?: CaptionPosition;
+const images = [
+  "/assets/001.jpg",
+  "/assets/002.jpg",
+  "/assets/003.jpg",
+  "/assets/004.jpg",
+  "/assets/20191118_151121.jpg",
+  "/assets/20230314_143140.jpg",
+  "/assets/20230821_183727.jpg",
+  "/assets/20231229_162432.jpg",
+  "/assets/20260406_103022.jpg",
+];
+
+const initialSceneImages = images.slice(0, 3);
+
+const getRandomSceneImages = () => {
+  const shuffled = [...images];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+  }
+
+  return shuffled.slice(0, 3);
 };
 
-// Load photo config from JSON (edit src/app/photoblog/photos.json)
-import photosConfig from "./photos.json";
-type PhotoEntry = {
-  src?: string;
-  filename?: string;
-  alt?: string;
-  caption?: string;
-  captionColor?: string;
-  captionPosition?: CaptionPosition;
+type CopyAlign = "left" | "right" | "center";
+type CaptionSide = "left" | "right";
+
+type Scene = {
+  copy: string;
+  word: string;
+  caption: string;
+  position: {
+    left: string;
+    top: string;
+    translate: string;
+    align: CopyAlign;
+  };
+  captionPosition: {
+    side: CaptionSide;
+    top: string;
+  };
 };
+
+type SceneStyle = CSSProperties & {
+  "--copy-left": string;
+  "--copy-top": string;
+  "--copy-translate": string;
+  "--caption-top": string;
+};
+
+const scenes: Scene[] = [
+  {
+    copy: "You are",
+    word: "beautiful",
+    caption: "雲のすきま、月が笑っている",
+    position: {
+      left: "54vw",
+      top: "58vh",
+      translate: "-6%, 0",
+      align: "right",
+    },
+    captionPosition: {
+      side: "left",
+      top: "16vh",
+    },
+  },
+  {
+    copy: "Please be",
+    word: "lovely",
+    caption: "星の雨、静かな庭に降る",
+    position: {
+      left: "4vw",
+      top: "49vh",
+      translate: "0, 0",
+      align: "left",
+    },
+    captionPosition: {
+      side: "right",
+      top: "23vh",
+    },
+  },
+  {
+    copy: "today am i",
+    word: "dreaming",
+    caption: "遠い窓辺、風だけが踊る",
+    position: {
+      left: "56vw",
+      top: "14vh",
+      translate: "0, 0",
+      align: "right",
+    },
+    captionPosition: {
+      side: "left",
+      top: "47vh",
+    },
+  },
+  {
+    copy: "Your heart is",
+    word: "special",
+    caption: "夜明け前、影は金色になる",
+    position: {
+      left: "33vw",
+      top: "33vh",
+      translate: "-28%, 0",
+      align: "left",
+    },
+    captionPosition: {
+      side: "right",
+      top: "10vh",
+    },
+  },
+  {
+    copy: "Smile in the",
+    word: "skytime",
+    caption: "水色の夢、鳥はまだ眠らない",
+    position: {
+      left: "45vw",
+      top: "67vh",
+      translate: "-50%, 0",
+      align: "center",
+    },
+    captionPosition: {
+      side: "left",
+      top: "30vh",
+    },
+  },
+];
 
 const PhotoblogPage = () => {
-  // Build from JSON with graceful fallback to placeholder
-  const dynamicPhotos: Photo[] = useMemo(() => {
-    const entries = (photosConfig as PhotoEntry[]) ?? [];
-    return entries.map((entry, i) => ({
-      id: i,
-      // Prefer explicit src; else assume files live under /assets in public
-      src: entry.src ?? (entry.filename ? `/assets/${entry.filename}` : vaporwave),
-      alt: entry.alt ?? `photoblog-${i + 1}`,
-      caption: entry.caption ?? "why oh just why",
-      captionColor: entry.captionColor ?? "#ffffff",
-      captionPosition: entry.captionPosition ?? "right",
-    }));
+  const sceneRef = useRef<HTMLElement>(null);
+  const copyRef = useRef<HTMLDivElement>(null);
+  const changeTimeoutRef = useRef<number | null>(null);
+  const glitchTimeoutRef = useRef<number | null>(null);
+  const initialShuffleRef = useRef<number | null>(null);
+  const [activeScene, setActiveScene] = useState(0);
+  const [sceneImages, setSceneImages] = useState(initialSceneImages);
+  const [copyAnimationKey, setCopyAnimationKey] = useState(0);
+  const [isChanging, setIsChanging] = useState(false);
+  const [isGlitching, setIsGlitching] = useState(false);
+
+  const currentScene = scenes[activeScene];
+
+  const keepCopyInView = useCallback(() => {
+    const scene = sceneRef.current;
+    const copyStack = copyRef.current;
+
+    if (!scene || !copyStack) {
+      return;
+    }
+
+    scene.style.setProperty("--copy-nudge-x", "0px");
+    scene.style.setProperty("--copy-nudge-y", "0px");
+
+    const margin = 16;
+    const rect = copyStack.getBoundingClientRect();
+    const nudgeX =
+      Math.min(0, window.innerWidth - margin - rect.right) + Math.max(0, margin - rect.left);
+    const nudgeY =
+      Math.min(0, window.innerHeight - margin - rect.bottom) + Math.max(0, margin - rect.top);
+
+    scene.style.setProperty("--copy-nudge-x", `${nudgeX}px`);
+    scene.style.setProperty("--copy-nudge-y", `${nudgeY}px`);
   }, []);
 
-  const desiredCount = 24;
-  const photos: Photo[] = useMemo(() => {
-    if (dynamicPhotos.length >= desiredCount) {
-      return dynamicPhotos.slice(0, desiredCount).map((p, i) => ({ ...p, id: i }));
+  const clearTimers = useCallback(() => {
+    if (changeTimeoutRef.current !== null) {
+      window.clearTimeout(changeTimeoutRef.current);
+      changeTimeoutRef.current = null;
     }
-    // Fill remaining slots with placeholder
-    return Array.from({ length: desiredCount }, (_, i) => {
-      const existing = dynamicPhotos[i];
-      return (
-        existing ?? {
-          id: i,
-          src: vaporwave,
-          alt: `photoblog-${i + 1}`,
-          caption: "why oh just why",
-          captionColor: "#ffffff",
-          captionPosition: "right",
-        }
-      );
+
+    if (glitchTimeoutRef.current !== null) {
+      window.clearTimeout(glitchTimeoutRef.current);
+      glitchTimeoutRef.current = null;
+    }
+
+    if (initialShuffleRef.current !== null) {
+      window.cancelAnimationFrame(initialShuffleRef.current);
+      initialShuffleRef.current = null;
+    }
+  }, []);
+
+  const nextScene = useCallback(() => {
+    if (isChanging) {
+      return;
+    }
+
+    setIsChanging(true);
+
+    changeTimeoutRef.current = window.setTimeout(() => {
+      setActiveScene((index) => (index + 1) % scenes.length);
+      setSceneImages(getRandomSceneImages());
+      setCopyAnimationKey((key) => key + 1);
+      setIsChanging(false);
+      setIsGlitching(true);
+
+      glitchTimeoutRef.current = window.setTimeout(() => {
+        setIsGlitching(false);
+        window.requestAnimationFrame(keepCopyInView);
+      }, 620);
+    }, 180);
+  }, [isChanging, keepCopyInView]);
+
+  useEffect(() => {
+    initialShuffleRef.current = window.requestAnimationFrame(() => {
+      setSceneImages(getRandomSceneImages());
+      initialShuffleRef.current = null;
     });
-  }, [dynamicPhotos]);
 
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [highResPhaseStarted, setHighResPhaseStarted] = useState(false);
-  const [highResLoaded, setHighResLoaded] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
+    window.addEventListener("resize", keepCopyInView);
 
-  const [viewport, setViewport] = useState(() => ({
-    w: typeof window !== "undefined" ? window.innerWidth : 0,
-    h: typeof window !== "undefined" ? window.innerHeight : 0,
-  }));
-  useEffect(() => {
-    const update = () => setViewport({ w: window.innerWidth, h: window.innerHeight });
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
-
-  const activePhoto = activeIndex !== null ? photos[activeIndex] : null;
-  const fitted = useMemo(() => {
-    if (!activePhoto) return null;
-    const isStatic = typeof activePhoto.src === "object";
-    const data = isStatic ? (activePhoto.src as StaticImageData) : null;
-    const nw = data?.width ?? 1200;
-    const nh = data?.height ?? 800;
-    const maxW = viewport.w ? viewport.w * 0.95 : nw;
-    const maxH = viewport.h ? viewport.h * 0.85 : nh;
-    const scale = Math.min(maxW / nw, maxH / nh);
-    return { width: Math.round(nw * scale), height: Math.round(nh * scale) };
-  }, [activePhoto, viewport]);
-
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActiveIndex(null);
+    return () => {
+      window.removeEventListener("resize", keepCopyInView);
+      clearTimers();
     };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
+  }, [clearTimers, keepCopyInView]);
 
-  useEffect(() => {
-    if (activeIndex === null) return;
-    const timeout = window.setTimeout(
-      () => setHighResPhaseStarted(true),
-      shouldReduceMotion ? 0 : 180
-    );
-    return () => window.clearTimeout(timeout);
-  }, [activeIndex, shouldReduceMotion]);
+  useLayoutEffect(() => {
+    window.requestAnimationFrame(keepCopyInView);
+  }, [activeScene, keepCopyInView]);
 
-  const open = (index: number) => {
-    setHighResLoaded(false);
-    setHighResPhaseStarted(false);
-    setActiveIndex(index);
-  };
-
-  const close = () => {
-    setActiveIndex(null);
-    setHighResLoaded(false);
-    setHighResPhaseStarted(false);
-  };
-
-  const gridClassName =
-    "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 w-full gap-1 m-0 p-0";
-
-  const tileTransition: Transition = shouldReduceMotion
-    ? { duration: 0 }
-    : { type: "spring", damping: 26, stiffness: 270, mass: 0.85 };
-
-  const modalTransition: Transition = shouldReduceMotion
-    ? { duration: 0 }
-    : { type: "spring", damping: 30, stiffness: 280, mass: 0.9 };
-
-  const router = useRouter();
-  const handleBack = () => {
-    if (typeof window !== "undefined" && window.history.length > 1) {
-      router.back();
-    } else {
-      router.push("/");
-    }
+  const sceneStyle: SceneStyle = {
+    "--copy-left": currentScene.position.left,
+    "--copy-top": currentScene.position.top,
+    "--copy-translate": currentScene.position.translate,
+    "--caption-top": currentScene.captionPosition.top,
   };
 
   return (
-    <main className="m-0 p-0 min-h-svh w-screen bg-[#578b92]">
-      <LayoutGroup id="photoblog-grid">
-        <div className="scroll-area w-screen h-svh overflow-auto pb-20 md:pb-24">
-          <motion.div layout className={gridClassName} transition={tileTransition}>
-            {photos.map((photo, i) => (
-              <motion.button
-                key={photo.id}
-                layout
-                aria-label={`Open image ${i + 1}`}
-                className="overflow-hidden group cursor-pointer"
-                onClick={() => open(i)}
-                transition={tileTransition}
-              >
-                <motion.div
-                  layoutId={`photo-${photo.id}`}
-                  className="relative w-full aspect-square transform-gpu"
-                  transition={modalTransition}
-                >
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    unoptimized
-                    quality={55}
-                    sizes="(min-width:1536px) 12.5vw, (min-width:1280px) 14.3vw, (min-width:1024px) 16.66vw, (min-width:768px) 25vw, (min-width:640px) 33.33vw, 50vw"
-                    className="object-cover select-none"
-                    priority={i < 12}
-                  />
-                </motion.div>
-              </motion.button>
-            ))}
-          </motion.div>
-        </div>
+    <main
+      ref={sceneRef}
+      className={`${styles.scene} ${shipporiMincho.className} ${
+        isChanging ? styles.isChanging : ""
+      } ${isGlitching ? styles.isGlitching : ""}`}
+      style={sceneStyle}
+      data-align={currentScene.position.align}
+      data-caption-side={currentScene.captionPosition.side}
+      aria-label="Retro Japanese photo collage"
+    >
+      <section className={styles.collage} aria-hidden="true">
+        {sceneImages.map((image, index) => (
+          <figure className={styles.photo} key={`${image}-${index}`}>
+            <Image
+              src={image}
+              alt=""
+              fill
+              unoptimized
+              priority
+              sizes={index === 0 ? "(max-width: 720px) 100vw, 54vw" : "(max-width: 720px) 100vw, 46vw"}
+              className={styles.image}
+            />
+          </figure>
+        ))}
+      </section>
 
-        <AnimatePresence initial={false}>
-          {activeIndex !== null && (
-            <motion.div
-              className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 md:p-8 backdrop-blur-sm"
-              onClick={close}
-              role="dialog"
-              aria-modal="true"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
-            >
-              <motion.div
-                layout
-                layoutId={`photo-${photos[activeIndex].id}`}
-                className="relative"
-                style={{ width: fitted?.width, height: fitted?.height }}
-                transition={{ layout: modalTransition }}
-              >
-                <Image
-                  src={photos[activeIndex].src}
-                  alt={photos[activeIndex].alt}
-                  width={
-                    fitted?.width ||
-                    (activePhoto ? (activePhoto.src as StaticImageData).width : 1000)
-                  }
-                  height={
-                    fitted?.height ||
-                    (activePhoto ? (activePhoto.src as StaticImageData).height : 600)
-                  }
-                  className="h-full w-full object-contain select-none"
-                  quality={55}
-                  priority
-                />
-
-                {highResPhaseStarted && (
-                  <Image
-                    src={photos[activeIndex].src}
-                    alt={photos[activeIndex].alt}
-                    width={
-                      fitted?.width ||
-                      (activePhoto ? (activePhoto.src as StaticImageData).width : 1000)
-                    }
-                    height={
-                      fitted?.height ||
-                      (activePhoto ? (activePhoto.src as StaticImageData).height : 600)
-                    }
-                    className={`absolute inset-0 h-full w-full object-contain select-none transition-opacity duration-150 ${
-                      highResLoaded ? "opacity-100" : "opacity-0"
+      <div
+        ref={copyRef}
+        className={styles.copyStack}
+        aria-live="polite"
+        key={copyAnimationKey}
+      >
+        <h1 className={styles.heading}>
+          <span className={styles.headlineLine}>
+            <span className={styles.copyPrefix}>{currentScene.copy}</span>
+            <span className={styles.wordStack}>
+              <span className={styles.wordEcho} aria-hidden="true">
+                {Array.from({ length: 5 }, (_, index) => (
+                  <span
+                    className={`${styles.duplicate} ${index > 0 ? styles[`duplicate${index + 1}`] : ""} ${
+                      index === 4 ? styles.blue : ""
                     }`}
-                    quality={100}
-                    priority
-                    onLoad={() => setHighResLoaded(true)}
-                  />
-                )}
+                    key={index}
+                  >
+                    {currentScene.word}
+                  </span>
+                ))}
+              </span>
+              <span className={styles.beautiful}>{currentScene.word}</span>
+            </span>
+          </span>
+        </h1>
+      </div>
 
-                <Caption
-                  text={photos[activeIndex].caption ?? "why oh just why"}
-                  color={photos[activeIndex].captionColor ?? "#ffffff"}
-                  position={photos[activeIndex].captionPosition ?? "right"}
-                />
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </LayoutGroup>
+      <p className={styles.caption} aria-live="polite">
+        {currentScene.caption}
+      </p>
 
-      <footer className="fixed bottom-0 left-0 right-0 z-40 bg-[#578b92]">
-        <div className="px-4 py-3 flex items-center">
-          <button
-            onClick={handleBack}
-            className="text-white/90 hover:text-white text-sm md:text-base font-medium cursor-pointer"
-            aria-label="Back"
-            title="Back"
-          >
-            ← Back
-          </button>
-        </div>
-      </footer>
+      <button
+        className={styles.screenButton}
+        type="button"
+        aria-label="Change collage and text"
+        onClick={nextScene}
+      />
+
+      <Link
+        href="/"
+        className={styles.backButton}
+        aria-label="Back to home page"
+        onClick={(event) => event.stopPropagation()}
+      >
+        BACK
+      </Link>
     </main>
   );
 };
