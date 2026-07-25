@@ -129,3 +129,56 @@ p {
 .scroll-area::-webkit-scrollbar-thumb:hover {
   background-color: rgba(255, 255, 255, 0.8);
 }
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 500ms;
+  animation-timing-function: ease-out;
+}
+
+html[data-swipe-direction="left"]::view-transition-old(root) {
+  animation-name: wipe-out-left;
+}
+
+html[data-swipe-direction="left"]::view-transition-new(root) {
+  animation-name: wipe-in-left;
+}
+
+html[data-swipe-direction="right"]::view-transition-old(root) {
+  animation-name: wipe-out-right;
+}
+
+html[data-swipe-direction="right"]::view-transition-new(root) {
+  animation-name: wipe-in-right;
+}
+
+@keyframes wipe-out-left {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes wipe-in-left {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes wipe-out-right {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes wipe-in-right {
+  from {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
