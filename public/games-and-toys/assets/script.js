@@ -204,24 +204,7 @@
     const desc = String(site.description || "").trim();
     const tags = Array.isArray(site.tags) ? site.tags.filter(Boolean).map(String) : [];
 
-    // Allow explicit screenshot override per item
-    let imgSrc = null;
-    const override = site.screenshotUrl ? String(site.screenshotUrl).trim() : "";
-    if (override) {
-      imgSrc = override;
-    } else {
-      // Build screenshot URL from INSTANT_SITE_DOMAIN (e.g., "cosine" -> "screenshot.cosine.show")
-      const domain = (
-        typeof window.INSTANT_SITE_DOMAIN !== "undefined" ? String(window.INSTANT_SITE_DOMAIN) : ""
-      )
-        .trim()
-        .replace(/\/*$/, "");
-      if (domain) {
-        let host = `screenshot.${domain}`;
-        if (!host.endsWith(".show")) host += ".show";
-        imgSrc = `https://${host}/?url=${url}`;
-      }
-    }
+    const imgSrc = site.screenshotUrl ? String(site.screenshotUrl).trim() : "";
 
     const card = document.createElement("article");
     card.className = "card";

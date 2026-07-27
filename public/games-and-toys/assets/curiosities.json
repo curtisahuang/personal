@@ -1,9 +1,20 @@
 [
   {
+    "title": "Minesweeper Rogue",
+    "url": "/games-and-toys/projects/minesweeper-rogue/index.html",
+    "description": "A roguelike Minesweeper adventure with characters, items, shops, and music.",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/minesweeper-rogue.jpg",
+    "author": "curtisahuang",
+    "githubUrl": "https://github.com/curtisahuang/mindsweeper-rogue",
+    "tags": [
+      "games"
+    ]
+  },
+  {
     "title": "Just a Day in the Forest",
     "url": "/games-and-toys/projects/3d-forest-with-enemy/index.html",
     "description": "Just a walk through a 3D forest with zero monsters in sight!",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/3d-forest-with-enemy.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/3d-forest-with-enemy.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/3d-forest-with-enemy",
     "tags": [
@@ -14,7 +25,7 @@
     "title": "Bookworm",
     "url": "/games-and-toys/projects/bookworm/index.html",
     "description": "Word-focused game inspired by classic bookish puzzlers",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/bookworm.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/bookworm.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/bookworm",
     "tags": [
@@ -25,7 +36,7 @@
     "title": "Reign of the Necromancer",
     "url": "/games-and-toys/projects/rpg-game-custom/index.html",
     "description": "A retro turn-based RPG with a secret quest!",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/rpg-game-custom.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/rpg-game-custom.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/rpg-game-custom",
     "tags": [
@@ -36,7 +47,7 @@
     "title": "Cosine Noise Maker",
     "url": "/games-and-toys/projects/another-music-toy-noise/index.html",
     "description": "A droning experimental music maker with numerous filters.",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/another-music-toy-noise.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/another-music-toy-noise.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/another-music-toy-noise",
     "tags": [
@@ -47,7 +58,7 @@
     "title": "Piano Smasher Rhythm Game",
     "url": "/games-and-toys/projects/rhythm-game-test/index.html",
     "description": "Upload an mp3 and play it!",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/rhythm-game-test.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/rhythm-game-test.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/rhythm-game-test",
     "tags": [
@@ -59,7 +70,7 @@
     "title": "14 Days Until Christmas Game",
     "url": "/games-and-toys/projects/14-days-until-christmas/index.html",
     "description": "A dating simulator with music and choices that determine whether you can get a date by Christmas!",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/14-days-until-christmas.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/14-days-until-christmas.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/14-days-until-christmas",
     "tags": [
@@ -70,7 +81,7 @@
     "title": "Markov Music Maker",
     "url": "/games-and-toys/projects/markov-music-maker/index.html",
     "description": "Generative music toy powered by Markov-style sequencing",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/markov-music-maker.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/markov-music-maker.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/markov-music-maker",
     "tags": [
@@ -82,7 +93,7 @@
     "title": "Escape Room",
     "url": "/games-and-toys/projects/escape-room/index.html",
     "description": "Old school escape room text adventure game",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/escape-room.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/escape-room.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/escape-room",
     "tags": [
@@ -93,7 +104,7 @@
     "title": "Isometric Walker Demo",
     "url": "/games-and-toys/projects/isometric-walker/index.html",
     "description": "A basic engine with some testing for sprite animations and isometric movements",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/isometric-walker.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/isometric-walker.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/isometric-walker",
     "tags": [
@@ -104,7 +115,7 @@
     "title": "Strange Correlations",
     "url": "/games-and-toys/projects/strange-correlations/index.html",
     "description": "Funny graphs grabbing random public data sets to find correlations",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/strange-correlations.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/strange-correlations.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/strange-correlations",
     "tags": [
@@ -116,7 +127,7 @@
     "title": "Cosine Music Maker",
     "url": "/games-and-toys/projects/music-maker/index.html",
     "description": "Make beats and drones",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/music-maker.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/music-maker.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/music-maker",
     "tags": [
@@ -127,7 +138,7 @@
     "title": "Car ML",
     "url": "/games-and-toys/projects/car-ml/index.html",
     "description": "Self evolving car algorithm simulation",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/car-ml.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/car-ml.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/car-ML",
     "tags": [
@@ -139,7 +150,7 @@
     "title": "North Pole Clicker",
     "url": "/games-and-toys/projects/present-clicker/index.html",
     "description": "A holiday clicker game with festive progression",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/present-clicker.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/present-clicker.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/present-clicker",
     "tags": [
@@ -150,7 +161,7 @@
     "title": "Drinkspo",
     "url": "/games-and-toys/projects/cocktail-inspo/index.html",
     "description": "A playful drinks inspiration toy",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/cocktail-inspo.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/cocktail-inspo.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/cocktail-inspo",
     "tags": [
@@ -161,7 +172,7 @@
     "title": "Puzzle League",
     "url": "/games-and-toys/projects/puzzle-league/index.html",
     "description": "A puzzle game with quick sessions and satisfying combos",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/puzzle-league.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/puzzle-league.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/battle-jewels",
     "tags": [
@@ -172,7 +183,7 @@
     "title": "Text2Beeps",
     "url": "/games-and-toys/projects/text2beeps/index.html",
     "description": "Convert text into playful beep melodies",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/text2beeps.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/text2beeps.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/text2beeps",
     "tags": [
@@ -184,7 +195,7 @@
     "title": "poke the bear",
     "url": "/games-and-toys/projects/poke-the-bear/index.html",
     "description": "Poke the bear.",
-    "screenshotUrl": "/games-and-toys/assets/screenshots/poke-the-bear.png",
+    "screenshotUrl": "/games-and-toys/assets/thumbnails/poke-the-bear.jpg",
     "author": "curtisahuang",
     "githubUrl": "https://github.com/CosineAI/poke-the-bear",
     "tags": [

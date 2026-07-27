@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minesweeper</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <main class="app">
+    <section id="title-screen" class="title-screen" aria-labelledby="title-screen-heading">
+      <div class="title-screen-card">
+        <picture>
+          <source media="(max-width: 760px)" srcset="assets/images/mobile-splash.png">
+          <img src="assets/images/desktop-splash.png" alt="Minesweeper" class="title-splash">
+        </picture>
+        <h1 id="title-screen-heading" class="visually-hidden">Minesweeper</h1>
+        <div class="title-actions">
+          <button id="title-start" class="title-start-button" type="button">Start</button>
+          <button id="title-demo" class="title-demo-button" type="button">Play Demo</button>
+          <button id="title-options" class="title-options-button" type="button">Options</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="hud" aria-labelledby="game-title">
+      <div class="hud-title-panel">
+        <div class="hud-title-lockup">
+          <button id="devmode-header-trigger" class="hud-mascot-button" type="button" aria-label="Open dev menu">
+            <img src="assets/images/Bombgirl.png" alt="" class="hud-mascot" aria-hidden="true">
+          </button>
+          <h1 id="game-title">Minesweeper</h1>
+        </div>
+        <div class="hud-title-actions">
+          <button id="options-open" class="secondary-action" type="button">Options</button>
+        </div>
+      </div>
+      <div>
+        <span class="hud-label">Level</span>
+        <strong id="level-readout">1 / 10</strong>
+      </div>
+      <div id="timer-panel" class="timer-panel hud-stat">
+        <img src="assets/images/clock.png" alt="" class="hud-stat-icon" aria-hidden="true">
+        <div class="hud-stat-copy">
+          <span class="hud-label">Run timer</span>
+          <strong id="timer-readout">200s</strong>
+        </div>
+        <span id="time-freeze-readout" class="time-freeze-readout hidden" aria-live="polite"></span>
+        <span id="timer-penalty-feedback" class="timer-penalty-feedback" aria-hidden="true"></span>
+      </div>
+      <div class="hud-stat">
+        <img src="assets/images/coin.png" alt="" class="hud-stat-icon" aria-hidden="true">
+        <div class="hud-stat-copy">
+          <span class="hud-label">Gold</span>
+          <strong id="gold-readout">0</strong>
+        </div>
+      </div>
+      <div class="hud-stat">
+        <img src="assets/images/Bombgirl.png" alt="" class="hud-stat-icon" aria-hidden="true">
+        <div class="hud-stat-copy">
+          <span class="hud-label">Bombs</span>
+          <strong id="bomb-readout">0</strong>
+        </div>
+      </div>
+      <div class="hud-stat">
+        <img src="assets/images/flag.png" alt="" class="hud-stat-icon" aria-hidden="true">
+        <div class="hud-stat-copy">
+          <span class="hud-label">Flags Remaining</span>
+          <strong id="flag-readout">0</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="game-shell">
+      <section class="board-panel" aria-label="Minefield">
+        <aside id="selected-character" class="selected-character" aria-live="polite"></aside>
+        <div class="board-content">
+
+          <div class="board-stage">
+            <div id="board" class="board" role="grid" aria-label="Minesweeper board"></div>
+          </div>
+
+          <div class="run-message" aria-live="polite">
+            <p id="message"></p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="item-column" aria-label="Items">
+        <section class="item-panel active-items" aria-labelledby="active-items-title">
+          <div class="panel-heading">
+            <h2 id="active-items-title">Active Items</h2>
+          </div>
+          <div id="active-items" class="item-list"></div>
+        </section>
+
+        <section class="item-panel passive-items" aria-labelledby="passive-items-title">
+          <div class="panel-heading">
+            <h2 id="passive-items-title">Passive Items</h2>
+          </div>
+          <div id="passive-items" class="item-list"></div>
+        </section>
+      </aside>
+    </section>
+
+    <section id="shop-modal" class="shop-modal hidden" role="dialog" aria-modal="true" aria-labelledby="shop-title">
+      <div class="shop-modal-card">
+        <div class="shop-modal-header">
+          <div>
+            <p class="eyebrow">Between levels</p>
+            <h2 id="shop-title">Shop</h2>
+          </div>
+          <button id="next-level" class="primary-action hidden" type="button">Start next level</button>
+        </div>
+        <div class="shop-run-summary" aria-label="Current run status">
+          <div>
+            <span class="hud-label">Level</span>
+            <strong id="shop-level-readout">1 / 10</strong>
+          </div>
+          <div>
+            <span class="hud-label">Run timer</span>
+            <strong id="shop-timer-readout">200s</strong>
+          </div>
+          <div>
+            <span class="hud-label">Gold</span>
+            <strong id="shop-gold-readout">0</strong>
+          </div>
+        </div>
+        <div id="shop-items" class="item-list shop-list"></div>
+        <div class="shop-actions">
+          <button id="shop-expand" class="secondary-action" type="button">
+            Expand shop (1000 gold)
+          </button>
+          <button id="shop-shuffle" class="secondary-action" type="button">
+            Shuffle remaining items (500 gold)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="game-over-modal" class="shop-modal game-over-modal hidden" role="dialog" aria-modal="true"
+      aria-labelledby="game-over-title">
+      <div class="shop-modal-card game-over-card">
+        <p class="eyebrow">Run ended</p>
+        <h2 id="game-over-title">Game over</h2>
+        <p id="game-over-summary" class="game-over-summary">
+          The run timer hit zero. Start a new run to try again.
+        </p>
+        <div class="game-over-actions">
+          <button id="game-over-new-run" class="primary-action" type="button">New run</button>
+          <button id="game-over-title-return" class="secondary-action" type="button">Go back to title page</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="character-modal" class="shop-modal character-modal hidden" role="dialog" aria-modal="true"
+      aria-labelledby="character-title" aria-describedby="character-description">
+      <div class="shop-modal-card character-modal-card">
+        <div class="character-modal-header">
+          <h2 id="character-title">Pick a character</h2>
+        </div>
+        <div id="character-options" class="character-options"></div>
+      </div>
+    </section>
+
+    <section id="options-modal" class="shop-modal options-modal hidden" role="dialog" aria-modal="true"
+      aria-labelledby="options-title">
+      <div class="shop-modal-card options-card">
+        <div class="shop-modal-header">
+          <div>
+            <p class="eyebrow">Settings</p>
+            <h2 id="options-title">Options</h2>
+          </div>
+          <button id="options-close" class="secondary-action" type="button">Close</button>
+        </div>
+        <div class="options-actions">
+          <button id="music-toggle" class="secondary-action" type="button">Music: On</button>
+          <button id="new-run" class="primary-action" type="button">Start new game</button>
+          <button id="title-return" class="secondary-action" type="button">Go back to title page</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="devmode-modal" class="shop-modal devmode-modal hidden" role="dialog" aria-modal="true"
+      aria-labelledby="devmode-title">
+      <div class="shop-modal-card devmode-card">
+        <div class="shop-modal-header">
+          <div>
+            <p class="eyebrow">Developer tools</p>
+            <h2 id="devmode-title">Devmode</h2>
+          </div>
+          <button id="devmode-close" class="secondary-action" type="button">Close</button>
+        </div>
+
+        <div class="devmode-grid">
+          <form id="devmode-item-form" class="devmode-section">
+            <label for="devmode-item-select">Grant item</label>
+            <div class="devmode-inline">
+              <select id="devmode-item-select"></select>
+              <button class="primary-action" type="submit">Add item</button>
+            </div>
+          </form>
+
+          <form id="devmode-level-form" class="devmode-section">
+            <label for="devmode-level-input">Set level</label>
+            <div class="devmode-inline">
+              <input id="devmode-level-input" type="number" min="1" max="10" step="1">
+              <button class="primary-action" type="submit">Apply</button>
+            </div>
+          </form>
+
+          <form id="devmode-gold-form" class="devmode-section">
+            <label for="devmode-gold-input">Gold</label>
+            <div class="devmode-inline">
+              <input id="devmode-gold-input" type="number" min="0" step="1">
+              <button class="primary-action" type="submit">Set gold</button>
+            </div>
+          </form>
+
+          <form id="devmode-timer-form" class="devmode-section">
+            <label for="devmode-timer-input">Timer seconds</label>
+            <div class="devmode-inline">
+              <input id="devmode-timer-input" type="number" min="0" step="1">
+              <button class="primary-action" type="submit">Set timer</button>
+            </div>
+          </form>
+
+          <form id="devmode-bombs-form" class="devmode-section">
+            <label for="devmode-bombs-input">Bomb count</label>
+            <div class="devmode-inline">
+              <input id="devmode-bombs-input" type="number" min="0" step="1">
+              <button class="primary-action" type="submit">Set bombs</button>
+            </div>
+          </form>
+
+          <div class="devmode-section">
+            <span>Timer countdown</span>
+            <button id="devmode-timer-toggle" class="secondary-action" type="button">Pause timer</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="src/grid.js"></script>
+  <script src="src/items.js"></script>
+  <script src="src/render.js"></script>
+  <script src="src/music.js"></script>
+  <script src="src/game.js"></script>
+</body>
+
+</html>
