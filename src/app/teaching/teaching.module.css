@@ -26,6 +26,16 @@
   border-bottom: 1px solid var(--ink);
 }
 
+.backLink {
+  display: inline-block;
+  margin-bottom: 28px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .eyebrow {
   margin: 0 0 18px;
   color: var(--accent);
@@ -68,6 +78,53 @@
   font-weight: 600;
   letter-spacing: 0.11em;
   text-transform: uppercase;
+}
+
+.socialIcon {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.socialIcon svg {
+  display: block;
+}
+
+.topCta {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  gap: 0.35em;
+  justify-self: start;
+  padding: 15px 20px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--paper-deep);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.topCta span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.9em;
+  height: 0.9em;
+  flex: none;
+  color: var(--accent);
+  transform: translateY(-0.08em);
+}
+
+.topCta svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .page a {
@@ -224,6 +281,10 @@
 }
 
 .footer a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35em;
   flex: none;
   padding: 15px 20px;
   border: 1px solid var(--line);
@@ -235,6 +296,7 @@
   line-height: 1;
   text-decoration: none;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .footer a:hover,
@@ -244,7 +306,20 @@
 }
 
 .footer a span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.9em;
+  height: 0.9em;
+  flex: none;
   color: var(--accent);
+  transform: translateY(-0.08em);
+}
+
+.footer a svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 @media (max-width: 640px) {
@@ -294,7 +369,7 @@
   }
 
   .footer a {
-    display: inline-block;
+    display: inline-flex;
     margin-top: 18px;
   }
 }
