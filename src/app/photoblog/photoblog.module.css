@@ -100,7 +100,9 @@
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 100% 3px, 4px 100%;
+  background-size:
+    100% 3px,
+    4px 100%;
 }
 
 .copyStack {
@@ -112,8 +114,7 @@
   color: var(--cream);
   text-align: var(--copy-align, right);
   text-shadow: 0 2px 18px var(--shadow);
-  transform:
-    translate(var(--copy-translate, -6%, 0))
+  transform: translate(var(--copy-translate, -6%, 0))
     translate(var(--copy-nudge-x), var(--copy-nudge-y));
   transition:
     top 220ms steps(2, end),
@@ -328,54 +329,43 @@
     opacity: 0;
     filter: blur(8px);
     clip-path: inset(0 0 86% 0);
-    transform:
-      translate(var(--copy-translate, -6%, 0))
-      translate(var(--copy-nudge-x), var(--copy-nudge-y))
-      translate(-10px, 7px);
+    transform: translate(var(--copy-translate, -6%, 0))
+      translate(var(--copy-nudge-x), var(--copy-nudge-y)) translate(-10px, 7px);
   }
 
   16% {
     opacity: 1;
     clip-path: inset(42% 0 24% 0);
-    transform:
-      translate(var(--copy-translate, -6%, 0))
-      translate(var(--copy-nudge-x), var(--copy-nudge-y))
-      translate(12px, -4px);
+    transform: translate(var(--copy-translate, -6%, 0))
+      translate(var(--copy-nudge-x), var(--copy-nudge-y)) translate(12px, -4px);
   }
 
   31% {
     opacity: 0.38;
     clip-path: inset(10% 0 58% 0);
-    transform:
-      translate(var(--copy-translate, -6%, 0))
-      translate(var(--copy-nudge-x), var(--copy-nudge-y))
-      translate(-4px, -9px);
+    transform: translate(var(--copy-translate, -6%, 0))
+      translate(var(--copy-nudge-x), var(--copy-nudge-y)) translate(-4px, -9px);
   }
 
   47% {
     opacity: 1;
     filter: blur(2px);
     clip-path: inset(68% 0 7% 0);
-    transform:
-      translate(var(--copy-translate, -6%, 0))
-      translate(var(--copy-nudge-x), var(--copy-nudge-y))
-      translate(7px, 3px);
+    transform: translate(var(--copy-translate, -6%, 0))
+      translate(var(--copy-nudge-x), var(--copy-nudge-y)) translate(7px, 3px);
   }
 
   68% {
     clip-path: inset(0 0 0 0);
-    transform:
-      translate(var(--copy-translate, -6%, 0))
-      translate(var(--copy-nudge-x), var(--copy-nudge-y))
-      translate(-2px, 0);
+    transform: translate(var(--copy-translate, -6%, 0))
+      translate(var(--copy-nudge-x), var(--copy-nudge-y)) translate(-2px, 0);
   }
 
   100% {
     opacity: 1;
     filter: blur(0);
     clip-path: inset(0 0 0 0);
-    transform:
-      translate(var(--copy-translate, -6%, 0))
+    transform: translate(var(--copy-translate, -6%, 0))
       translate(var(--copy-nudge-x), var(--copy-nudge-y));
   }
 }

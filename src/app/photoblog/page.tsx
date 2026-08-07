@@ -41,9 +41,8 @@ const getRandomSceneImages = (count: number) => {
   return shuffled.slice(0, count);
 };
 
-const getRandomLayoutVariant = () => (
-  layoutVariants[Math.floor(Math.random() * layoutVariants.length)]
-);
+const getRandomLayoutVariant = () =>
+  layoutVariants[Math.floor(Math.random() * layoutVariants.length)];
 
 const getLayoutImageCount = (layout: LayoutVariant) => (layout === "topStrip" ? 4 : 3);
 
@@ -316,19 +315,16 @@ const PhotoblogPage = () => {
               fill
               unoptimized
               priority
-              sizes={index === 0 ? "(max-width: 720px) 100vw, 54vw" : "(max-width: 720px) 100vw, 46vw"}
+              sizes={
+                index === 0 ? "(max-width: 720px) 100vw, 54vw" : "(max-width: 720px) 100vw, 46vw"
+              }
               className={styles.image}
             />
           </figure>
         ))}
       </section>
 
-      <div
-        ref={copyRef}
-        className={styles.copyStack}
-        aria-live="polite"
-        key={copyAnimationKey}
-      >
+      <div ref={copyRef} className={styles.copyStack} aria-live="polite" key={copyAnimationKey}>
         <h1 className={styles.heading}>
           <span className={styles.headlineLine}>
             <span className={styles.copyPrefix}>{currentScene.copy}</span>
