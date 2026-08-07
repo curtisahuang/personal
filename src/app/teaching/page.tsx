@@ -50,8 +50,12 @@ export default function TeachingPage() {
           <ul className={styles.primaryList}>
             <li>Bachelor of Science in Bioengineering, UC Berkeley</li>
             <li>
-              Research positions at UC Berkeley (Biomedical Engineering), UC Irvine (Environmental
-              Science), and HKU (Ecology)
+              <p>Research positions:</p>
+              <ul className={styles.detailList}>
+                <li>UC Berkeley — Biomedical Engineering & Comparative Biomechanics</li>
+                <li>UC Irvine — Environmental Science (Air Pollution Laboratory)</li>
+                <li>HKU — Ecology (Arboreal Ants in Mangrove Ecosystems)</li>
+              </ul>
             </li>
             <li>TEFL certificate</li>
           </ul>
