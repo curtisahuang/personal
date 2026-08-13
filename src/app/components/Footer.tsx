@@ -56,7 +56,7 @@ const SocialLinks = ({
         <div className="flex flex-row gap-10 items-center">
           <SwipeLink className="hover-underline-animation" direction="left" href="/teaching">
             <h5>
-              <strong>tutoring</strong>
+              <strong>teaching</strong>
             </h5>
           </SwipeLink>
           <h5>
