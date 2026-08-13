@@ -6,7 +6,7 @@ import vaporwave from "../../assets/vaporwave.png";
 const Header = () => {
   return (
     <div>
-      <div className="w-full flex justify-center pb-12">
+      <div className="w-full flex justify-center pb-12 px-4">
         <Link href="/photoblog" aria-label="Open photoblog">
           <Image
             className="cursor-pointer"

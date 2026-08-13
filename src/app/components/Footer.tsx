@@ -27,13 +27,13 @@ const SocialLinks = ({
   const y = useTransform(scrollProgress, [0, 1], [-225, 0]);
 
   return (
-    <div className="h-[800px] pb-10 bg-(--background-color) overflow-hidden">
+    <div className="h-[100vh] pb-10 bg-(--background-color) overflow-hidden">
       <motion.div
         style={{ y }}
-        className="h-full bg-(--background-color) flex flex-col justify-center gap-10 items-center p-10"
+        className="h-full bg-(--background-color) flex flex-col justify-center gap-4 items-center p-4"
       >
         <Contact />
-        <div className="flex flex-col sm:flex-row gap-10 items-center">
+        <div className="flex flex-row gap-10 items-center">
           <h5>
             <a className="hover-underline-animation" href="https://github.com/curtisahuang">
               <strong>github</strong>
@@ -53,16 +53,38 @@ const SocialLinks = ({
             </a>
           </h5>
         </div>
-        <h5 className="text-center">
+        <div className="flex flex-row gap-10 items-center">
           <SwipeLink className="hover-underline-animation" direction="left" href="/teaching">
-            <strong>teaching</strong>
+            <h5>
+              <strong>tutoring</strong>
+            </h5>
           </SwipeLink>
-        </h5>
+          <h5>
+            <a className="hover-underline-animation" href="https://dashboard.curtisahuang.com">
+              <strong>dashboard</strong>
+            </a>
+          </h5>
+        </div>
         <h5 className="text-center">
           <Link className="hover-underline-animation" href="/games-and-toys">
-            <strong>games & toys</strong>
+            <strong>lil&apos; games & toys</strong>
           </Link>
         </h5>
+        <div className="flex flex-row gap-10 items-center">
+          <h6>
+            <strong>other stuff:</strong>
+          </h6>
+          <h6>
+            <a className="hover-underline-animation" href="https://hollyhlchan.com">
+              <strong>holly hl chan</strong>
+            </a>
+          </h6>
+          <h6>
+            <a className="hover-underline-animation" href="https://arcdepear.com">
+              <strong>arc de pear</strong>
+            </a>
+          </h6>
+        </div>
       </motion.div>
     </div>
   );
