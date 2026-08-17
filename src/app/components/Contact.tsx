@@ -1,5 +1,7 @@
 "use client";
 
+import ContactFormDrawer from "./ContactFormDrawer";
+
 const Contact = () => {
   return (
     <div className="flex justify-between items-center uppercase pt-10 sm:pb-10 leading-[2.75rem]">
@@ -25,6 +27,24 @@ const Contact = () => {
             <h2>55781337</h2>
           </div>
         </a>
+
+        <ContactFormDrawer
+          triggerClassName="pb-6 text-left uppercase transition duration-500 hover:text-[#555]"
+          triggerLabel={
+            <div>
+              <div className="flex justify-between tracking-[0.58em]">
+                <h2>contact</h2>
+                <h2>form</h2>
+              </div>
+              <div className="flex justify-between tracking-[0.18em] font-normal">
+                <h2>send</h2>
+                <h2>a message</h2>
+              </div>
+            </div>
+          }
+          title="Let's talk"
+          description="Use the form to share what you need help with, and I will reply by email."
+        />
 
         <a href="tel:+447479227231" className="transition duration-500 hover:text-[#555]">
           <div className="flex justify-between tracking-[0.65em]">

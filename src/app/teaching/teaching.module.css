@@ -110,6 +110,11 @@
   white-space: nowrap;
 }
 
+.topCta:not(a) {
+  color: inherit;
+  cursor: pointer;
+}
+
 .topCta span {
   display: flex;
   align-items: center;
@@ -280,6 +285,15 @@
   font-size: inherit;
 }
 
+.footerActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  justify-content: space-between;
+}
+
 .footer a {
   display: inline-flex;
   align-items: center;
@@ -299,8 +313,40 @@
   white-space: nowrap;
 }
 
+.footerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35em;
+  flex: none;
+  padding: 15px 20px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--paper-deep);
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
 .footer a:hover,
 .footer a:focus-visible {
+  border-color: var(--accent);
+  background: var(--paper);
+}
+
+.footerButton:hover,
+.footerButton:focus-visible {
+  color: var(--accent);
   border-color: var(--accent);
   background: var(--paper);
 }
@@ -370,7 +416,6 @@
 
   .footer a {
     display: inline-flex;
-    margin-top: 18px;
   }
 }
 

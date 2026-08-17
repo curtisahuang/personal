@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Newsreader } from "next/font/google";
+import { ContactFormDrawer } from "../components";
 import SwipeLink from "../components/SwipeLink";
 import styles from "./teaching.module.css";
 
@@ -42,12 +43,7 @@ export default function TeachingPage() {
               <span>WhatsApp</span>
               <a href="https://wa.me/85255781337">+852 5578 1337</a>
             </p>
-            <p>
-              <span>Website</span>
-              <SwipeLink direction="right" href="/">
-                curtisahuang.com
-              </SwipeLink>
-            </p>
+
             <p>
               <span>Facebook</span>
               <a
@@ -68,9 +64,15 @@ export default function TeachingPage() {
               </a>
             </p>
             <a className={styles.topCta} href="https://wa.me/85255781337">
-              Start a conversation
+              Whatsapp me
               <WhatsAppIcon />
             </a>
+            <ContactFormDrawer
+              triggerClassName={styles.topCta}
+              triggerLabel="Send a message"
+              title="Get in touch"
+              description="Tell me about the student, subjects, and scheduling needs, and I will follow up by email."
+            />
           </div>
         </header>
 
@@ -235,10 +237,18 @@ export default function TeachingPage() {
 
         <footer className={styles.footer}>
           <p>Available for private tutoring and educational consultation.</p>
-          <a href="https://wa.me/85255781337">
-            Start a conversation
-            <WhatsAppIcon />
-          </a>
+          <div className={styles.footerActions}>
+            <a href="https://wa.me/85255781337">
+              WhatsApp me
+              <WhatsAppIcon />
+            </a>
+            <ContactFormDrawer
+              triggerClassName={styles.footerButton}
+              triggerLabel="Send a message"
+              title="Get in touch"
+              description="Use the form for tutoring, mentoring, or educational consultation inquiries."
+            />
+          </div>
         </footer>
       </main>
     </div>
