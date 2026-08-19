@@ -198,9 +198,6 @@ export default function TeachingPage() {
                 <h3>Hong Kong</h3>
                 <ul className={`${styles.detailList} ${styles.institutionList}`}>
                   <li>The University of Hong Kong (HKU)</li>
-                  <li>The Hong Kong Polytechnic University (PolyU)</li>
-                  <li>City University of Hong Kong (CityU)</li>
-                  <li>Hong Kong Baptist University (HKBU)</li>
                   <li>Hong Kong International School (HKIS)</li>
                   <li>Kellett School</li>
                   <li>Harrow International School Hong Kong</li>
