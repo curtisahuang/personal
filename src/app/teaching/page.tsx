@@ -41,7 +41,7 @@ export default function TeachingPage() {
           <div className={styles.contactList} aria-label="Contact information">
             <p>
               <span>WhatsApp</span>
-              <a href="https://wa.me/85255781337">+852 5578 1337</a>
+              <a href="https://wa.me/447479227231">+44 7479 227231</a>
             </p>
 
             <p>
@@ -63,7 +63,7 @@ export default function TeachingPage() {
                 </svg>
               </a>
             </p>
-            <a className={styles.topCta} href="https://wa.me/85255781337">
+            <a className={styles.topCta} href="https://wa.me/447479227231">
               Whatsapp me
               <WhatsAppIcon />
             </a>
@@ -235,7 +235,7 @@ export default function TeachingPage() {
         <footer className={styles.footer}>
           <p>Available for private tutoring and educational consultation.</p>
           <div className={styles.footerActions}>
-            <a href="https://wa.me/85255781337">
+            <a href="https://wa.me/447479227231">
               WhatsApp me
               <WhatsAppIcon />
             </a>

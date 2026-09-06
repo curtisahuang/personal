@@ -1,7 +1,5 @@
 "use client";
 
-import ContactFormDrawer from "./ContactFormDrawer";
-
 const Contact = () => {
   return (
     <div className="flex justify-between items-center uppercase pt-10 sm:pb-10 leading-[2.75rem]">
@@ -18,13 +16,13 @@ const Contact = () => {
 
         <hr className="pb-5 h-0 border-t-4" />
 
-        <a href="https://wa.me/85255781337" className="transition duration-500 hover:text-[#555]">
+        <a href="https://wa.me/447479227231" className="transition duration-500 hover:text-[#555]">
           <div className="flex justify-between tracking-[0.9em] ">
             <h2>whatsapp</h2>
           </div>
           <div className="flex justify-between pb-6 tracking-[0.3em]">
-            <h2>+852</h2>
-            <h2>55781337</h2>
+            <h2>+447479</h2>
+            <h2>227231</h2>
           </div>
         </a>
 
