@@ -123,7 +123,7 @@ export default function TeachingPage() {
             </li>
             <li>
               <p>
-                10 Advanced Placement (AP) exams (US; equivalent to A levels), with scores of 5 out
+                10 Advanced Placement (AP) exams (US; equivalent to A-level), with scores of 5 out
                 of 5:
               </p>
               <ul className={`${styles.detailList} ${styles.subjectList}`}>
@@ -160,7 +160,7 @@ export default function TeachingPage() {
                 </li>
                 <li>
                   <span className={styles.detailLabel}>Secondary</span> - IGCSE, GCSE, ACT, SAT
-                  (US), TOEFL, IB Diploma, and A levels
+                  (US), TOEFL, AP, IB Diploma, and A-level
                 </li>
                 <li>
                   <span className={styles.detailLabel}>University</span> - science (Biology,
