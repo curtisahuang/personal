@@ -20,7 +20,7 @@ const Contact = () => {
           <div className="flex justify-between tracking-[0.9em] ">
             <h2>whatsapp</h2>
           </div>
-          <div className="flex justify-between pb-6 tracking-[0.3em]">
+          <div className="flex justify-between pb-6 tracking-[0.2em]">
             <h2>+447479</h2>
             <h2>227231</h2>
           </div>
