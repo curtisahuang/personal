@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+Why did the developer bring a ladder to the README? Because the project had great documentation, but the jokes were still over the top.
+
 ## Getting Started
 
 **Requirements:**
