@@ -9,7 +9,8 @@ const Footer = () => {
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
     target: container,
-    offset: ["start end", "end end"],
+    // Finish when the top reaches the viewport top, so content taller than the viewport isn't left clipped
+    offset: ["start end", "start start"],
   });
 
   return (
@@ -27,10 +28,10 @@ const SocialLinks = ({
   const y = useTransform(scrollProgress, [0, 1], [-225, 0]);
 
   return (
-    <div className="h-[100vh] pb-10 bg-(--background-color) overflow-hidden">
+    <div className="min-h-[100vh] pb-10 bg-(--background-color) overflow-hidden">
       <motion.div
         style={{ y }}
-        className="h-full bg-(--background-color) flex flex-col justify-center gap-4 items-center p-4"
+        className="min-h-[calc(100vh-2.5rem)] bg-(--background-color) flex flex-col justify-center gap-4 items-center p-4"
       >
         <Contact />
         <div className="flex flex-row gap-10 items-center">
